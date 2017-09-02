@@ -1,5 +1,6 @@
 package database;
 
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -29,8 +30,8 @@ public class HSQLQuery {
 		al = new ArrayList();
 		
 		try {
-			con = DriverManager.getConnection("jdbc:hsqldb:file:C:/Users/Stefan/Desktop/hsdb/new;shutdown=true", "sa",
-					"");
+			con = DriverManager.getConnection("jdbc:hsqldb:file:"+Paths.get(".").toAbsolutePath().normalize().toString()+"/hsdb/new;shutdown=true", "sa","");
+			//con = DriverManager.getConnection("jdbc:hsqldb:file:C:/Users/Stefan/Desktop/hsdb/new;shutdown=true", "sa","");
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery(q);
 			showMetatData(rs);
