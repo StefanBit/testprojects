@@ -20,18 +20,35 @@ public class HSQLQuery {
 	public HSQLQuery() {
 		try {
 			Class.forName("org.hsqldb.jdbcDriver");
+			open();
 		} catch (ClassNotFoundException e) {
 			System.err.println("Keine Treiber-Klasse!");
 			return;
 		}
 	}
 
+	public void open() {
+		try {
+			con = DriverManager.getConnection("jdbc:hsqldb:file:"+Paths.get(".").toAbsolutePath().normalize().toString()+"/hsdb/new;shutdown=true", "sa","");
+		} catch (SQLException e) {
+			System.out.println("MEin Fehler");
+			e.printStackTrace();
+		}
+//		finally {
+//			if (con != null)
+//				try {
+//					con.close();
+//				} catch (SQLException e) {
+//					e.printStackTrace();
+//				}
+//		}
+	}
 	public ArrayList query(String q) {
 		al = new ArrayList();
 		
 		try {
-			con = DriverManager.getConnection("jdbc:hsqldb:file:"+Paths.get(".").toAbsolutePath().normalize().toString()+"/hsdb/new;shutdown=true", "sa","");
-			//con = DriverManager.getConnection("jdbc:hsqldb:file:C:/Users/Stefan/Desktop/hsdb/new;shutdown=true", "sa","");
+		//	con = DriverManager.getConnection("jdbc:hsqldb:file:"+Paths.get(".").toAbsolutePath().normalize().toString()+"/hsdb/new;shutdown=true", "sa","");
+		
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery(q);
 			showMetatData(rs);
@@ -42,15 +59,17 @@ public class HSQLQuery {
 			stmt.close();
 
 		} catch (SQLException e) {
+			System.out.println("MEin Fehler");
 			e.printStackTrace();
-		} finally {
-			if (con != null)
-				try {
-					con.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-		}
+		} 
+//		finally {
+//			if (con != null)
+//				try {
+//					con.close();
+//				} catch (SQLException e) {
+//					e.printStackTrace();
+//				}
+	//	}
 //		System.out.println();
 		//System.out.println("Result has "+al.size()+" Entrys");
 		return al;

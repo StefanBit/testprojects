@@ -17,7 +17,7 @@ public class HistStockDataLoaderTask<T> extends Task{
 	
 
 	@Override
-	protected Object call() throws Exception {
+	protected ArrayList<HistData> call() throws Exception {
 		HistStockDataLoader l = new HistStockDataLoader();
 		Calendar cal = Calendar.getInstance();
 		Date today = cal.getTime();
@@ -33,7 +33,7 @@ public class HistStockDataLoaderTask<T> extends Task{
 		sHistData.insertAll(alHistData);
 		al2 = sHistData.getAll();
 		updateProgress(1, 1);
-		return null;
+		return al2;
 	}
 	
 }

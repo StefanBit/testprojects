@@ -25,12 +25,14 @@ public class DAOHsqlImpl<T> {
 	Map<String, Method> mapSetter = new HashMap<String, Method>();
 	T t = null;
 	BeanInfo info;
+	HSQLQuery q;
 	
 	public DAOHsqlImpl(Class<T> c) {
 		this.c = c;
 		this.tablename = c.getSimpleName();
 		buildGetterSetterMap();
 		System.out.println("Building new SQL Adapter for Class " + c.getSimpleName());
+		q = new HSQLQuery();
 		if (!exists()) {
 			create();
 		}
@@ -71,8 +73,6 @@ public class DAOHsqlImpl<T> {
 	private Boolean exists() {
 		Boolean exists;
 		ArrayList al;
-		//System.out.print("Exist ");
-		HSQLQuery q = new HSQLQuery();
 		al = q.query(("SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = '" + tablename.toUpperCase() + "'"));
 		exists = ((al.size() == 0) ? false : true);
 		System.out.println(tablename + "? " + exists);
@@ -80,7 +80,6 @@ public class DAOHsqlImpl<T> {
 	}
 
 	private void create() {
-		HSQLQuery q = new HSQLQuery();
 		System.out.println("Creating table " + tablename);
 		q.query("CREATE TABLE " + tablename + "(" + getSignature() + ")");
 	}
@@ -91,7 +90,6 @@ public class DAOHsqlImpl<T> {
 	 * @param T
 	 */
 	public void insert(T t) {
-		HSQLQuery q = new HSQLQuery();
 		BeanInfo info;
 		String valueString = "";
 		String columnString = "";
@@ -158,7 +156,6 @@ public class DAOHsqlImpl<T> {
 		ArrayList al, alTable;
 		al = new ArrayList<>();
 		
-		HSQLQuery q = new HSQLQuery();
 		alTable = q.query("SELECT * FROM " + tablename);
 		for (int i = 0; i < alTable.size(); i++) {
 			try {
@@ -191,7 +188,6 @@ public class DAOHsqlImpl<T> {
 	 */
 	public void deleteAll() {
 		ArrayList al;
-		HSQLQuery q = new HSQLQuery();
 		al = q.query("DELETE FROM " + tablename);
 		for (Object object : al) {
 			System.out.println(object);
@@ -199,7 +195,6 @@ public class DAOHsqlImpl<T> {
 	}
 	public void dropTable() {
 		ArrayList al;
-		HSQLQuery q = new HSQLQuery();
 		al = q.query("DROP TABLE " + tablename);
 		for (Object object : al) {
 			System.out.println(object);
