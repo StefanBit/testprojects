@@ -37,7 +37,7 @@ public class HistStockDataLoader {
 		SimpleDateFormat ft = new SimpleDateFormat("YYYY-MM-dd");
 		Calendar cal=Calendar.getInstance();
 		long millisStart = Calendar.getInstance().getTimeInMillis();
-		String request = "http://www.google.com/finance/historical?q=NASDAQ:"+s.getName()+"&startdate=Jun+01%2C+2017&output=csv";
+		String request = "http://www.google.com/finance/historical?q=NASDAQ:"+s.getName()+"&startdate=Jun+01%2C+2008&output=csv";
 
 		try {
 			StringTokenizer st;

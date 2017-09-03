@@ -10,6 +10,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
+import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ProgressBar;
@@ -27,7 +30,7 @@ import model.FloatingMean;
 import model.HistData;
 import model.Symbol;
 
-public class StocksStage<T> extends Stage {
+public class StocksStage<T> extends Stage implements EventHandler{
 	
 	Class<T> c;
 	ArrayList<TableColumn> colNames;
@@ -35,6 +38,7 @@ public class StocksStage<T> extends Stage {
 	ArrayList<ProgressIndicator> pbs;
 	ArrayList<Button> buttons;
 	ArrayList<Thread> threads;
+	int currentItem;
 	
 	public StocksStage(ArrayList<T> ol) {
 		T t;
@@ -51,26 +55,18 @@ public class StocksStage<T> extends Stage {
 		setScene(SymbolScene);
 		setTitle("StockStage");
 		
-		for (int i = 0; i < 2; i++) {
-
+		for (int i = 0; i < ol.size(); i++) {
+			currentItem=i;
 			tasks.add(new HistStockDataLoaderTask());
 			tasks.get(i).alSymbol=(Symbol) ol.get(i);
 			pbs.add(new ProgressIndicator());
 			pbs.get(i).progressProperty().bind(tasks.get(i).progressProperty());
-			buttons.add(new Button());
+			buttons.add(new Button(String.valueOf(i)));
 			buttons.get(i).setShape(pbs.get(i).getShape());
 			threads.add(new Thread(tasks.get(i)));
 			threads.get(i).start();
 			hBox.getChildren().add(pbs.get(i));
-			buttons.get(i).setOnAction((event)->{
-				ArrayList<HistData> hd;
-				System.out.println("jjjJ"+event.getSource());
-				hd=(ArrayList<HistData>) tasks.get(0).getValue();
-				new ChartStage(hd);
-				FloatingMean fm= new FloatingMean();
-				new ChartStage(fm.calc(hd));
-			}
-			);
+			buttons.get(i).setOnAction(this);
 //			tasks.get(i).setOnSucceeded((WorkerStateEvent event) -> {
 //				System.out.println(event);
 //				ArrayList<Symbol> alSymbols=null;
@@ -85,5 +81,22 @@ public class StocksStage<T> extends Stage {
 		show();
 	}
 
+	@Override
+	public void handle(Event event) {
+		ArrayList<HistData> hd;
+		int i=0;
+		while (!event.getSource().equals(buttons.get(i))) {
+			i++;
+		}
+			
+			hd=(ArrayList<HistData>) tasks.get(i).getValue();
+			System.out.println(i);
+		new ChartStage(hd);
+		FloatingMean fm= new FloatingMean();
+		new ChartStage(fm.calc(hd));
+	}
+	public void handle(ActionEvent event) {
+		// TODO Auto-generated method stub
+	}
 
 }

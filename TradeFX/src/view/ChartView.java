@@ -21,6 +21,7 @@ public class ChartView implements ChangeListener{
 		final CategoryAxis xAxis = new CategoryAxis();
 		final NumberAxis yAxis = new NumberAxis();
 		xAxis.setLabel("Month");
+		
 		yAxis.setForceZeroInRange(false);
 		lineChart = new CandleChart<String, Number>(xAxis, yAxis);
 		

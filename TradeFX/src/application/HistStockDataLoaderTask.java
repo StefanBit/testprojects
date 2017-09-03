@@ -31,7 +31,7 @@ public class HistStockDataLoaderTask<T> extends Task{
 		ArrayList<HistData> al2;
 		sHistData.deleteAll();
 		sHistData.insertAll(alHistData);
-		al2 = sHistData.getAllWhere("0");
+		al2 = sHistData.getAllWhere(alSymbol.getPk().toString());
 		updateProgress(1, 1);
 		return al2;
 	}
