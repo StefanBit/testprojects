@@ -2,7 +2,6 @@ package view;
 
 import java.util.ArrayList;
 
-import application.CandleChart;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.Node;
@@ -22,6 +21,7 @@ public class ChartView implements ChangeListener{
 		final CategoryAxis xAxis = new CategoryAxis();
 		final NumberAxis yAxis = new NumberAxis();
 		xAxis.setLabel("Month");
+		yAxis.setForceZeroInRange(false);
 		lineChart = new CandleChart<String, Number>(xAxis, yAxis);
 		
 	}

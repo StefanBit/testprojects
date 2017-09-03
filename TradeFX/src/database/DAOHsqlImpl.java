@@ -179,10 +179,45 @@ public class DAOHsqlImpl<T> {
 			}
 			al.add(t);
 		}
-
 		return al;
 	}
-
+	/**
+	 * @return ArrayList<T>
+	 */
+	public ArrayList<T> getAllWhere(String where) {
+		System.out.println("getAll");
+		where="pk="+where;
+		T t = null;
+		ArrayList al, alTable;
+		al = new ArrayList<>();
+		
+		alTable = q.query("SELECT * FROM " + tablename+" WHERE "+where +" ORDER BY DATE ASC");
+		for (int i = 0; i < alTable.size(); i++) {
+			try {
+				t= c.newInstance();
+			} catch (InstantiationException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (IllegalAccessException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			// Call t SetterMethods for each Column in Current row.
+			ArrayList row = (ArrayList) alTable.get(i);
+			for (int j = 1; j <= row.size(); j++) {
+				try {
+					mapSetter.get(q.m.getColumnName(j)).invoke(t, row.get(j - 1));
+				} catch (SQLException | IllegalAccessException | IllegalArgumentException
+						| InvocationTargetException e) {
+					e.printStackTrace();
+				}
+			}
+			al.add(t);
+		}
+		return al;
+	}
+	
+	
 	/**
 	 * Delete all
 	 */

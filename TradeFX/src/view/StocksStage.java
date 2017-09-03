@@ -23,6 +23,7 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
+import model.FloatingMean;
 import model.HistData;
 import model.Symbol;
 
@@ -66,6 +67,8 @@ public class StocksStage<T> extends Stage {
 				System.out.println("jjjJ"+event.getSource());
 				hd=(ArrayList<HistData>) tasks.get(0).getValue();
 				new ChartStage(hd);
+				FloatingMean fm= new FloatingMean();
+				new ChartStage(fm.calc(hd));
 			}
 			);
 //			tasks.get(i).setOnSucceeded((WorkerStateEvent event) -> {

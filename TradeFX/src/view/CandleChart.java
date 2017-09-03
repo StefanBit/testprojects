@@ -1,4 +1,4 @@
-package application;
+package view;
 
 import javafx.scene.chart.Axis;
 import javafx.scene.chart.LineChart;
