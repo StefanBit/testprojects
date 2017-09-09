@@ -35,9 +35,9 @@ import model.TradeFXModel;
 
 public class StocksStage<T> extends Stage {
 
-	ArrayList<HistStockDataLoaderTask> tasks;
 	ArrayList<ProgressIndicator> pbs;
 	ArrayList<Button> buttons;
+	ArrayList<HistStockDataLoaderTask> tasks;
 	ArrayList<Thread> threads;
 
 	int currentItem;
@@ -63,16 +63,10 @@ public class StocksStage<T> extends Stage {
 
 		for (Map.Entry<Symbol, ArrayList<HistData>> entry : TradeFXModel.StockHistData.entrySet()) {
 			Symbol currentSymbol = entry.getKey();
-			HistStockDataLoaderTask currenttask = new HistStockDataLoaderTask();
 			ProgressIndicator currentProgressindicator = new ProgressIndicator();
+			currentProgressindicator.progressProperty().bind(TradeFXModel.tasks.get(currentSymbol).progressProperty());
 			Button currentButton = new Button(currentSymbol.getName());
-			Thread currentThread;
-			tasks.add(currenttask);
-			currenttask.alSymbol = currentSymbol;
-			currentProgressindicator.progressProperty().bind(currenttask.progressProperty());
 			buttons.add(currentButton);
-			currentThread = new Thread(currenttask);
-			currentThread.start();
 			currentButton.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
 				public void handle(ActionEvent event) {

@@ -30,15 +30,19 @@ public class HistStockDataLoader {
 	public ArrayList<HistData> load(Symbol s, Date firstDate, Date lastDate) {
 		
 		URL url;
-		
 
 		alHistData=new ArrayList<HistData>();
 
 		SimpleDateFormat ft = new SimpleDateFormat("YYYY-MM-dd");
 		Calendar cal=Calendar.getInstance();
+		cal.setTime(firstDate);
+		System.out.println(cal.get(Calendar.YEAR));
+		int fromDay=cal.get(Calendar.DAY_OF_MONTH);
+		int fromYear=cal.get(Calendar.YEAR);
+		int fromMonth=cal.get(Calendar.MONTH);
 		long millisStart = Calendar.getInstance().getTimeInMillis();
-		String request = "http://www.google.com/finance/historical?q=NASDAQ:"+s.getName()+"&startdate=Jun+01%2C+2008&output=csv";
-
+		String request = "http://www.google.com/finance/historical?q=NASDAQ:"+s.getName()+"&startdate="+fromMonth+"+"+fromDay+"%2C+"+fromYear+"&output=csv";
+		System.out.println("Fetch: "+request);
 		try {
 			StringTokenizer st;
 			DateFormat format = new SimpleDateFormat("dd-MMM-yy", Locale.ENGLISH);
