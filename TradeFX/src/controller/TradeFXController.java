@@ -35,7 +35,7 @@ public class TradeFXController {
 				// Load Symbols
 				DAOHsqlImpl<Symbol> SymbolsLoader = new DAOHsqlImpl(Symbol.class);
 				ArrayList<Symbol> alSymbols = SymbolsLoader.getAll();
-				// Create Map
+				// Create SymbolMap
 				TradeFXModel.StockHistData = new HashMap<Symbol, ArrayList<HistData>>();
 				for (Symbol symbol : alSymbols) {
 					TradeFXModel.StockHistData.put(symbol, null);
