@@ -13,10 +13,7 @@ import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.ProgressIndicator;
 import loader.HistStockDataLoaderTask;
-import model.FloatingMean;
-import model.HistData;
-import model.Symbol;
-import model.TradeFXModel;
+import model.*;
 import view.ChartStage;
 
 public class TradeFXController {
@@ -25,6 +22,10 @@ public class TradeFXController {
 
 	public static void init() {
 
+		TradeFXModel.trades = new ArrayList<Transaction>();
+		TradeFXModel.trades.add(new Transaction("MSFT",0.5d));
+		TradeFXModel.trades.add(new Transaction("MSFT",0.5d));
+		
 		TradeFXModel.tasks = new HashMap<Symbol,HistStockDataLoaderTask>();
 		ArrayList<Thread> threads = new ArrayList<Thread>();
 

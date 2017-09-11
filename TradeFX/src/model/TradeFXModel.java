@@ -11,6 +11,7 @@ public class TradeFXModel {
 	public static ArrayList<Symbol> StockSymbols;
 	public static Map<Symbol, ArrayList<HistData>> StockHistData;
 	public static Map<Symbol, HistStockDataLoaderTask> tasks;
-
+	public static ArrayList<Transaction> trades;
+	
 
 }

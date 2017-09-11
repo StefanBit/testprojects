@@ -9,20 +9,17 @@ import javafx.stage.Stage;
 import model.HistData;
 import model.TradeFXModel;
 
-public class PortfolioStage extends Stage{
-public PortfolioStage() {
-	HBox hBox = new HBox();
-	Scene SymbolScene = new Scene(hBox, 800, 400);
-	setScene(SymbolScene);
-	setTitle("Portfolios");
-	
-	TableView table = new MyTableView(TradeFXModel);
-	hBox.getChildren().add(table);
-	setScene(SymbolScene);
-	setTitle("StockStage");
-	
-	show();
-}
+public class PortfolioStage extends Stage {
+	public PortfolioStage() {
+		HBox hBox = new HBox();
+		Scene SymbolScene = new Scene(hBox, 800, 400);
+		setScene(SymbolScene);
+		setTitle("Portfolios");
 
+		TableView table = new MyTableView(TradeFXModel.trades);
+		hBox.getChildren().add(table);
+
+		show();
+	}
 
 }

@@ -6,6 +6,9 @@ public class Symbol {
 public Symbol() {
 	// TODO Auto-generated constructor stub
 }
+public Symbol newInstance() {
+	return new Symbol();
+}
 	public Symbol(Integer pk, String name) {
 		this.pk = pk;
 		this.name = name;
