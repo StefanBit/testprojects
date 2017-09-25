@@ -57,6 +57,7 @@ public class StocksStage<T> extends Stage {
 		Scene SymbolScene = new Scene(hBox, 800, 400);
 //		TableView table = new MyTableView(TradeFXModel.StockSymbols);
 		StackPane table = new MyTablePane(TradeFXModel.StockSymbols,Symbol.class);
+		StackPane inserttable = new MyTablePane(TradeFXModel.StockSymbols,Symbol.class);
 		hBox.getChildren().add(table);
 		
 		setScene(SymbolScene);

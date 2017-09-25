@@ -15,10 +15,11 @@ public class PortfolioStage extends Stage {
 		Scene SymbolScene = new Scene(hBox, 800, 400);
 		setScene(SymbolScene);
 		setTitle("Portfolios");
-
+		PortfolioView pv=new PortfolioView();
+		pv.setData();
 		TableView table = new MyTableView(TradeFXModel.trades);
 		hBox.getChildren().add(table);
-
+		hBox.getChildren().add(pv.lineChart);
 		show();
 	}
 

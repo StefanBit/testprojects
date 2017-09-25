@@ -1,11 +1,21 @@
 package view;
 
+import java.beans.BeanInfo;
+import java.beans.IntrospectionException;
+import java.beans.Introspector;
+import java.beans.PropertyDescriptor;
 import java.util.ArrayList;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -15,17 +25,35 @@ import model.TradeFXModel;
 public class MyTablePane<T> extends StackPane implements EventHandler<ActionEvent> {
 	TableView table;
 	ArrayList<T> ol;
+	
 	Class c;
 
 	public MyTablePane(ArrayList<T> ol,Class c) {
 		super();
 		this.c=c;
 		this.ol = ol;
+		BeanInfo info;
 		VBox vBox = new VBox();
 		Button b = new Button("neu");
+		
+		TextField tf = new TextField();
 		table = new MyTableView(ol);
+		ArrayList<T> ol2;
+		ol2 = new ArrayList<T>();
+		T newentiti=null;
+		try {
+			newentiti=(T) c.newInstance();
+		} catch (InstantiationException | IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		ol2.add( newentiti);
+		TableView inserttable = new MyTableView<>(ol2);
+		inserttable.setPrefHeight(50);
 		this.getChildren().addAll(vBox);
-		vBox.getChildren().addAll(table, b);
+		vBox.getChildren().addAll(table);
+		vBox.getChildren().addAll(b);
+		vBox.getChildren().addAll(inserttable);
 		b.setOnAction(this);
 	}
 
