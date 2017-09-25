@@ -28,7 +28,7 @@ import model.TradeFXModel;
 public class MyTablePane<T> extends StackPane implements EventHandler<ActionEvent> {
 	TableView table;
 	ArrayList<T> ol;
-	
+	TableView inserttable;
 	Class c;
 
 	public MyTablePane(ArrayList<T> ol,Class c) {
@@ -52,7 +52,7 @@ public class MyTablePane<T> extends StackPane implements EventHandler<ActionEven
 			e.printStackTrace();
 		}
 		ol2.add( newentiti);
-		TableView inserttable = new MyTableView<>(ol2);
+		inserttable = new MyTableView(ol2);
 		inserttable.setPrefHeight(50);
 		this.getChildren().addAll(vBox);
 		vBox.getChildren().addAll(table);
@@ -71,12 +71,15 @@ public class MyTablePane<T> extends StackPane implements EventHandler<ActionEven
 			e.printStackTrace();
 		}
 		//table.getItems().add(object);
+		System.out.println("öööö");
+		System.out.println(inserttable.getItems().get(0));
+		table.getItems().add(inserttable.getItems().get(0));
 		
-		DAOHsqlImpl<T> sSymbol = new DAOHsqlImpl(Symbol.class);
-		sSymbol.deleteAll();
-		ArrayList alt = new ArrayList<>(Arrays.asList(table.getItems().toArray()));
+		//DAOHsqlImpl<T> sSymbol = new DAOHsqlImpl(Symbol.class);
+		//sSymbol.deleteAll();
+		//ArrayList alt = new ArrayList<>(Arrays.asList(table.getItems().toArray()));
 		 
-		sSymbol.insertAll(alt);
+		//sSymbol.insertAll(alt);
 
 	}
 }
