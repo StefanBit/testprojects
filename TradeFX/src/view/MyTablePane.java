@@ -5,7 +5,9 @@ import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.util.ArrayList;
+import java.util.Arrays;
 
+import database.DAOHsqlImpl;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
@@ -19,6 +21,7 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import model.HistData;
 import model.Symbol;
 import model.TradeFXModel;
 
@@ -35,6 +38,7 @@ public class MyTablePane<T> extends StackPane implements EventHandler<ActionEven
 		BeanInfo info;
 		VBox vBox = new VBox();
 		Button b = new Button("neu");
+		Button b2 = new Button("update");
 		
 		TextField tf = new TextField();
 		table = new MyTableView(ol);
@@ -53,6 +57,7 @@ public class MyTablePane<T> extends StackPane implements EventHandler<ActionEven
 		this.getChildren().addAll(vBox);
 		vBox.getChildren().addAll(table);
 		vBox.getChildren().addAll(b);
+		vBox.getChildren().addAll(b2);
 		vBox.getChildren().addAll(inserttable);
 		b.setOnAction(this);
 	}
@@ -65,7 +70,13 @@ public class MyTablePane<T> extends StackPane implements EventHandler<ActionEven
 		} catch (InstantiationException | IllegalAccessException e) {
 			e.printStackTrace();
 		}
-		table.getItems().add(object);
+		//table.getItems().add(object);
+		
+		DAOHsqlImpl<T> sSymbol = new DAOHsqlImpl(Symbol.class);
+		sSymbol.deleteAll();
+		ArrayList alt = new ArrayList<>(Arrays.asList(table.getItems().toArray()));
+		 
+		sSymbol.insertAll(alt);
 
 	}
 }

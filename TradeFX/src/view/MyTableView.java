@@ -69,6 +69,8 @@ public class MyTableView<T> extends TableView implements EventHandler<KeyEvent> 
 		if (selectedItem != null) {
 			if (keyEvent.getCode().equals(KeyCode.DELETE)) {
 				this.getItems().remove(selectedItem);
+				//System.out.println((ArrayList<T>) this.getItems());
+				
 			}
 		}
 	}

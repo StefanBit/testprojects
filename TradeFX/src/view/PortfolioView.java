@@ -5,6 +5,7 @@ import java.util.Iterator;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.chart.AreaChart;
 import javafx.scene.chart.CategoryAxis;
@@ -18,9 +19,11 @@ import model.HistData;
 import model.Symbol;
 import model.TradeFXModel;
 
-public class PortfolioView implements ChangeListener{
+public class PortfolioView implements ChangeListener {
 	final StackedAreaChart<String, Number> lineChart;
-	int x=0;
+	int x = 0;
+
+	TradeFXModel m = new TradeFXModel();
 
 	public PortfolioView() {
 		final CategoryAxis xAxis = new CategoryAxis();
@@ -31,36 +34,38 @@ public class PortfolioView implements ChangeListener{
 	}
 
 	public void setData() {
-		TradeFXModel m=new TradeFXModel();
-		for (Symbol iterable_element : m.StockSymbols) {
-			System.out.println(iterable_element.getName()+"llll");
-			lineChart.getData().add(getDataSeriesClose(m.StockHistData.get(iterable_element)));
-		}
-		
-		
-	}
-	
-	public XYChart.Series getDataSeriesClose(ArrayList<HistData> data){
-		double mid;
-		
-		XYChart.Series series = new XYChart.Series();
-		XYChart.Data dat;
-		series.setName(String.valueOf(data.get(0).getPk()));
-		int scale=data.size()/50;
-		for (int i = 0; i < data.size(); i=i+scale) {
-			dat = new StackedAreaChart.Data(data.get(i).getDate().toString(), data.get(i).getClose());
+		getDataSeriesClose();
 
-			series.getData().add(dat);
+	}
+
+	public void getDataSeriesClose() {
+		double mid;
+		ArrayList<HistData> data;
+		XYChart.Data dat;
+		XYChart.Series series = new XYChart.Series();;
+		Symbol iterable_element;		
+		// series.setName(String.valueOf(data.get(0).getPk()));
+		//for (Symbol iterable_element : m.StockSymbols) {
+		for (int k = 0;k<2;k++){
+		iterable_element = m.StockSymbols.get(k);
+			
+		series = new XYChart.Series();
+			data = m.StockHistData.get(iterable_element);
+			int scale = data.size() / 50;
+			System.out.println(iterable_element.getName() + "llll"+data.size());
+			for (int i = 0; i < data.size(); i = i + scale) {
+				dat = new XYChart.Data(data.get(i).getDate().toString(), data.get(i).getClose());
+				series.getData().add(dat);
+				
+			}
+			lineChart.getData().add(series);
+
 		}
-		
-		return series;
 	}
 
 	@Override
 	public void changed(ObservableValue arg0, Object arg1, Object arg2) {
-		
-		
-		
+
 	}
-	
+
 }
