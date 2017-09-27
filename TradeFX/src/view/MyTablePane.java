@@ -47,6 +47,8 @@ public class MyTablePane<T> extends StackPane implements EventHandler<ActionEven
 		T newentiti=null;
 		try {
 			newentiti=(T) c.newInstance();
+			((Symbol) newentiti).setName("FB");
+			((Symbol) newentiti).setPk(3);
 		} catch (InstantiationException | IllegalAccessException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -60,26 +62,36 @@ public class MyTablePane<T> extends StackPane implements EventHandler<ActionEven
 		vBox.getChildren().addAll(b2);
 		vBox.getChildren().addAll(inserttable);
 		b.setOnAction(this);
+		b2.setOnAction(new updateHandler());
 	}
 
 	@Override
 	public void handle(ActionEvent arg0) {
 		T object=null;
+		System.out.println(arg0.getSource());
 		try {
 			object = (T) c.newInstance();
 		} catch (InstantiationException | IllegalAccessException e) {
 			e.printStackTrace();
 		}
 		//table.getItems().add(object);
-		System.out.println("öööö");
-		System.out.println(inserttable.getItems().get(0));
+		System.out.println(((Symbol) inserttable.getItems().get(0)).getName());
 		table.getItems().add(inserttable.getItems().get(0));
 		
-		//DAOHsqlImpl<T> sSymbol = new DAOHsqlImpl(Symbol.class);
-		//sSymbol.deleteAll();
-		//ArrayList alt = new ArrayList<>(Arrays.asList(table.getItems().toArray()));
-		 
-		//sSymbol.insertAll(alt);
+		DAOHsqlImpl<T> sSymbol = new DAOHsqlImpl(Symbol.class);
+		sSymbol.deleteAll();
+		ArrayList alt = new ArrayList<>(Arrays.asList(table.getItems().toArray()));
+		
+		sSymbol.insertAll(alt);
+		
+	}
 
+}
+
+class updateHandler implements EventHandler<ActionEvent>{
+
+	@Override
+	public void handle(ActionEvent event) {
+		System.out.println("UpdateHandler");
 	}
 }

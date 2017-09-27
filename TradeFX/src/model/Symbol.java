@@ -3,12 +3,15 @@ package model;
 public class Symbol {
 	Integer pk;
 	String name;
-public Symbol() {
-	// TODO Auto-generated constructor stub
-}
-public Symbol newInstance() {
-	return new Symbol();
-}
+
+	public Symbol() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public Symbol newInstance() {
+		return new Symbol();
+	}
+
 	public Symbol(Integer pk, String name) {
 		this.pk = pk;
 		this.name = name;
@@ -30,5 +33,8 @@ public Symbol newInstance() {
 		this.name = name;
 	}
 
-
+	@Override
+	public String toString() {
+		return super.toString() + "[" + getName() + "," + getPk();
+	}
 }
