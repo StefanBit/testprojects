@@ -52,7 +52,7 @@ public class DAOHsqlImpl<T> {
 				s += "INTEGER, ";
 				break;
 			case "class java.lang.String":
-				s += "VARCHAR(10), ";
+				s += "VARCHAR(100), ";
 				break;
 			case "class java.util.Date":
 				s += "DATE, ";

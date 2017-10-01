@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+import application.Console;
 import controller.TradeFXController;
 import database.DAOHsqlImpl;
 import javafx.concurrent.Task;
@@ -23,47 +24,56 @@ import model.Symbol;
 import model.TradeFXModel;
 
 public class MainStage extends Stage {
+	
+	BorderPane root;
+	Scene scene;
+	MenuBar menuBar;
+	Menu menuStocks;
+	MenuItem stocks;
+	MenuItem portfolio;
+	ProgressBar pb;
+	TradeFXController tfxc;
 	public MainStage() {
 
-		BorderPane root = new BorderPane();
-		Scene scene = new Scene(root, 800, 400);
+		//Init
+		root = new BorderPane();
+		scene = new Scene(root, 800, 400);
+		menuBar = new MenuBar();
+		menuStocks = new Menu("Stocks");
+		stocks = new MenuItem("stocks");
+		portfolio = new MenuItem("Portfolio");
+		pb = new ProgressBar();
 
-		TradeFXController.init();
+		TradeFXController tfxc = new TradeFXController();
+		tfxc.init();
 
-		// Menu
-		MenuBar menuBar = new MenuBar();
-		Menu menuStocks = new Menu("Stocks");
+		//Layout
+		setTitle("MyTradeFX");
+		root.setBottom(pb);
+		root.setTop(menuBar);
+		//root.setRight(new Console());
+		
 		menuBar.getMenus().add(menuStocks);
-		MenuItem stocks = new MenuItem("stocks");
+		menuStocks.getItems().addAll(portfolio, stocks);
+		//Progressbar
+		pb.progressProperty().bind(tfxc.symbolsLoaderTask.progressProperty());
+		
+
+		// Menu Actions
 		stocks.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent t) {
 				new StocksStage();
 			}
 		});
-		MenuItem portfolio = new MenuItem("Portfolio");
 		portfolio.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent t) {
 				new PortfolioStage();
 			}
 		});
 
-		menuStocks.getItems().addAll(portfolio, stocks);
-
-
-		//Progressbar
-		ProgressBar pb = new ProgressBar();
-		pb.progressProperty().bind(TradeFXController.symbolsLoaderTask.progressProperty());
-		
-		
-		//Layout
-		setTitle("MyTradeFX");
-		root.setBottom(pb);
-		root.setTop(menuBar);
-		//root.setRight(new Console());
-		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+		//scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 		setScene(scene);
 		show();
-
 	}
 
 }

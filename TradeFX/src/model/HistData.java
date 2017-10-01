@@ -8,7 +8,13 @@ public class HistData {
 	Double open, hight, low, close, volume;
 	
 	public HistData() {
-		// TODO Auto-generated constructor stub
+		this.pk=0;
+		this.date= null ;
+		this.open = 0.0;
+		this.hight = 0.0;
+		this.low = 0.0;
+		this.close = 0.0;
+		this.volume = 0.0;
 	}
 	public HistData(int pk, Date date, double open, double hight, double low, double close,double  volume) {
 		this.pk=pk;
@@ -67,6 +73,6 @@ public class HistData {
 	
 	@Override
 	public String toString() {
-		return super.toString()+"["+getDate()+","+getOpen()+"]";
+		return super.toString()+":"+pk+"["+getDate()+","+getOpen()+","+getHight()+","+getLow()+","+getClose()+","+getVolume()+"]";
 	}
 }

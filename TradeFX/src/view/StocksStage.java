@@ -30,6 +30,7 @@ import loader.HistStockDataLoader;
 import loader.HistStockDataLoaderTask;
 import model.FloatingMean;
 import model.HistData;
+import model.ProMean;
 import model.Symbol;
 import model.TradeFXModel;
 
@@ -70,10 +71,11 @@ public class StocksStage<T> extends Stage {
 			currentButton.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
 				public void handle(ActionEvent event) {
-					
 					new ChartStage(TradeFXModel.StockHistData.get(currentSymbol)).setTitle("HistData");
 					FloatingMean fm = new FloatingMean();
 					new ChartStage(fm.calc(TradeFXModel.StockHistData.get(currentSymbol))).setTitle("Mean");
+					ProMean pm= new ProMean();
+					new ChartStage(pm.calc(TradeFXModel.StockHistData.get(currentSymbol),fm.calc(TradeFXModel.StockHistData.get(currentSymbol)))).setTitle("ProMean");
 				}
 			});
 			hBox.getChildren().addAll(currentButton, currentProgressindicator);
