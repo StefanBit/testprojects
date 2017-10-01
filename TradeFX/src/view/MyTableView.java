@@ -32,6 +32,7 @@ public class MyTableView<T> extends TableView implements EventHandler<KeyEvent> 
 
 	public MyTableView(ArrayList<T> ol) {
 		super();
+		ObservableList<T> items = FXCollections.observableList(ol);
 		BeanInfo info;
 		colNames = new ArrayList();
 		setEditable(true);
@@ -58,6 +59,17 @@ public class MyTableView<T> extends TableView implements EventHandler<KeyEvent> 
 				}
 				if (pd.getPropertyType().toString().equals("class java.lang.Integer")) {
 					tc.setCellFactory(TextFieldTableCell.forTableColumn(new MyConverter()));
+					tc.setOnEditCommit(new EventHandler<CellEditEvent<T,String>>() {
+						@Override
+						public void handle(CellEditEvent<T,String> event) {
+							Method m = pd.getWriteMethod();;
+							try {
+								m.invoke(event.getTableView().getItems().get(event.getTablePosition().getRow()), event.getNewValue());
+							} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+								e.printStackTrace();
+							}
+						}
+					});
 				}
 				tc.setCellValueFactory(new PropertyValueFactory<T, Integer>(pd.getName()));
 				System.out.println(pd.getName().toString());
@@ -67,7 +79,6 @@ public class MyTableView<T> extends TableView implements EventHandler<KeyEvent> 
 			e.printStackTrace();
 		}
 
-		ObservableList<T> items = FXCollections.observableList(ol);
 
 		getColumns().addAll(colNames);
 		setItems(items);
@@ -81,8 +92,6 @@ public class MyTableView<T> extends TableView implements EventHandler<KeyEvent> 
 		if (selectedItem != null) {
 			if (keyEvent.getCode().equals(KeyCode.DELETE)) {
 				this.getItems().remove(selectedItem);
-				// System.out.println((ArrayList<T>) this.getItems());
-
 			}
 			if (keyEvent.getCode().equals(KeyCode.SPACE)) {
 				System.out.println("hehe" + ((Symbol) selectedItem).getName());

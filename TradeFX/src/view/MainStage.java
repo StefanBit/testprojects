@@ -1,4 +1,4 @@
-package application;
+package view;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -21,10 +21,6 @@ import javafx.stage.Stage;
 import model.HistData;
 import model.Symbol;
 import model.TradeFXModel;
-import view.ChartView;
-import view.MyTableView;
-import view.PortfolioStage;
-import view.StocksStage;
 
 public class MainStage extends Stage {
 	public MainStage() {

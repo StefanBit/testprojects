@@ -31,67 +31,63 @@ public class MyTablePane<T> extends StackPane implements EventHandler<ActionEven
 	TableView inserttable;
 	Class c;
 
-	public MyTablePane(ArrayList<T> ol,Class c) {
+	public MyTablePane(ArrayList<T> ol, Class c) {
 		super();
-		this.c=c;
+		this.c = c;
 		this.ol = ol;
 		BeanInfo info;
 		VBox vBox = new VBox();
-		Button b = new Button("neu");
-		Button b2 = new Button("update");
-		
+		Button b = new Button("insert");
+		Button b2 = new Button("save");
+
 		TextField tf = new TextField();
 		table = new MyTableView(ol);
 		ArrayList<T> ol2;
 		ol2 = new ArrayList<T>();
-		T newentiti=null;
+		T newentiti = null;
 		try {
-			newentiti=(T) c.newInstance();
+			newentiti = (T) c.newInstance();
 			((Symbol) newentiti).setName("FB");
 			((Symbol) newentiti).setPk(3);
 		} catch (InstantiationException | IllegalAccessException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		ol2.add( newentiti);
+		ol2.add(newentiti);
 		inserttable = new MyTableView(ol2);
-		inserttable.setPrefHeight(50);
+		inserttable.setPrefHeight(100);
 		this.getChildren().addAll(vBox);
 		vBox.getChildren().addAll(table);
+		vBox.getChildren().addAll(inserttable);
 		vBox.getChildren().addAll(b);
 		vBox.getChildren().addAll(b2);
-		vBox.getChildren().addAll(inserttable);
 		b.setOnAction(this);
-		b2.setOnAction(new updateHandler());
+		b2.setOnAction(this);
 	}
 
 	@Override
 	public void handle(ActionEvent arg0) {
-		T object=null;
-		System.out.println(arg0.getSource());
-		try {
-			object = (T) c.newInstance();
-		} catch (InstantiationException | IllegalAccessException e) {
-			e.printStackTrace();
+		T object = null;
+		String command = ((Button) arg0.getSource()).getText();
+
+		if (command.equals("insert")) {
+
+			try {
+				object = (T) c.newInstance();
+			} catch (InstantiationException | IllegalAccessException e) {
+				e.printStackTrace();
+			}
+			// table.getItems().add(object);
+			System.out.println(((Symbol) inserttable.getItems().get(0)).getName());
+			table.getItems().add(inserttable.getItems().get(0));
 		}
-		//table.getItems().add(object);
-		System.out.println(((Symbol) inserttable.getItems().get(0)).getName());
-		table.getItems().add(inserttable.getItems().get(0));
-		
-		DAOHsqlImpl<T> sSymbol = new DAOHsqlImpl(Symbol.class);
-		sSymbol.deleteAll();
-		ArrayList alt = new ArrayList<>(Arrays.asList(table.getItems().toArray()));
-		
-		sSymbol.insertAll(alt);
-		
+		if (command.equals("save")) {
+			DAOHsqlImpl<T> sSymbol = new DAOHsqlImpl(Symbol.class);
+			sSymbol.deleteAll();
+			ArrayList alt = new ArrayList<>(Arrays.asList(table.getItems().toArray()));
+			sSymbol.insertAll(alt);
+		}
+
 	}
 
-}
-
-class updateHandler implements EventHandler<ActionEvent>{
-
-	@Override
-	public void handle(ActionEvent event) {
-		System.out.println("UpdateHandler");
-	}
 }

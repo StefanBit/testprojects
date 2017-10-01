@@ -3,22 +3,23 @@ package application;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeType;
+import model.HistData;
 
 public class CandleNode extends Rectangle {
-	public CandleNode(DaySet d) {
+	public CandleNode(HistData d) {
 		StrokeType st;
 		System.out.println(this.getX());
 		this.setX(0);
 		
 		this.setY(20);
 		
-		if (d.close<d.open){
+		if (d.getClose()<d.getOpen()){
 			this.setFill(Color.RED);
-			this.setHeight(d.open-d.close);
+			this.setHeight(d.getOpen()-d.getClose());
 			
 		} else {
 			this.setFill(Color.GREEN);
-			this.setHeight(d.close-d.open);
+			this.setHeight(d.getClose()-d.getOpen());
 		}
 		this.setHeight(this.getHeight()*200);
 		this.setWidth(5);

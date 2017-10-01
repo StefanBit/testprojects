@@ -9,6 +9,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.stage.Stage;
 import model.Symbol;
+import view.MainStage;
 import javafx.scene.Scene;
 import javafx.scene.chart.Axis;
 import javafx.scene.chart.CategoryAxis;
@@ -25,14 +26,9 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 	
-			StackPane root = new StackPane();
-			
+			StackPane root = new StackPane();		
 			new MainStage();
-			
-			
-			
-			
-			
+	
 	}
 
 	public static void main(String[] args) {

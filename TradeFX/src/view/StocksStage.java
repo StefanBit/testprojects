@@ -54,10 +54,8 @@ public class StocksStage<T> extends Stage {
 		threads = new ArrayList();
 		buttons = new ArrayList();
 		HBox hBox = new HBox();
-		Scene SymbolScene = new Scene(hBox, 800, 400);
-//		TableView table = new MyTableView(TradeFXModel.StockSymbols);
+		Scene SymbolScene = new Scene(hBox, 800, 600);
 		StackPane table = new MyTablePane(TradeFXModel.StockSymbols,Symbol.class);
-		StackPane inserttable = new MyTablePane(TradeFXModel.StockSymbols,Symbol.class);
 		hBox.getChildren().add(table);
 		
 		setScene(SymbolScene);
@@ -73,9 +71,9 @@ public class StocksStage<T> extends Stage {
 				@Override
 				public void handle(ActionEvent event) {
 					
-					new ChartStage(TradeFXModel.StockHistData.get(currentSymbol));
+					new ChartStage(TradeFXModel.StockHistData.get(currentSymbol)).setTitle("HistData");
 					FloatingMean fm = new FloatingMean();
-					new ChartStage(fm.calc(TradeFXModel.StockHistData.get(currentSymbol)));
+					new ChartStage(fm.calc(TradeFXModel.StockHistData.get(currentSymbol))).setTitle("Mean");
 				}
 			});
 			hBox.getChildren().addAll(currentButton, currentProgressindicator);

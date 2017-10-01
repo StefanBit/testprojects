@@ -14,7 +14,6 @@ public class ChartStage extends Stage {
 		chartview.setData(data);
 		Scene SymbolScene = new Scene(hBox, 800, 400);
 		setScene(SymbolScene);
-		setTitle("StockStage");
 		hBox.getChildren().add(chartview.lineChart);
 		show();
 	}

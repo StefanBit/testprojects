@@ -46,7 +46,7 @@ public class PortfolioView implements ChangeListener {
 		Symbol iterable_element;		
 		// series.setName(String.valueOf(data.get(0).getPk()));
 		//for (Symbol iterable_element : m.StockSymbols) {
-		for (int k = 0;k<3;k++){
+		for (int k = 0;k<4;k++){
 		iterable_element = m.StockSymbols.get(k);
 			
 		series = new XYChart.Series();
