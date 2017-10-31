@@ -20,7 +20,7 @@ import model.Symbol;
 import model.TradeFXModel;
 
 public class PortfolioView implements ChangeListener {
-	final StackedAreaChart<String, Number> lineChart;
+	public final StackedAreaChart<String, Number> lineChart;
 	int x = 0;
 
 	TradeFXModel m = new TradeFXModel();
@@ -46,7 +46,7 @@ public class PortfolioView implements ChangeListener {
 		Symbol iterable_element;		
 		// series.setName(String.valueOf(data.get(0).getPk()));
 		//for (Symbol iterable_element : m.StockSymbols) {
-		for (int k = 0;k<4;k++){
+		for (int k = 1;k<3;k++){
 		iterable_element = m.StockSymbols.get(k);
 			
 		series = new XYChart.Series();

@@ -1,4 +1,4 @@
-package view;
+package stage;
 
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
@@ -33,6 +33,7 @@ import model.HistData;
 import model.ProMean;
 import model.Symbol;
 import model.TradeFXModel;
+import view.MyTablePane;
 
 public class StocksStage<T> extends Stage {
 
@@ -71,11 +72,11 @@ public class StocksStage<T> extends Stage {
 			currentButton.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
 				public void handle(ActionEvent event) {
-					new ChartStage(TradeFXModel.StockHistData.get(currentSymbol)).setTitle("HistData");
-					FloatingMean fm = new FloatingMean();
-					new ChartStage(fm.calc(TradeFXModel.StockHistData.get(currentSymbol))).setTitle("Mean");
-					ProMean pm= new ProMean();
-					new ChartStage(pm.calc(TradeFXModel.StockHistData.get(currentSymbol),fm.calc(TradeFXModel.StockHistData.get(currentSymbol)))).setTitle("ProMean");
+					new CandleStickChartStage(TradeFXModel.StockHistData.get(currentSymbol)).setTitle("HistData");
+//					FloatingMean fm = new FloatingMean();
+//					new ChartStage(fm.calc(TradeFXModel.StockHistData.get(currentSymbol))).setTitle("Mean");
+//					ProMean pm= new ProMean();
+//					new ChartStage(pm.calc(TradeFXModel.StockHistData.get(currentSymbol),fm.calc(TradeFXModel.StockHistData.get(currentSymbol)))).setTitle("ProMean");
 				}
 			});
 			hBox.getChildren().addAll(currentButton, currentProgressindicator);

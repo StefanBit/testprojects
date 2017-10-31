@@ -1,4 +1,4 @@
-package view;
+package stage;
 
 import java.util.ArrayList;
 
@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import model.HistData;
+import view.ChartView;
 
 public class ChartStage extends Stage {
 	public ChartStage(ArrayList<HistData> data) {

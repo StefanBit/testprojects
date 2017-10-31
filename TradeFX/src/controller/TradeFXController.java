@@ -15,7 +15,7 @@ import javafx.scene.control.ProgressIndicator;
 import loader.HistStockDataLoaderTask;
 import loader.SymbolLoaderTask;
 import model.*;
-import view.ChartStage;
+import stage.ChartStage;
 
 public class TradeFXController {
 

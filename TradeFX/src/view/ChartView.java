@@ -14,14 +14,13 @@ import javafx.scene.shape.Rectangle;
 import model.HistData;
 
 public class ChartView implements ChangeListener{
-	final CandleChart<String, Number> lineChart;
+	public final CandleChart<String, Number> lineChart;
 	int x=0;
 
 	public ChartView() {
 		final CategoryAxis xAxis = new CategoryAxis();
 		final NumberAxis yAxis = new NumberAxis();
 		xAxis.setLabel("Month");
-		
 		yAxis.setForceZeroInRange(false);
 		lineChart = new CandleChart<String, Number>(xAxis, yAxis);
 		

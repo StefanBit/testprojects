@@ -13,8 +13,8 @@ import model.FloatingMean;
 import model.HistData;
 import model.Symbol;
 import model.TradeFXModel;
-import view.ChartStage;
-import view.StocksStage;
+import stage.ChartStage;
+import stage.StocksStage;
 
 public class HistStockDataLoaderTask<T> extends Task{
 

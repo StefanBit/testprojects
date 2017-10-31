@@ -1,4 +1,4 @@
-package view;
+package stage;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -54,7 +54,7 @@ public class MainStage extends Stage {
 		//root.setRight(new Console());
 		
 		menuBar.getMenus().add(menuStocks);
-		menuStocks.getItems().addAll(portfolio, stocks);
+		menuStocks.getItems().addAll(stocks,portfolio);
 		//Progressbar
 		pb.progressProperty().bind(tfxc.symbolsLoaderTask.progressProperty());
 		

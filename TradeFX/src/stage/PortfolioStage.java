@@ -1,4 +1,4 @@
-package view;
+package stage;
 
 import java.util.ArrayList;
 
@@ -8,6 +8,8 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import model.HistData;
 import model.TradeFXModel;
+import view.MyTableView;
+import view.PortfolioView;
 
 public class PortfolioStage extends Stage {
 	public PortfolioStage() {
