@@ -17,7 +17,8 @@ public class CandleStickChartView {
 	public CandleStickChartView() {
 		final CategoryAxis xAxis = new CategoryAxis();
 		final NumberAxis yAxis = new NumberAxis();
-		xAxis.setLabel("Month");
+		xAxis.setLabel("Date");
+		yAxis.setLabel("Value");
 		yAxis.setForceZeroInRange(false);
 		lineChart = new CandleStickChart(xAxis, yAxis);
 
@@ -25,6 +26,7 @@ public class CandleStickChartView {
 
 	public void setData(ArrayList<HistData> data) {
 		setDataSeries(data);
+		lineChart.setTitle("MSFT");
 	}
 	
 	public XYChart.Series setDataSeries(ArrayList<HistData> data){

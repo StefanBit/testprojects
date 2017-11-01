@@ -40,6 +40,7 @@ public class CandleStickChart extends XYChart<String, Number> {
         setAnimated(false);
         xAxis.setAnimated(false);
         yAxis.setAnimated(false);
+        
     }
  
     /**
@@ -180,9 +181,7 @@ public class CandleStickChart extends XYChart<String, Number> {
        }
         // create series path
         Path seriesPath = new Path();
-        seriesPath.getStyleClass().setAll("candlestick-average-line",
-
-                                         "series" + seriesIndex);
+        seriesPath.getStyleClass().setAll("candlestick-average-line","series" + seriesIndex);
         series.setNode(seriesPath);
         getPlotChildren().add(seriesPath);
     }
