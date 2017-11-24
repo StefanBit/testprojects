@@ -17,7 +17,7 @@ public class Candle extends Group {
 		this.seriesStyleClass = seriesStyleClass;
 		this.dataStyleClass = dataStyleClass;
 		updateStyleClasses();
-//		tooltip.setGraphic(new TooltipContent());
+		tooltip.setGraphic(new TooltipContent());
 		Tooltip.install(bar, tooltip);
 	}
 	public void setSeriesAndDataStyleClasses(String seriesStyleClass,
@@ -32,20 +32,22 @@ public class Candle extends Group {
 		updateStyleClasses();
 		highLowLine.setStartY(highOffset);
 		highLowLine.setEndY(lowOffset);
+		candleWidth = bar.prefWidth(candleWidth);
+		
+		bar.setPrefWidth(10);
 		if (candleWidth == -1) {
+			
 			candleWidth = bar.prefWidth(-1);
 		}
 		if (openAboveClose) {
-			bar.resizeRelocate(-candleWidth / 2, 0,
-					candleWidth, closeOffset);
+			bar.resizeRelocate(-candleWidth / 2, 0,candleWidth, closeOffset);
 		} else {
-			bar.resizeRelocate(-candleWidth / 2, closeOffset,
-					candleWidth, -closeOffset);
+			bar.resizeRelocate(-candleWidth / 2, closeOffset,candleWidth, -closeOffset);
 		}
 	}
-	public void updateTooltip(double open, double close, double high, double low) {
-//		TooltipContent tooltipContent = (TooltipContent) tooltip.getGraphic();
-		//tooltipContent.update(open, close, high, low);
+	public void updateTooltip(double open, double close, double high, double low,double average) {
+		TooltipContent tooltipContent = (TooltipContent) tooltip.getGraphic();
+		tooltipContent.update(open, close, high, low,average);
 	}
 	private void updateStyleClasses() {
 		final String aboveClose =

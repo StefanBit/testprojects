@@ -9,7 +9,7 @@ import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import model.FloatingMean;
+import model.ArithmeticMean;
 import model.HistData;
 import model.Symbol;
 import model.TradeFXModel;

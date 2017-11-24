@@ -19,6 +19,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import model.HistData;
@@ -37,9 +38,11 @@ public class MyTablePane<T> extends StackPane implements EventHandler<ActionEven
 		this.ol = ol;
 		BeanInfo info;
 		VBox vBox = new VBox();
+		HBox hBox = new HBox();
 		Button b = new Button("insert");
 		Button b2 = new Button("save");
 
+		
 		TextField tf = new TextField();
 		table = new MyTableView(ol);
 		ArrayList<T> ol2;
@@ -47,8 +50,8 @@ public class MyTablePane<T> extends StackPane implements EventHandler<ActionEven
 		T newentiti = null;
 		try {
 			newentiti = (T) c.newInstance();
-			((Symbol) newentiti).setName("FB");
-			((Symbol) newentiti).setPk(3);
+//			((Symbol) newentiti).setName("FB");
+//			((Symbol) newentiti).setPk(3);
 		} catch (InstantiationException | IllegalAccessException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -59,8 +62,10 @@ public class MyTablePane<T> extends StackPane implements EventHandler<ActionEven
 		this.getChildren().addAll(vBox);
 		vBox.getChildren().addAll(table);
 		vBox.getChildren().addAll(inserttable);
-		vBox.getChildren().addAll(b);
-		vBox.getChildren().addAll(b2);
+		hBox.getChildren().addAll(b,b2);
+		vBox.getChildren().addAll(hBox);
+//		vBox.getChildren().addAll(b);
+//		vBox.getChildren().addAll(b2);
 		b.setOnAction(this);
 		b2.setOnAction(this);
 	}

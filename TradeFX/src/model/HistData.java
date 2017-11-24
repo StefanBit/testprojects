@@ -26,8 +26,6 @@ public class HistData {
 		this.volume = volume;
 	}
 	
-	
-	
 	public int getPk() {
 		return pk;
 	}

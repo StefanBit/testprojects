@@ -28,7 +28,6 @@ public class Main extends Application {
 	
 			StackPane root = new StackPane();		
 			new MainStage();
-	
 	}
 
 	public static void main(String[] args) {

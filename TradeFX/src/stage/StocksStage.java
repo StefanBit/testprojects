@@ -28,7 +28,7 @@ import javafx.util.Callback;
 import javafx.util.StringConverter;
 import loader.HistStockDataLoader;
 import loader.HistStockDataLoaderTask;
-import model.FloatingMean;
+import model.ArithmeticMean;
 import model.HistData;
 import model.ProMean;
 import model.Symbol;

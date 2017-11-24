@@ -30,9 +30,9 @@ public class HSQLQuery {
 	public void open() {
 		try {
 			con = DriverManager.getConnection("jdbc:hsqldb:file:"+Paths.get(".").toAbsolutePath().normalize().toString()+"/hsdb/new;shutdown=true", "sa","");
-			System.out.println(Paths.get(".").toAbsolutePath().normalize().toString()+"/hsdb/new");
+			System.out.println("Using DB File "+Paths.get(".").toAbsolutePath().normalize().toString()+"/hsdb/new");
 		} catch (SQLException e) {
-			System.out.println("MEin Fehler");
+			System.out.println("Mein Fehler");
 			e.printStackTrace();
 		}
 //		finally {

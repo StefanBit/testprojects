@@ -8,18 +8,19 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import model.HistData;
 import view.CandleStickChartView;
+import view.MyTablePane;
+import view.MyTableView;
 
-public class CandleStickChartStage extends Stage{
-	public CandleStickChartStage(ArrayList<HistData> data) {
+public class MyTableStage extends Stage{
+	public MyTableStage(ArrayList<HistData> data) {
+		
 		HBox hBox = new HBox();
 		BorderPane bp = new BorderPane();
-		
-		CandleStickChartView chartview = new CandleStickChartView();
-		chartview.setData(data);
+		MyTablePane mtp = new MyTablePane(data, HistData.class);
+		this.setTitle(this.getClass().getName()+" for "+ HistData.class );
 		Scene SymbolScene = new Scene(bp);
 		setScene(SymbolScene);
-		bp.setCenter(chartview.lineChart);
-		//hBox.getChildren().add(chartview.lineChart);
+		bp.setCenter(mtp);
 		show();
 	}
 }

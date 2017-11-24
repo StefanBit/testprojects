@@ -10,12 +10,11 @@ public class CandleStickExtraValues  {
     private double low;
     private double average;
  
-    public CandleStickExtraValues(Object day, Object day2,
-                                  Object day3, Object day4) {
-        this.close = (double) day;
-        this.high =(double) day2;
-        this.low = (double)day3;
-        this.average =(double) day4;
+    public CandleStickExtraValues(Object close, Object high, Object low, Object average) {
+        this.high = (double) high;
+        this.low =(double) low;
+        this.close = (double) close;
+        this.average =(double) average;
     }
  
     public double getClose() {

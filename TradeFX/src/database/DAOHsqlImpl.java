@@ -38,6 +38,20 @@ public class DAOHsqlImpl<T> {
 		}
 	}
 
+	private Boolean exists() {
+		Boolean exists;
+		ArrayList al;
+		al = q.query(("SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = '" + tablename.toUpperCase() + "'"));
+		exists = ((al.size() == 0) ? false : true);
+		System.out.println("SQL Table for "+tablename + "? " + exists);
+		return exists;
+	}
+	
+	private void create() {
+		System.out.println("Creating table " + tablename);
+		q.query("CREATE TABLE " + tablename + "(" + getSignature() + ")");
+	}
+
 	/**
 	 * 
 	 * @return String
@@ -70,19 +84,6 @@ public class DAOHsqlImpl<T> {
 		return s;
 	}
 
-	private Boolean exists() {
-		Boolean exists;
-		ArrayList al;
-		al = q.query(("SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = '" + tablename.toUpperCase() + "'"));
-		exists = ((al.size() == 0) ? false : true);
-		System.out.println(tablename + "? " + exists);
-		return exists;
-	}
-
-	private void create() {
-		System.out.println("Creating table " + tablename);
-		q.query("CREATE TABLE " + tablename + "(" + getSignature() + ")");
-	}
 
 	/**
 	 * Builds String for SQL and insert a row
@@ -190,8 +191,10 @@ public class DAOHsqlImpl<T> {
 		T t = null;
 		ArrayList al, alTable;
 		al = new ArrayList<>();
+		String query="SELECT * FROM " + tablename+" WHERE "+where +" ORDER BY DATE ASC";
+		alTable = q.query(query);
+		System.out.println(query);
 		
-		alTable = q.query("SELECT * FROM " + tablename+" WHERE "+where +" ORDER BY DATE ASC");
 		for (int i = 0; i < alTable.size(); i++) {
 			try {
 				t= c.newInstance();
@@ -214,6 +217,8 @@ public class DAOHsqlImpl<T> {
 			}
 			al.add(t);
 		}
+		System.out.println("alTable has "+alTable.size()+" Entrys");
+		System.out.println("Result has "+al.size()+" Entrys");
 		return al;
 	}
 	

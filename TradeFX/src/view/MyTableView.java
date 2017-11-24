@@ -7,80 +7,84 @@ import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.Event;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.StackPane;
-import javafx.stage.Stage;
-import javafx.util.Callback;
+import javafx.scene.paint.Color;
 import javafx.util.StringConverter;
 import model.Symbol;
 
+/**
+ * A scrollable Table with Edit functionality.
+ * 
+ * @param ArrayList
+ *            with Objects of Type T
+ */
+
 public class MyTableView<T> extends TableView implements EventHandler<KeyEvent> {
 
-	ArrayList<TableColumn> colNames;
+	ArrayList<TableColumn> aColumns;
+	TableColumn tableColumn;
+	ObservableList<T> items;
+	BeanInfo info;
+	PropertyDescriptor[] aPropertys;
+	Tooltip tooltip;
+	Label label;
 
-	public MyTableView(ArrayList<T> ol) {
+	public MyTableView(ArrayList<T> lObjects) {
 		super();
-		ObservableList<T> items = FXCollections.observableList(ol);
-		BeanInfo info;
-		colNames = new ArrayList();
+		items = FXCollections.observableList(lObjects);
+		aColumns = new ArrayList();
 		setEditable(true);
-		try {
-			info = Introspector.getBeanInfo(ol.get(0).getClass());
-			PropertyDescriptor[] props = info.getPropertyDescriptors();
-			TableColumn tc;
-			for (PropertyDescriptor pd : props) {
-				tc = new TableColumn(pd.getName());
-				System.out.println(":" + pd.getPropertyType().toString());
-				if (pd.getPropertyType().toString().equals("class java.lang.String")) {
-					tc.setCellFactory(TextFieldTableCell.forTableColumn());
-					tc.setOnEditCommit(new EventHandler<CellEditEvent<T,String>>() {
+		if (lObjects.isEmpty()) {
+			// Keine Objecte
+		} else {
+			Object object = lObjects.get(0);
+			try {
+				info = Introspector.getBeanInfo(object.getClass());
+				aPropertys = info.getPropertyDescriptors();
+				// New Column for each Property of Object
+				for (PropertyDescriptor property : aPropertys) {
+					// Column with name
+					tooltip = new Tooltip();
+					label = new Label(property.getName());
+					tableColumn = new TableColumn();
+					label.setTooltip(tooltip);
+					tableColumn.setGraphic(label);
+					tableColumn.setCellValueFactory(new PropertyValueFactory<T, String>(property.getName()));
+					tableColumn.setCellFactory(	mytfCell.forTableColumn(new MyConverter(property.getPropertyType())));
+					tableColumn.setOnEditCommit(new EventHandler<CellEditEvent<T, String>>() {
 						@Override
-						public void handle(CellEditEvent<T,String> event) {
-							Method m = pd.getWriteMethod();;
+						public void handle(CellEditEvent<T, String> event) {
+							Method method = property.getWriteMethod();
 							try {
-								m.invoke(event.getTableView().getItems().get(event.getTablePosition().getRow()), event.getNewValue());
+								method.invoke(event.getTableView().getItems().get(event.getTablePosition().getRow()),event.getNewValue());
 							} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 								e.printStackTrace();
 							}
 						}
 					});
+					tooltip.setText(property.getName() + " (" + property.getPropertyType() + ")");
+					System.out.println(property.getName().toString());
+					aColumns.add(tableColumn);
 				}
-				if (pd.getPropertyType().toString().equals("class java.lang.Integer")) {
-					tc.setCellFactory(TextFieldTableCell.forTableColumn(new MyConverter()));
-					tc.setOnEditCommit(new EventHandler<CellEditEvent<T,String>>() {
-						@Override
-						public void handle(CellEditEvent<T,String> event) {
-							Method m = pd.getWriteMethod();;
-							try {
-								m.invoke(event.getTableView().getItems().get(event.getTablePosition().getRow()), event.getNewValue());
-							} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-								e.printStackTrace();
-							}
-						}
-					});
-				}
-				tc.setCellValueFactory(new PropertyValueFactory<T, Integer>(pd.getName()));
-				System.out.println(pd.getName().toString());
-				colNames.add(tc);
+			} catch (IntrospectionException e) {
+				e.printStackTrace();
 			}
-		} catch (IntrospectionException e) {
-			e.printStackTrace();
+
 		}
-
-
-		getColumns().addAll(colNames);
+		getColumns().addAll(aColumns);
 		setItems(items);
 
 		this.setOnKeyPressed(this);
@@ -95,17 +99,61 @@ public class MyTableView<T> extends TableView implements EventHandler<KeyEvent> 
 			}
 			if (keyEvent.getCode().equals(KeyCode.SPACE)) {
 				System.out.println("hehe" + ((Symbol) selectedItem).getName());
-
 			}
 		}
 	}
 }
 
+class mytfCell<T, S> extends TextFieldTableCell<T, S> {
+	MyTextField mtf = new MyTextField();
+
+	public mytfCell() {
+		mtf.setOnAction(new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent event) {
+				// commitEdit( Integer.parseInt(mtf.getText().toString()));
+				commitEdit(null);
+			};
+		});
+	}
+	@Override
+	public void updateItem(S item, boolean empty) {
+		super.updateItem(item, empty);
+		if (item != null & !empty) {
+			setTextFill(Color.BLUE);
+			this.setText(item.toString() + "kkK");
+		}
+	}
+
+}
+
+class MyTextField extends TextField {
+}
+
+
 class MyConverter extends StringConverter {
+	Class c;
+
+	public MyConverter(Class c) {
+		this.c = c;
+	}
 
 	@Override
-	public Integer fromString(String arg0) {
-		return Integer.parseInt(arg0);
+	public Object fromString(String arg0) {
+		Object o=null;
+		if (c.equals("class java.lang.String")) {
+			o=arg0;
+		}
+		if (c.equals("class java.lang.Integer")) {
+			o=Integer.parseInt(arg0);
+		}
+		if (c.equals(int.class)){
+			o=Integer.parseInt(arg0);
+		}
+		if (c.equals(double.class)){
+			o=Double.parseDouble(arg0);
+		}
+		
+		return o;
 	}
 
 	@Override
@@ -113,5 +161,4 @@ class MyConverter extends StringConverter {
 		return String.valueOf(arg0);
 
 	}
-
 }
