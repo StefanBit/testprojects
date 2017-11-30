@@ -12,11 +12,18 @@ import view.MyTablePane;
 import view.MyTableView;
 
 public class MyTableStage extends Stage{
-	public MyTableStage(ArrayList<HistData> data) {
+	public MyTableStage(ArrayList data,Object c) {
 		
 		HBox hBox = new HBox();
 		BorderPane bp = new BorderPane();
-		MyTablePane mtp = new MyTablePane(data, HistData.class);
+		Class ArgClass;
+		ArgClass=c.getClass();	
+		if (data.size()==0){
+			data.add(c);
+		}
+			
+		System.out.println(ArgClass);
+		MyTablePane mtp = new MyTablePane(data, ArgClass);
 		this.setTitle(this.getClass().getName()+" for "+ HistData.class );
 		Scene SymbolScene = new Scene(bp);
 		setScene(SymbolScene);

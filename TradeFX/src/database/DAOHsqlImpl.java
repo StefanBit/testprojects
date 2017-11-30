@@ -104,7 +104,6 @@ public class DAOHsqlImpl<T> {
 				String name = pd.getName();
 				Method getter = pd.getReadMethod();
 				Class<?> type = pd.getPropertyType();
-
 				try {
 					Object value = getter.invoke(t);
 					switch (value.getClass().toString()) {
@@ -255,16 +254,6 @@ public class DAOHsqlImpl<T> {
 			e1.printStackTrace();
 		}
 
-	}
-
-	public static void main(String[] args) {
-		DAOHsqlImpl s;
-		s = new DAOHsqlImpl<HistData>(HistData.class);
-		//s.insert(new Symbol(0, "MSFT"));
-		//s.insert(new Symbol(1, "INTL"));
-		//s.dropTable();
-		System.out.println(s.getAll().get(1).toString());
-//		 s.deleteAll();
 	}
 
 }

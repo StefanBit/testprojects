@@ -46,7 +46,7 @@ public class HSQLQuery {
 	}
 	public ArrayList query(String q) {
 		al = new ArrayList();
-		
+		System.out.println("Query:"+q);
 		try {
 		//	con = DriverManager.getConnection("jdbc:hsqldb:file:"+Paths.get(".").toAbsolutePath().normalize().toString()+"/hsdb/new;shutdown=true", "sa","");
 		

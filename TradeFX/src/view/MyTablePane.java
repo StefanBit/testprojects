@@ -41,58 +41,75 @@ public class MyTablePane<T> extends StackPane implements EventHandler<ActionEven
 		HBox hBox = new HBox();
 		Button b = new Button("insert");
 		Button b2 = new Button("save");
+		Button b3 = new Button("drop");
 
 		
 		TextField tf = new TextField();
 		table = new MyTableView(ol);
 		ArrayList<T> ol2;
 		ol2 = new ArrayList<T>();
+		
 		T newentiti = null;
 		try {
 			newentiti = (T) c.newInstance();
-//			((Symbol) newentiti).setName("FB");
-//			((Symbol) newentiti).setPk(3);
 		} catch (InstantiationException | IllegalAccessException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		System.out.println(newentiti.getClass());
+		
 		ol2.add(newentiti);
 		inserttable = new MyTableView(ol2);
 		inserttable.setPrefHeight(100);
 		this.getChildren().addAll(vBox);
 		vBox.getChildren().addAll(table);
 		vBox.getChildren().addAll(inserttable);
-		hBox.getChildren().addAll(b,b2);
+		hBox.getChildren().addAll(b,b2,b3);
 		vBox.getChildren().addAll(hBox);
-//		vBox.getChildren().addAll(b);
-//		vBox.getChildren().addAll(b2);
 		b.setOnAction(this);
 		b2.setOnAction(this);
+		b3.setOnAction(this);
 	}
 
 	@Override
 	public void handle(ActionEvent arg0) {
 		T object = null;
+		try {
+			object = (T) c.newInstance();
+		} catch (InstantiationException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		// table.getItems().add(object);
+		
 		String command = ((Button) arg0.getSource()).getText();
 
 		if (command.equals("insert")) {
 
-			try {
-				object = (T) c.newInstance();
-			} catch (InstantiationException | IllegalAccessException e) {
-				e.printStackTrace();
-			}
-			// table.getItems().add(object);
-			System.out.println(((Symbol) inserttable.getItems().get(0)).getName());
 			table.getItems().add(inserttable.getItems().get(0));
 		}
 		if (command.equals("save")) {
-			DAOHsqlImpl<T> sSymbol = new DAOHsqlImpl(Symbol.class);
+			DAOHsqlImpl<T> sSymbol = new DAOHsqlImpl(getArrayListsClass().getClass());
 			sSymbol.deleteAll();
 			ArrayList alt = new ArrayList<>(Arrays.asList(table.getItems().toArray()));
 			sSymbol.insertAll(alt);
 		}
+		if (command.equals("drop")) {
+			DAOHsqlImpl<T> sSymbol = new DAOHsqlImpl(getArrayListsClass().getClass());
+			sSymbol.deleteAll();
+			ArrayList alt = new ArrayList<>(Arrays.asList(table.getItems().toArray()));
+			sSymbol.dropTable();
+		}
 
+	}
+	
+	private T getArrayListsClass(){
+		T newentiti = null;
+		try {
+			newentiti = (T) c.newInstance();
+		} catch (InstantiationException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		
+		return newentiti;
 	}
 
 }

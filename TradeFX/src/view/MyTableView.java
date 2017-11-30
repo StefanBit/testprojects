@@ -68,6 +68,7 @@ public class MyTableView<T> extends TableView implements EventHandler<KeyEvent> 
 						@Override
 						public void handle(CellEditEvent<T, String> event) {
 							Method method = property.getWriteMethod();
+							System.out.println("lll");
 							try {
 								method.invoke(event.getTableView().getItems().get(event.getTablePosition().getRow()),event.getNewValue());
 							} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
@@ -139,6 +140,7 @@ class MyConverter extends StringConverter {
 
 	@Override
 	public Object fromString(String arg0) {
+		System.out.println(c.getName());
 		Object o=null;
 		if (c.equals("class java.lang.String")) {
 			o=arg0;
@@ -146,13 +148,18 @@ class MyConverter extends StringConverter {
 		if (c.equals("class java.lang.Integer")) {
 			o=Integer.parseInt(arg0);
 		}
+		if (c.equals("java.lang.String")) {
+			o=arg0;
+		}
+		if (c.equals("java.lang.Integer")) {
+			o=Integer.parseInt(arg0);
+		}
 		if (c.equals(int.class)){
 			o=Integer.parseInt(arg0);
 		}
 		if (c.equals(double.class)){
 			o=Double.parseDouble(arg0);
-		}
-		
+		}	
 		return o;
 	}
 
