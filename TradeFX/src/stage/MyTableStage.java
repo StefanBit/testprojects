@@ -12,12 +12,12 @@ import view.MyTablePane;
 import view.MyTableView;
 
 public class MyTableStage extends Stage{
-	public MyTableStage(ArrayList<HistData> data) {
+	public MyTableStage(ArrayList data, Class c) {
 		
 		HBox hBox = new HBox();
 		BorderPane bp = new BorderPane();
-		MyTablePane mtp = new MyTablePane(data, HistData.class);
-		this.setTitle(this.getClass().getName()+" for "+ HistData.class );
+		MyTablePane mtp = new MyTablePane(data, c);
+		this.setTitle(this.getClass().getName()+" for "+ c );
 		Scene SymbolScene = new Scene(bp);
 		setScene(SymbolScene);
 		bp.setCenter(mtp);

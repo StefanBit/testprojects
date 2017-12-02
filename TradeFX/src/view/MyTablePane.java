@@ -44,28 +44,22 @@ public class MyTablePane<T> extends StackPane implements EventHandler<ActionEven
 
 		
 		TextField tf = new TextField();
-		table = new MyTableView(ol);
+		table = new MyTableView(ol, c);
 		ArrayList<T> ol2;
 		ol2 = new ArrayList<T>();
 		T newentiti = null;
 		try {
 			newentiti = (T) c.newInstance();
-//			((Symbol) newentiti).setName("FB");
-//			((Symbol) newentiti).setPk(3);
 		} catch (InstantiationException | IllegalAccessException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		ol2.add(newentiti);
-		inserttable = new MyTableView(ol2);
+		inserttable = new MyTableView(ol2,c);
 		inserttable.setPrefHeight(100);
 		this.getChildren().addAll(vBox);
-		vBox.getChildren().addAll(table);
-		vBox.getChildren().addAll(inserttable);
+		vBox.getChildren().addAll(table,inserttable,hBox);
 		hBox.getChildren().addAll(b,b2);
-		vBox.getChildren().addAll(hBox);
-//		vBox.getChildren().addAll(b);
-//		vBox.getChildren().addAll(b2);
 		b.setOnAction(this);
 		b2.setOnAction(this);
 	}

@@ -17,7 +17,7 @@ import stage.CandleStickChartStage;
 import stage.MyTableStage;
 
 
-public class Test extends Application {
+public class TestCandle extends Application {
 	
 	
 	BorderPane root;
@@ -38,7 +38,7 @@ public class Test extends Application {
 	    	
 	    	alHIstoricalData2.update();
 	    	// alHIstoricalData2.getAsSingleItem()
-	    	//new MyTableStage(alHIstoricalData);
+	    	new MyTableStage(alHIstoricalData,HistData.class );
 	    	new CandleStickChartStage( alHIstoricalData2).setTitle("HistData");
 	    	//new BarChartStage( alHIstoricalData2);
 	}
