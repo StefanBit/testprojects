@@ -31,15 +31,16 @@ public class TestCandle extends Application {
 	    	DAOHsqlImpl<HistData> historicalDataLoader = new DAOHsqlImpl(HistData.class);
 	    	//alHIstoricalData = historicalDataLoader.getAllWhere(symbol.getPk().toString());
 	    	alHIstoricalData = historicalDataLoader.getAllWhere(symbol.getPk().toString()+" AND Date >= '2017-01-09' AND Date <= '2017-12-25'");
+	    	System.out.println(alHIstoricalData.size());
 	    	MyArrayList alHIstoricalData2= new MyArrayList();
 	    	for (HistData histData : alHIstoricalData) {
 	    		alHIstoricalData2.add(histData);
 			}
 	    	
-	    	alHIstoricalData2.update();
+	    	//alHIstoricalData2.update();
 	    	// alHIstoricalData2.getAsSingleItem()
-	    	new MyTableStage(alHIstoricalData,HistData.class );
-	    	new CandleStickChartStage( alHIstoricalData2).setTitle("HistData");
+	  //  	new MyTableStage(alHIstoricalData,HistData.class );
+	    //	new CandleStickChartStage( alHIstoricalData2).setTitle("HistData");
 	    	//new BarChartStage( alHIstoricalData2);
 	}
 

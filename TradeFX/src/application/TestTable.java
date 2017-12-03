@@ -25,12 +25,20 @@ public class TestTable extends Application {
 	Stage stage;
 	@Override
 	public void start(Stage primaryStage) {
-
-			ArrayList<Symbol> alHIstoricalData;
+			
+			ArrayList alData;
 	    	DAOHsqlImpl<Symbol> historicalDataLoader = new DAOHsqlImpl(Symbol.class);
-	    	alHIstoricalData = new ArrayList();
-	    	alHIstoricalData = historicalDataLoader.getAll();
-	    	new MyTableStage(alHIstoricalData, Symbol.class);
+	    	alData = new ArrayList();
+	    	alData = historicalDataLoader.getAll();
+	    	new MyTableStage(alData, Symbol.class);
+			
+	    	ArrayList alData2;
+	    	DAOHsqlImpl<HistData> historicalDataLoader2 = new DAOHsqlImpl(HistData.class);
+	    	alData2 = new ArrayList();
+	    	alData2 = historicalDataLoader2.getAll();
+	    	System.out.println(alData2.size());
+	    	
+	    		    	new MyTableStage(alData2, HistData.class);
 	    	
 	}
 

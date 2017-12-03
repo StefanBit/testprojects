@@ -40,8 +40,8 @@ public class HistStockDataLoader {
 		int fromYear = cal.get(Calendar.YEAR);
 		int fromMonth = cal.get(Calendar.MONTH);
 		long millisStart = Calendar.getInstance().getTimeInMillis();
-		String request = "http://www.google.com/finance/historical?q=" + s.getName() + "&startdate=" + fromMonth + "+"
-				+ fromDay + "%2C+" + fromYear + "&output=csv";
+		String request = "http://finance.google.com/finance/historical?q=" + s.getName() + "&startdate=" + fromMonth + "+"
+				+ fromDay + "+" + fromYear + "&output=csv";
 		System.out.println("Fetch: " + request);
 		try {
 			StringTokenizer st;

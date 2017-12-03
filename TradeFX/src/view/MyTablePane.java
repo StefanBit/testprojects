@@ -27,42 +27,38 @@ import model.Symbol;
 import model.TradeFXModel;
 
 public class MyTablePane<T> extends StackPane implements EventHandler<ActionEvent> {
-	TableView table;
-	ArrayList<T> ol;
-	TableView inserttable;
+	TableView datatable,inserttable;
+	ArrayList<T> dataTableObjectList,insertTableObjectList;
 	Class c;
+	Button buttonInsert,buttonSave; 
 
-	public MyTablePane(ArrayList<T> ol, Class c) {
+	public MyTablePane(ArrayList<T> dataTableObjectList, Class c) {
 		super();
 		this.c = c;
-		this.ol = ol;
-		BeanInfo info;
+		this.dataTableObjectList = dataTableObjectList;
 		VBox vBox = new VBox();
 		HBox hBox = new HBox();
-		Button b = new Button("insert");
-		Button b2 = new Button("save");
+		buttonInsert = new Button("insert");
+		buttonInsert.setOnAction(this);
+		buttonSave = new Button("save");
+		buttonSave.setOnAction(this);
 
-		
-		TextField tf = new TextField();
-		table = new MyTableView(ol, c);
-		ArrayList<T> ol2;
-		ol2 = new ArrayList<T>();
+		datatable = new MyTableView(dataTableObjectList, c);
+		insertTableObjectList = new ArrayList<T>();
 		T newentiti = null;
 		try {
 			newentiti = (T) c.newInstance();
 		} catch (InstantiationException | IllegalAccessException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		ol2.add(newentiti);
-		inserttable = new MyTableView(ol2,c);
+		insertTableObjectList.add(newentiti);
+		inserttable = new MyTableView(insertTableObjectList,c);
 		inserttable.setPrefHeight(100);
 		this.getChildren().addAll(vBox);
-		vBox.getChildren().addAll(table,inserttable,hBox);
-		hBox.getChildren().addAll(b,b2);
-		b.setOnAction(this);
-		b2.setOnAction(this);
+		vBox.getChildren().addAll(datatable,inserttable,hBox);
+		hBox.getChildren().addAll(buttonInsert,buttonSave);
 	}
+	
 
 	@Override
 	public void handle(ActionEvent arg0) {
@@ -70,23 +66,19 @@ public class MyTablePane<T> extends StackPane implements EventHandler<ActionEven
 		String command = ((Button) arg0.getSource()).getText();
 
 		if (command.equals("insert")) {
-
 			try {
 				object = (T) c.newInstance();
 			} catch (InstantiationException | IllegalAccessException e) {
 				e.printStackTrace();
 			}
-			// table.getItems().add(object);
 			System.out.println(((Symbol) inserttable.getItems().get(0)).getName());
-			table.getItems().add(inserttable.getItems().get(0));
+			datatable.getItems().add(inserttable.getItems().get(0));
 		}
 		if (command.equals("save")) {
 			DAOHsqlImpl<T> sSymbol = new DAOHsqlImpl(Symbol.class);
 			sSymbol.deleteAll();
-			ArrayList alt = new ArrayList<>(Arrays.asList(table.getItems().toArray()));
+			ArrayList alt = new ArrayList<>(Arrays.asList(datatable.getItems().toArray()));
 			sSymbol.insertAll(alt);
 		}
-
 	}
-
 }
