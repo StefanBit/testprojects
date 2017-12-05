@@ -20,26 +20,56 @@ import stage.ChartStage;
 public class TradeFXController {
 
 	public SymbolLoaderTask symbolsLoaderTask;
-
 	ArrayList<Thread> threads;
 	
 	public TradeFXController() {
-		// TODO Auto-generated constructor stub
+		
+		TradeFXModel.tasks = new HashMap<Symbol,HistStockDataLoaderTask>();
+		
+		//threads = new ArrayList<Thread>();
+
 	}
 	
 	public void init() {
-
-		TradeFXModel.trades = new ArrayList<Transaction>();
-		TradeFXModel.trades.add(new Transaction("MSFT",0.5d));
-		TradeFXModel.trades.add(new Transaction("MSFT",0.5d));
-		
-		TradeFXModel.tasks = new HashMap<Symbol,HistStockDataLoaderTask>();
-		threads = new ArrayList<Thread>();
-
+		loadSymbols();
+		loadHistData();
+	}
+	
+	public void loadSymbols(){
+		System.out.println("Loading Symbols"); 
 		symbolsLoaderTask = new SymbolLoaderTask();
-		
 		Thread thread = new Thread(symbolsLoaderTask);
 		thread.start();
-		
+		while (thread.isAlive()){
+		}
+		System.out.println("Ok."+TradeFXModel.StockSymbols);
+		System.out.println("Ok."+TradeFXModel.StockHistData);
+		TradeFXModel.symbolsLoaded=true;
 	}
+	
+	public void loadHistData(){
+//		ArrayList<Symbol> alSymbols = null;
+//		alSymbols = (ArrayList<Symbol>) this.getValue();
+//		TradeFXModel.StockSymbols = alSymbols;
+		// new StocksStage( alSymbols);
+		// Load Hist Data
+		for (Map.Entry<Symbol, ArrayList<HistData>> entry : TradeFXModel.StockHistData.entrySet()) {
+			Symbol currentSymbol = entry.getKey();
+			HistStockDataLoaderTask currenttask = new HistStockDataLoaderTask();
+			Thread currentThread;
+			TradeFXModel.tasks.put(currentSymbol, currenttask);
+			currenttask.alSymbol = currentSymbol;
+			currentThread = new Thread(currenttask);
+			currentThread.start();
+			while (currentThread.isAlive()){
+				//System.out.print("-");
+			}
+			
+		}
+		TradeFXModel.histDataLoaded=true;
+	}
+	
+	
+
+	
 }

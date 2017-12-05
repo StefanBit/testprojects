@@ -23,6 +23,7 @@ public class HistStockDataLoaderTask<T> extends Task{
 
 	@Override
 	protected ArrayList<HistData> call() throws Exception {
+		System.out.println("Start Task HistLoader");
 		HistStockDataLoader l = new HistStockDataLoader();
 		Calendar cal = Calendar.getInstance();
 		Date today = cal.getTime();
@@ -38,6 +39,7 @@ public class HistStockDataLoaderTask<T> extends Task{
 		sHistData.insertAll(alHistData);
 		al2 = sHistData.getAllWhere(alSymbol.getPk().toString());
 		updateProgress(1, 1);
+		TradeFXModel.StockHistData.put(alSymbol, (ArrayList<HistData>) al2);
 		return al2;
 	}
 	

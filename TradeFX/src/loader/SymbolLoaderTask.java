@@ -11,6 +11,9 @@ import model.Symbol;
 import model.TradeFXModel;
 
 public class SymbolLoaderTask extends Task{
+	public SymbolLoaderTask() {
+	System.out.println("new SymbolLoaderTask");
+	}
 	@Override
 	protected ArrayList<Symbol> call() throws Exception {
 		System.out.println("Start Task");
@@ -20,28 +23,30 @@ public class SymbolLoaderTask extends Task{
 		// Create SymbolMap
 		TradeFXModel.StockHistData = new HashMap<Symbol, ArrayList<HistData>>();
 		for (Symbol symbol : alSymbols) {
+			System.out.println(".");
 			TradeFXModel.StockHistData.put(symbol, null);
 		}
 		System.out.println("Stop Task");
 		updateProgress(1, 1);
+		TradeFXModel.StockSymbols = alSymbols;
 		return alSymbols;
 	}
 	@Override
 	protected void succeeded() {
-		//System.out.println(event);
+		System.out.println("Succeded");
 		ArrayList<Symbol> alSymbols = null;
 		alSymbols = (ArrayList<Symbol>) this.getValue();
 		TradeFXModel.StockSymbols = alSymbols;
 		// new StocksStage( alSymbols);
 		// Load Hist Data
-		for (Map.Entry<Symbol, ArrayList<HistData>> entry : TradeFXModel.StockHistData.entrySet()) {
-			Symbol currentSymbol = entry.getKey();
-			HistStockDataLoaderTask currenttask = new HistStockDataLoaderTask();
-			Thread currentThread;
-			TradeFXModel.tasks.put(currentSymbol, currenttask);
-			currenttask.alSymbol = currentSymbol;
-			currentThread = new Thread(currenttask);
-			currentThread.start();
-		}
+//		for (Map.Entry<Symbol, ArrayList<HistData>> entry : TradeFXModel.StockHistData.entrySet()) {
+//			Symbol currentSymbol = entry.getKey();
+//			HistStockDataLoaderTask currenttask = new HistStockDataLoaderTask();
+//			Thread currentThread;
+//			TradeFXModel.tasks.put(currentSymbol, currenttask);
+//			currenttask.alSymbol = currentSymbol;
+//			currentThread = new Thread(currenttask);
+//			currentThread.start();
+//		}
 	}
 }

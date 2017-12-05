@@ -1,34 +1,47 @@
 package application;
 
 import java.util.ArrayList;
+import java.util.Map;
 
+import controller.TradeFXController;
 import database.DAOHsqlImpl;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import model.HistData;
 import model.MyArrayList;
 import model.Symbol;
+import model.TradeFXModel;
 import stage.BarChartStage;
 
 public class TestBarChart extends Application {
 
+	
+	
+	ArrayList<HistData> alHIstoricalData;
+
 	public void start(Stage primaryStage) {
 
-		Symbol symbol = new Symbol(0, "NASDAQ:MSFT");
+		TradeFXController tfxc= new TradeFXController();
+		tfxc.init();
+
+		while (!(TradeFXModel.histDataLoaded))
+		{
+			
+		}
+		System.out.println("ready");
+		
 		ArrayList<HistData> alHIstoricalData;
-		DAOHsqlImpl<HistData> historicalDataLoader = new DAOHsqlImpl(HistData.class);
-
-		alHIstoricalData = historicalDataLoader.getAllWhere(symbol.getPk().toString() + " AND Date >= '2017-01-09' AND Date <= '2017-12-25'");
-		System.out.println("ll"+alHIstoricalData.size());
-
+		alHIstoricalData = TradeFXModel.getHistDataFor(new Symbol(0,"MSFT"));
 		MyArrayList alHIstoricalData2 = new MyArrayList();
 		for (HistData histData : alHIstoricalData) {
 			alHIstoricalData2.add(histData);
 		}
 		alHIstoricalData2.update();
-		System.out.println(alHIstoricalData2.getAsSingleItem());
-		new BarChartStage(alHIstoricalData2);
 
+		new BarChartStage(alHIstoricalData2);
+		
+		
+		//System.exit(0);
 	}
 
 	public static void main(String[] args) {
