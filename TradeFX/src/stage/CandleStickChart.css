@@ -1,7 +1,8 @@
 /* ====== CANDLE STICK CHART =========================================================== */
 
 .chart {
-    -fx-background-color: black;   
+    -fx-background-color: black;
+    -fx-stroke: grey;   
 }
 .chart-plot-background {
     -fx-background-color: black;
@@ -26,6 +27,7 @@
 .axis {
     -fx-font-size: 1.4em;    
     -fx-tick-label-fill: #914800;
+    -fx-tick-label-fill: grey;
     -fx-font-family: Tahoma;
     -fx-tick-length: 10;
     -fx-minor-tick-length: 5;

@@ -12,7 +12,7 @@ import model.Symbol;
 public class TestHistLoader {
 public TestHistLoader() {
 	Symbol alSymbol;
-	alSymbol=new Symbol(0,"NASDAQ:MSFT");
+	alSymbol=new Symbol(0,"NASDAQ:AMZN");
 	HistStockDataLoader l = new HistStockDataLoader();
 	Calendar cal = Calendar.getInstance();
 	Date today = cal.getTime();

@@ -40,7 +40,7 @@ public class TestCandle extends Application {
 	    	//alHIstoricalData2.update();
 	    	// alHIstoricalData2.getAsSingleItem()
 	  //  	new MyTableStage(alHIstoricalData,HistData.class );
-	    //	new CandleStickChartStage( alHIstoricalData2).setTitle("HistData");
+	    	new CandleStickChartStage( alHIstoricalData2).setTitle("HistData");
 	    	//new BarChartStage( alHIstoricalData2);
 	}
 

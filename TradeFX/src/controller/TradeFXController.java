@@ -36,14 +36,14 @@ public class TradeFXController {
 	}
 	
 	public void loadSymbols(){
-		System.out.println("Loading Symbols"); 
+		//System.out.println("Loading Symbols"); 
 		symbolsLoaderTask = new SymbolLoaderTask();
 		Thread thread = new Thread(symbolsLoaderTask);
 		thread.start();
 		while (thread.isAlive()){
 		}
-		System.out.println("Ok."+TradeFXModel.StockSymbols);
-		System.out.println("Ok."+TradeFXModel.StockHistData);
+		//System.out.println("Ok."+TradeFXModel.StockSymbols);
+		//System.out.println("Ok."+TradeFXModel.StockHistData);
 		TradeFXModel.symbolsLoaded=true;
 	}
 	
@@ -53,10 +53,10 @@ public class TradeFXController {
 //		TradeFXModel.StockSymbols = alSymbols;
 		// new StocksStage( alSymbols);
 		// Load Hist Data
+		Thread currentThread=null;
 		for (Map.Entry<Symbol, ArrayList<HistData>> entry : TradeFXModel.StockHistData.entrySet()) {
 			Symbol currentSymbol = entry.getKey();
 			HistStockDataLoaderTask currenttask = new HistStockDataLoaderTask();
-			Thread currentThread;
 			TradeFXModel.tasks.put(currentSymbol, currenttask);
 			currenttask.alSymbol = currentSymbol;
 			currentThread = new Thread(currenttask);
@@ -64,7 +64,10 @@ public class TradeFXController {
 			while (currentThread.isAlive()){
 				//System.out.print("-");
 			}
-			
+			System.out.println(currentSymbol.toString()+"loaded");
+		}
+		while (currentThread.isAlive()){
+			//System.out.print("-");
 		}
 		TradeFXModel.histDataLoaded=true;
 	}

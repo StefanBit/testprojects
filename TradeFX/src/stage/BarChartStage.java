@@ -11,6 +11,7 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+import model.FloatingMean;
 import model.HistData;
 import model.MyArrayList;
 import model.Symbol;
@@ -26,7 +27,7 @@ public class BarChartStage extends Stage{
      * @param ArrayList  
      */
 	
-	public BarChartStage(MyArrayList data) {
+	public BarChartStage() {
 		    setTitle("Bar Chart Sample");
 		    final String candleStickChartCss =  getClass().getResource("CandleStickChart.css").toExternalForm();
 		     
@@ -41,26 +42,37 @@ public class BarChartStage extends Stage{
         
 
 	        XYChart.Series series1 = new XYChart.Series();
-	        series1.setName("Year");       
+	        series1.setName("Week");       
 	        XYChart.Series series2 = new XYChart.Series();
 	        series2.setName("Month");
+	        XYChart.Series series3 = new XYChart.Series();
+	        series3.setName("100Day");
+	        XYChart.Series series4 = new XYChart.Series();
+	        series4.setName("270Day");
 	        
-	        MyArrayList alHIstoricalData2;
+	        MyArrayList alHIstoricalData2, p365;
 	        HistData d=null;
+	        
+	        FloatingMean fm=new FloatingMean();
+	        int len;
+	        
 	        for (Symbol s : TradeFXModel.StockSymbols) {
 	        	alHIstoricalData2 = new MyArrayList();
 				for (HistData histData :TradeFXModel.getHistDataFor(s)) {
 					alHIstoricalData2.add(histData);
 				}
 				alHIstoricalData2.update();
-				d= alHIstoricalData2.getAsSingleItem().get(0);
-				series1.getData().add(new XYChart.Data(d.getClose()/d.getOpen()*100, s.getName()));
-				series2.getData().add(new XYChart.Data(d.getClose()/d.getOpen()*100, s.getName()));
+				len=alHIstoricalData2.size();
+				series1.getData().add(new XYChart.Data(alHIstoricalData2.get(len-1).getOpen()/alHIstoricalData2.get(len-7).getOpen()-1, s.getName()));
+				series2.getData().add(new XYChart.Data(alHIstoricalData2.get(len-1).getOpen()/alHIstoricalData2.get(len-30).getOpen()-1, s.getName()));
+				series3.getData().add(new XYChart.Data(alHIstoricalData2.get(len-1).getOpen()/alHIstoricalData2.get(len-100).getOpen()-1, s.getName()));
+				series4.getData().add(new XYChart.Data(alHIstoricalData2.get(len-1).getOpen()/alHIstoricalData2.get(len-270).getOpen()-1, s.getName()));
+				System.out.println(alHIstoricalData2.get(len-1).getDate()+"/"+alHIstoricalData2.get(len-30).getDate());
 			}
 	        
 
 	        Scene scene  = new Scene(bc,300,400);
-	        bc.getData().addAll(series1, series2);
+	        bc.getData().addAll(series1, series2,series3,series4);
 	        setScene(scene);
 	        show();
 	}

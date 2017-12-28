@@ -29,19 +29,9 @@ public class TestBarChart extends Application {
 			
 		}
 		System.out.println("ready");
-		
-		ArrayList<HistData> alHIstoricalData;
-		alHIstoricalData = TradeFXModel.getHistDataFor(new Symbol(0,"MSFT"));
-		MyArrayList alHIstoricalData2 = new MyArrayList();
-		for (HistData histData : alHIstoricalData) {
-			alHIstoricalData2.add(histData);
-		}
-		alHIstoricalData2.update();
 
-		new BarChartStage(alHIstoricalData2);
+		new BarChartStage();
 		
-		
-		//System.exit(0);
 	}
 
 	public static void main(String[] args) {
