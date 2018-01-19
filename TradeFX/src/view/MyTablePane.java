@@ -31,19 +31,22 @@ public class MyTablePane<T> extends StackPane implements EventHandler<ActionEven
 	ArrayList<T> dataTableObjectList,insertTableObjectList;
 	Class c;
 	Button buttonInsert,buttonSave; 
-
+	VBox vBox;
+	HBox hBox;
+	
 	public MyTablePane(ArrayList<T> dataTableObjectList, Class c) {
 		super();
 		this.c = c;
 		this.dataTableObjectList = dataTableObjectList;
-		VBox vBox = new VBox();
-		HBox hBox = new HBox();
+		vBox = new VBox();
+		hBox = new HBox();
 		buttonInsert = new Button("insert");
 		buttonInsert.setOnAction(this);
 		buttonSave = new Button("save");
 		buttonSave.setOnAction(this);
 
 		datatable = new MyTableView(dataTableObjectList, c);
+		
 		insertTableObjectList = new ArrayList<T>();
 		T newentiti = null;
 		try {
@@ -55,8 +58,25 @@ public class MyTablePane<T> extends StackPane implements EventHandler<ActionEven
 		inserttable = new MyTableView(insertTableObjectList,c);
 		inserttable.setPrefHeight(100);
 		this.getChildren().addAll(vBox);
-		vBox.getChildren().addAll(datatable,inserttable,hBox);
+		vBox.getChildren().add(datatable);
+		vBox.getChildren().add(inserttable);
+		vBox.getChildren().add(hBox);
 		hBox.getChildren().addAll(buttonInsert,buttonSave);
+	}
+	
+	public void addNewInsertable(){
+		insertTableObjectList = new ArrayList<T>();
+		T newentiti = null;
+		try {
+			newentiti = (T) c.newInstance();
+		} catch (InstantiationException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		insertTableObjectList.add(newentiti);
+		inserttable = new MyTableView(insertTableObjectList,c);
+		inserttable.setPrefHeight(100);
+		vBox.getChildren().remove(1);
+		vBox.getChildren().add(1,inserttable);
 	}
 	
 
@@ -71,8 +91,9 @@ public class MyTablePane<T> extends StackPane implements EventHandler<ActionEven
 			} catch (InstantiationException | IllegalAccessException e) {
 				e.printStackTrace();
 			}
-			System.out.println(((Symbol) inserttable.getItems().get(0)).getName());
+			System.out.println("llll:"+(inserttable.getItems().get(0)));
 			datatable.getItems().add(inserttable.getItems().get(0));
+			addNewInsertable();
 		}
 		if (command.equals("save")) {
 			DAOHsqlImpl<T> sSymbol = new DAOHsqlImpl(Symbol.class);

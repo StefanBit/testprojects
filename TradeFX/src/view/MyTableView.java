@@ -6,22 +6,35 @@ import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
+
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.scene.Node;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.ContentDisplay;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
+import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
+import javafx.util.Callback;
 import javafx.util.StringConverter;
 import model.Symbol;
 
@@ -59,14 +72,31 @@ public class MyTableView<T> extends TableView implements EventHandler<KeyEvent> 
 				tableColumn = new TableColumn();
 				label.setTooltip(tooltip);
 				tableColumn.setGraphic(label);
+
+				// Verknüpft mit den Properties der Bean
 				tableColumn.setCellValueFactory(new PropertyValueFactory<T, String>(property.getName()));
-				tableColumn.setCellFactory(mytfCell.forTableColumn(new MyConverter(property.getPropertyType())));
+
+				// Zellenfabrik wird nach Typ definiert
+				switch (property.getPropertyType().getName()) {
+				case "java.util.Date":
+					tableColumn.setCellFactory(new Callback<TableColumn, TableCell>() {
+						@Override
+						public TableCell call(TableColumn arg0) {
+							return new myDpCell();
+						}
+					});
+					break;
+				default:
+					tableColumn.setCellFactory(mytfCell.forTableColumn(new MyConverter(property.getPropertyType())));
+				}
+
 				tableColumn.setOnEditCommit(new EventHandler<CellEditEvent<T, String>>() {
 					@Override
 					public void handle(CellEditEvent<T, String> event) {
 						Method method = property.getWriteMethod();
 						try {
-							method.invoke(event.getTableView().getItems().get(event.getTablePosition().getRow()),event.getNewValue());
+							method.invoke(event.getTableView().getItems().get(event.getTablePosition().getRow()),
+									event.getNewValue());
 						} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 							e.printStackTrace();
 						}
@@ -119,6 +149,103 @@ class mytfCell<T, S> extends TextFieldTableCell<T, S> {
 			setTextFill(Color.BLUE);
 			this.setText(item.toString() + "kkK");
 		}
+	}
+
+}
+
+class myDpCell<T, S> extends TableCell<T, S> {
+	private DatePicker datePicker;
+
+	public myDpCell() {
+		super();
+
+		if (datePicker == null) {
+			createDatePicker();
+		}
+		setGraphic(datePicker);
+		setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+
+		Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+				datePicker.requestFocus();
+			}
+		});
+	}
+
+	@Override
+	public void startEdit() {
+		datePicker = new DatePicker();
+	}
+	@Override
+	public void updateItem(S item, boolean empty) {
+		 super.updateItem(item, empty);
+
+         SimpleDateFormat smp = new SimpleDateFormat("dd/MM/yyyy");
+
+         if (null == this.datePicker) {
+             System.out.println("datePicker is NULL");
+         }
+
+         if (empty) {
+             setText(null);
+             setGraphic(null);
+         } else {
+
+             if (isEditing()) {
+                 setContentDisplay(ContentDisplay.TEXT_ONLY);
+
+             } else {
+            	 //System.out.println("dsfsdfsdfs"+item);
+            	 if (item != null){
+                 setDatepikerDate(smp.format(item));
+                 setText(smp.format(item));
+            	 }
+                 setGraphic(this.datePicker);
+                 setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+             }
+         }
+	}
+	private void setDatepikerDate(String dateAsStr) {
+
+        LocalDate ld = null;
+        int jour, mois, annee;
+
+        jour = mois = annee = 0;
+        try {
+            jour = Integer.parseInt(dateAsStr.substring(0, 2));
+            mois = Integer.parseInt(dateAsStr.substring(3, 5));
+            annee = Integer.parseInt(dateAsStr.substring(6, dateAsStr.length()));
+        } catch (NumberFormatException e) {
+            System.out.println("setDatepikerDate / unexpected error " + e);
+        }
+
+        ld = LocalDate.of(annee, mois, jour);
+        datePicker.setValue(ld);
+    }
+
+	private void createDatePicker() {
+		this.datePicker = new DatePicker();
+		datePicker.setPromptText(datePicker.getValue()+"jj/mm/aaaa");
+		datePicker.setEditable(true);
+
+		datePicker.setOnAction(new EventHandler() {
+			public void handle(Event t) {
+				LocalDate date = datePicker.getValue();
+				int index = getIndex();
+
+				SimpleDateFormat smp = new SimpleDateFormat("dd/MM/yyyy");
+				Calendar cal = Calendar.getInstance();
+				cal.set(Calendar.DAY_OF_MONTH, date.getDayOfMonth());
+				cal.set(Calendar.MONTH, date.getMonthValue() - 1);
+				cal.set(Calendar.YEAR, date.getYear());
+
+				setText(smp.format(cal.getTime()));
+				commitEdit((S) cal.getTime());
+
+			}
+		});
+
 	}
 
 }

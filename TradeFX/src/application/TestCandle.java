@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+import controller.TradeFXController;
 import database.DAOHsqlImpl;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -20,27 +21,42 @@ import stage.MyTableStage;
 public class TestCandle extends Application {
 	
 	
-	BorderPane root;
-	Scene scene;
-	Stage stage;
+
+	CandleStickChartStage candleStickChartStage;
 	@Override
 	public void start(Stage primaryStage) {
 
-		Symbol symbol = new Symbol(0, "NASDAQ:MSFT");
-			ArrayList<HistData> alHIstoricalData;
-	    	DAOHsqlImpl<HistData> historicalDataLoader = new DAOHsqlImpl(HistData.class);
+		
+			TradeFXController tfxc = new TradeFXController();
+			Symbol symbol = new Symbol(0, "NASDAQ:MSFT");
+			candleStickChartStage = new CandleStickChartStage();
+
+			tfxc.init();
+		
+			candleStickChartStage.show(symbol);
+			candleStickChartStage.setTitle("Graph");
+			
+			//ArrayList<HistData> alHIstoricalData;
+	    	//DAOHsqlImpl<HistData> historicalDataLoader = new DAOHsqlImpl(HistData.class);
+	    	
 	    	//alHIstoricalData = historicalDataLoader.getAllWhere(symbol.getPk().toString());
-	    	alHIstoricalData = historicalDataLoader.getAllWhere(symbol.getPk().toString()+" AND Date >= '2017-01-09' AND Date <= '2017-12-25'");
-	    	System.out.println(alHIstoricalData.size());
-	    	MyArrayList alHIstoricalData2= new MyArrayList();
-	    	for (HistData histData : alHIstoricalData) {
-	    		alHIstoricalData2.add(histData);
-			}
+	    	//alHIstoricalData = historicalDataLoader.getAllWhere(symbol.getPk().toString()+" AND Date >= '2017-01-09' AND Date <= '2017-12-25'");
+	    	
+//	    	alHIstoricalData = tfxc.getModel().getHistDataFor(symbol);
+//	    	
+//	    	System.out.println(alHIstoricalData.size());
+//	    	
+//	    	MyArrayList alHIstoricalData2= new MyArrayList();
+//	    	for (HistData histData : alHIstoricalData) {
+//	    		alHIstoricalData2.add(histData);
+//			}
 	    	
 	    	//alHIstoricalData2.update();
 	    	// alHIstoricalData2.getAsSingleItem()
-	  //  	new MyTableStage(alHIstoricalData,HistData.class );
-	    	new CandleStickChartStage( alHIstoricalData2).setTitle("HistData");
+	    	//  	new MyTableStage(alHIstoricalData,HistData.class );
+	    	//new CandleStickChartStage(alHIstoricalData2).setTitle("HistData");
+	    	
+	    	
 	    	//new BarChartStage( alHIstoricalData2);
 	}
 

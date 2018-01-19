@@ -23,6 +23,10 @@ public class TradeFXModel {
 		trades=new ArrayList<Transaction>();
 	}
 	
+	public ArrayList<Symbol> getStockSymbols(){
+		return StockSymbols;
+	}
+	
 	public static void showState(){
 		System.out.println("-------------State--------------");
 		System.out.println("StockSymbols:"+StockSymbols);

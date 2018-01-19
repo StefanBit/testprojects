@@ -66,7 +66,7 @@ public class BarChartStage extends Stage{
 				series1.getData().add(new XYChart.Data(alHIstoricalData2.get(len-1).getOpen()/alHIstoricalData2.get(len-7).getOpen()-1, s.getName()));
 				series2.getData().add(new XYChart.Data(alHIstoricalData2.get(len-1).getOpen()/alHIstoricalData2.get(len-30).getOpen()-1, s.getName()));
 				series3.getData().add(new XYChart.Data(alHIstoricalData2.get(len-1).getOpen()/alHIstoricalData2.get(len-100).getOpen()-1, s.getName()));
-				series4.getData().add(new XYChart.Data(alHIstoricalData2.get(len-1).getOpen()/alHIstoricalData2.get(len-270).getOpen()-1, s.getName()));
+				series4.getData().add(new XYChart.Data(alHIstoricalData2.get(len-1).getOpen()/alHIstoricalData2.get(len-170).getOpen()-1, s.getName()));
 				System.out.println(alHIstoricalData2.get(len-1).getDate()+"/"+alHIstoricalData2.get(len-30).getDate());
 			}
 	        

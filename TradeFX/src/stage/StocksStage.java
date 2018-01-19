@@ -72,11 +72,11 @@ public class StocksStage<T> extends Stage {
 			currentButton.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
 				public void handle(ActionEvent event) {
-					new CandleStickChartStage(TradeFXModel.StockHistData.get(currentSymbol)).setTitle("HistData");
-//					FloatingMean fm = new FloatingMean();
-//					new ChartStage(fm.calc(TradeFXModel.StockHistData.get(currentSymbol))).setTitle("Mean");
-//					ProMean pm= new ProMean();
-//					new ChartStage(pm.calc(TradeFXModel.StockHistData.get(currentSymbol),fm.calc(TradeFXModel.StockHistData.get(currentSymbol)))).setTitle("ProMean");
+					CandleStickChartStage candleStickChartStage;
+					
+					candleStickChartStage = new CandleStickChartStage();
+					candleStickChartStage.setTitle("HistData");
+					candleStickChartStage.show(currentSymbol);
 				}
 			});
 			hBox.getChildren().addAll(currentButton, currentProgressindicator);

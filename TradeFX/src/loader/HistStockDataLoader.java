@@ -19,6 +19,9 @@ import database.DAOHsqlImpl;
 import model.HistData;
 import model.Symbol;
 
+
+/* Loads Historical Data from URL and returns Array*/ 
+
 public class HistStockDataLoader {
 
 	HistData histData;

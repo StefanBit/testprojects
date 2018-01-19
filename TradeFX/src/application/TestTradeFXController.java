@@ -11,14 +11,15 @@ public class TestTradeFXController extends Application{
 	@Override
 	public void start(Stage arg0) throws Exception {
 
-		TradeFXController t = new TradeFXController();
-		t.init();
-		while (!(TradeFXModel.symbolsLoaded))
-		{
-			System.out.println((TradeFXModel.histDataLoaded&TradeFXModel.symbolsLoaded));
-			
-		}
-		TradeFXModel.showState();
+		TradeFXController tfxc = new TradeFXController();
+		tfxc.init();
+
+//		while (!(TradeFXModel.symbolsLoaded))
+//		{
+//			System.out.println((TradeFXModel.histDataLoaded&TradeFXModel.symbolsLoaded));
+//			
+//		}
+//		TradeFXModel.showState();
 		System.exit(0);
 	}
 	

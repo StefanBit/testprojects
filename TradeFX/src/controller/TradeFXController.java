@@ -21,13 +21,12 @@ public class TradeFXController {
 
 	public SymbolLoaderTask symbolsLoaderTask;
 	ArrayList<Thread> threads;
+	TradeFXModel model;
 	
 	public TradeFXController() {
-		
-		TradeFXModel.tasks = new HashMap<Symbol,HistStockDataLoaderTask>();
-		
+		model = new TradeFXModel();
+		//TradeFXModel.tasks = new HashMap<Symbol,HistStockDataLoaderTask>();
 		//threads = new ArrayList<Thread>();
-
 	}
 	
 	public void init() {
@@ -35,16 +34,20 @@ public class TradeFXController {
 		loadHistData();
 	}
 	
+	public TradeFXModel getModel(){
+		return this.model;
+	}
+	
 	public void loadSymbols(){
-		//System.out.println("Loading Symbols"); 
+		System.out.println("Loading Symbols"); 
 		symbolsLoaderTask = new SymbolLoaderTask();
 		Thread thread = new Thread(symbolsLoaderTask);
 		thread.start();
 		while (thread.isAlive()){
 		}
-		//System.out.println("Ok."+TradeFXModel.StockSymbols);
+		System.out.println("Ok."+TradeFXModel.StockSymbols);
 		//System.out.println("Ok."+TradeFXModel.StockHistData);
-		TradeFXModel.symbolsLoaded=true;
+		model.symbolsLoaded=true;
 	}
 	
 	public void loadHistData(){

@@ -154,7 +154,7 @@ public class CandleStickChart extends XYChart<String, Number> {
 //					}
 
 					if (seriesPath != null) {
-						System.out.println("klkk");
+						//System.out.println("klkk");
 						if (true) {
 							double ave = yAxis.getDisplayPosition(item.getYValue());
 							if (seriesPath.getElements().isEmpty()) {
@@ -166,7 +166,7 @@ public class CandleStickChart extends XYChart<String, Number> {
 						}
 
 					} else {
-						System.out.println("klkk");
+					//	System.out.println("klkk");
 						double ave = yAxis.getDisplayPosition(item.getYValue());;
 						if (seriesPath.getElements().isEmpty()) {
 							seriesPath.getElements().add(new MoveTo(x, ave));

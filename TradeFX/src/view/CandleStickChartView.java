@@ -10,11 +10,15 @@ import javafx.scene.chart.XYChart;
 import model.ArithmeticMean;
 import model.FloatingMean;
 import model.HistData;
+import model.Symbol;
+import model.TradeFXModel;
 
 public class CandleStickChartView {
 
 	public CandleStickChart lineChart;
-
+	private int dataSetsToShow;
+	
+	
 	public CandleStickChartView() {
 		final CategoryAxis xAxis = new CategoryAxis();
 		final NumberAxis yAxis = new NumberAxis();
@@ -25,9 +29,17 @@ public class CandleStickChartView {
 	}
 
 	public void setData(ArrayList<HistData> data) {
-
 		setDataSeries(data);
+		dataSetsToShow=data.size();
 		lineChart.setTitle("MSFT");
+	}
+	
+	public void setDataForSymbol(Symbol symbol) {
+		ArrayList<HistData> data;
+		data= TradeFXModel.getHistDataFor(symbol);
+		dataSetsToShow=data.size();
+		setDataSeries(data);
+		lineChart.setTitle(symbol.getName());
 	}
 
 	public XYChart.Series setDataSeries(ArrayList<HistData> data) {
@@ -38,7 +50,7 @@ public class CandleStickChartView {
 		//series.setName(String.valueOf(data.get(0).getPk()));
 		series.setName("Chart");
 
-		for (int i = 0; i < data.size(); i++) {
+		for (int i = 0; i < dataSetsToShow; i++) {
 			HistData day = data.get(i);
 			final CandleStickExtraValues extras = new CandleStickExtraValues(day.getClose(), day.getHight(),
 					day.getLow(), (day.getHight() + day.getLow()) / 2);
@@ -52,11 +64,11 @@ public class CandleStickChartView {
 			lineChart.getData().add(series);
 		}
 
-		series2.setName("Floating MEan");
+		series2.setName("Floating Mean");
 		//series2.setName(String.valueOf(data.get(0).getPk()));
 		FloatingMean fm = new FloatingMean();
 		data=fm.calc(data,300);
-		for (int i = 0; i < data.size(); i++) {
+		for (int i = 0; i < dataSetsToShow; i++) {
 			HistData day = data.get(i);
 			final CandleStickExtraValues extras2 = null; //new CandleStickExtraValues(day.getClose() - 10, day.getHight() - 10,day.getLow() - 10, (day.getHight() + day.getLow()) / 2 - 10);
 			series2.getData().add(new XYChart.Data<String, Number>((String) day.getDate().toString(),(double) day.getOpen(),null));
