@@ -100,6 +100,7 @@ public class MyTableView<T> extends TableView implements EventHandler<KeyEvent> 
 						} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 							e.printStackTrace();
 						}
+						System.out.println("setonedircommit");
 					}
 				});
 				tooltip.setText(property.getName() + " (" + property.getPropertyType() + ")");
@@ -164,7 +165,16 @@ class myDpCell<T, S> extends TableCell<T, S> {
 		}
 		setGraphic(datePicker);
 		setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
-
+		datePicker.setOnAction(new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent event) {
+				
+				//commitEdit( Integer.parseInt(mtf.getText().toString()));
+				System.out.println("jjkjoi"+(S) datePicker.getValue());
+				
+				commitEdit((S) datePicker.getValue());
+			};
+		});
+		
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
@@ -172,6 +182,19 @@ class myDpCell<T, S> extends TableCell<T, S> {
 			}
 		});
 	}
+	
+	@Override
+	public void commitEdit(S newValue) {
+		// TODO Auto-generated method stub
+		System.out.println("kkkkkjhjihjoi");
+
+		System.out.println("setonedircommit");
+		
+		
+		
+		super.commitEdit(newValue);
+	}
+	
 
 	@Override
 	public void startEdit() {
@@ -204,6 +227,11 @@ class myDpCell<T, S> extends TableCell<T, S> {
                  setGraphic(this.datePicker);
                  setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
              }
+          
+         }
+         if (item!=null){
+        	 
+        	 System.out.println("dp: update Item:"+smp.format(item));
          }
 	}
 	private void setDatepikerDate(String dateAsStr) {
@@ -264,6 +292,7 @@ class MyConverter extends StringConverter {
 	@Override
 	public Object fromString(String arg0) {
 		Object o = null;
+		System.out.println("Translates Cells String Value to desired Field Type");
 		System.out.println(c);
 		if (c.equals("class java.lang.String")) {
 			o = arg0;

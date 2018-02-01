@@ -26,6 +26,13 @@ import model.HistData;
 import model.Symbol;
 import model.TradeFXModel;
 
+/**
+ * 
+ * Stellt eine Tabelle dar.
+ * Option zum einfügen, löschen.
+ * 
+ */
+
 public class MyTablePane<T> extends StackPane implements EventHandler<ActionEvent> {
 	TableView datatable,inserttable;
 	ArrayList<T> dataTableObjectList,insertTableObjectList;
@@ -47,16 +54,7 @@ public class MyTablePane<T> extends StackPane implements EventHandler<ActionEven
 
 		datatable = new MyTableView(dataTableObjectList, c);
 		
-		insertTableObjectList = new ArrayList<T>();
-		T newentiti = null;
-		try {
-			newentiti = (T) c.newInstance();
-		} catch (InstantiationException | IllegalAccessException e) {
-			e.printStackTrace();
-		}
-		insertTableObjectList.add(newentiti);
-		inserttable = new MyTableView(insertTableObjectList,c);
-		inserttable.setPrefHeight(100);
+		addNewInsertable();
 		this.getChildren().addAll(vBox);
 		vBox.getChildren().add(datatable);
 		vBox.getChildren().add(inserttable);
@@ -75,6 +73,8 @@ public class MyTablePane<T> extends StackPane implements EventHandler<ActionEven
 		insertTableObjectList.add(newentiti);
 		inserttable = new MyTableView(insertTableObjectList,c);
 		inserttable.setPrefHeight(100);
+	}
+	public void changeInserttable(){
 		vBox.getChildren().remove(1);
 		vBox.getChildren().add(1,inserttable);
 	}
@@ -94,6 +94,7 @@ public class MyTablePane<T> extends StackPane implements EventHandler<ActionEven
 			System.out.println("llll:"+(inserttable.getItems().get(0)));
 			datatable.getItems().add(inserttable.getItems().get(0));
 			addNewInsertable();
+			changeInserttable();
 		}
 		if (command.equals("save")) {
 			DAOHsqlImpl<T> sSymbol = new DAOHsqlImpl(Symbol.class);
