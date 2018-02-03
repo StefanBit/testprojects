@@ -32,6 +32,7 @@ public class DAOHsqlImpl<T> {
 		this.tablename = c.getSimpleName();
 		buildGetterSetterMap();
 		System.out.println("Building new SQL Adapter for Class " + c.getSimpleName());
+		getSignature();
 		q = new HSQLQuery();
 		if (!exists()) {
 			create();
@@ -80,7 +81,7 @@ public class DAOHsqlImpl<T> {
 			}
 		}
 		s = s.substring(0, s.length() - 2);
-	    System.out.println("Class " + c.getSimpleName() + " has Signature " + s);
+	    System.out.println("Class " + c.getSimpleName() + " has Signature: (" + s+")");
 		return s;
 	}
 
@@ -255,16 +256,6 @@ public class DAOHsqlImpl<T> {
 			e1.printStackTrace();
 		}
 
-	}
-
-	public static void main(String[] args) {
-		DAOHsqlImpl s;
-		s = new DAOHsqlImpl<HistData>(HistData.class);
-		//s.insert(new Symbol(0, "MSFT"));
-		//s.insert(new Symbol(1, "INTL"));
-		//s.dropTable();
-		System.out.println(s.getAll().get(1).toString());
-//		 s.deleteAll();
 	}
 
 }

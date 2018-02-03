@@ -48,7 +48,7 @@ public class TestTable extends Application {
 	    	alSymbolData = dataLoader.getAll();
 	    	dataLoader = new DAOHsqlImpl(HistData.class);
 	    	alHistData = dataLoader.getAll();
-	    	
+	    	//System.out.println("alHi"+alHistData.get(0));
 	    	
 	    	
 	    	// Open TableStages and show 

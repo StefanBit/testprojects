@@ -92,6 +92,7 @@ public class MyTablePane<T> extends StackPane implements EventHandler<ActionEven
 				e.printStackTrace();
 			}
 			System.out.println("llll:"+(inserttable.getItems().get(0)));
+			
 			datatable.getItems().add(inserttable.getItems().get(0));
 			addNewInsertable();
 			changeInserttable();

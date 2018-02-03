@@ -115,7 +115,7 @@ public class HSQLQuery {
 					resultList.add(r.getDouble(i));
 					break;
 				case "DATE":
-					resultList.add(r.getDate(i));
+					resultList.add((java.util.Date) r.getDate(i));
 					break;
 				default:
 					break;

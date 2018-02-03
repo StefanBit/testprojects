@@ -28,7 +28,7 @@ public class TestCandle extends Application {
 
 		
 			TradeFXController tfxc = new TradeFXController();
-			Symbol symbol = new Symbol(0, "NASDAQ:MSFT");
+			Symbol symbol = new Symbol(1, "NASDAQ:MSFT");
 			candleStickChartStage = new CandleStickChartStage();
 
 			tfxc.init();
