@@ -5,6 +5,8 @@ import java.util.Calendar;
 import java.util.Date;
 
 import database.DAOHsqlImpl;
+import gui.stage.ChartStage;
+import gui.stage.StocksStage;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.Event;
@@ -13,8 +15,6 @@ import model.ArithmeticMean;
 import model.HistData;
 import model.Symbol;
 import model.TradeFXModel;
-import stage.ChartStage;
-import stage.StocksStage;
 
 public class HistStockDataLoaderTask<T> extends Task{
 

@@ -12,12 +12,15 @@ import java.util.ArrayList;
 import model.Symbol;
 
 public class HSQLQuery {
+	static Boolean DEBUG=true;
 	Connection con = null;
+	String Databasefile;
 	ResultSetMetaData m;
 	ArrayList al;
 	int count;
 
 	public HSQLQuery() {
+		Databasefile= Paths.get(".").toAbsolutePath().normalize().toString()+"/hsdb/new";
 		try {
 			Class.forName("org.hsqldb.jdbcDriver");
 			open();
@@ -29,8 +32,8 @@ public class HSQLQuery {
 
 	public void open() {
 		try {
-			con = DriverManager.getConnection("jdbc:hsqldb:file:"+Paths.get(".").toAbsolutePath().normalize().toString()+"/hsdb/new;shutdown=true", "sa","");
-			System.out.println("Using DB File "+Paths.get(".").toAbsolutePath().normalize().toString()+"/hsdb/new");
+			con = DriverManager.getConnection("jdbc:hsqldb:file:"+Databasefile+";shutdown=true", "sa","");
+			System.out.println("Using DB File "+Databasefile);
 		} catch (SQLException e) {
 			System.out.println("Mein Fehler");
 			e.printStackTrace();
@@ -44,14 +47,25 @@ public class HSQLQuery {
 //				}
 //		}
 	}
+	
+	public void close(){
+		try {
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	public ArrayList query(String q) {
 		al = new ArrayList();
-		
 		try {
-		//	con = DriverManager.getConnection("jdbc:hsqldb:file:"+Paths.get(".").toAbsolutePath().normalize().toString()+"/hsdb/new;shutdown=true", "sa","");
-		
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery(q);
+			System.out.println("lölö"+q);
+			
+			if (DEBUG) System.out.println("Result: "+rs );
+			
 			showMetatData(rs);
 	//		System.out.print("getting Rowsets:");
 			while (rs.next())
@@ -60,7 +74,7 @@ public class HSQLQuery {
 			stmt.close();
 
 		} catch (SQLException e) {
-			System.out.println("MEin Fehler");
+			System.out.println("Mein Fehler");
 			e.printStackTrace();
 		} 
 //		finally {
@@ -72,25 +86,24 @@ public class HSQLQuery {
 //				}
 	//	}
 //		System.out.println();
-		//System.out.println("Result has "+al.size()+" Entrys");
+		if (DEBUG) System.out.println("Result has "+al.size()+" Entrys");
 		return al;
 	}
 
 	public void showMetatData(ResultSet r) {
-
+		if (DEBUG) System.out.println("Show Metadata for ");
 		try {
 			m = r.getMetaData();
 			count = m.getColumnCount();
-//			System.out.println("Result " + m.getTableName(1) + " has " + count + " Columns");
-//			System.out.print("Columnames: ");
+			if (DEBUG) System.out.println("Result " + m.getTableName(1) + " has " + count + " Columns");
+			if (DEBUG) System.out.print("Columnames: ");
 			for (int i = 1; i <= count; i++) {
-	//			System.out.print(m.getColumnLabel(i) + ";");
+				if (DEBUG) System.out.print(m.getColumnLabel(i) + ";");
 			}
-//			System.out.print("; ColumnSignature: ");
+			if (DEBUG) System.out.print("; ColumnSignature: ");
 			for (int i = 1; i <= count; i++) {
-		//		System.out.print(m.getColumnTypeName(i) + ";");
+				if (DEBUG) System.out.print(m.getColumnTypeName(i) + ";");
 			}
-//			System.out.println();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -125,7 +138,7 @@ public class HSQLQuery {
 			}
 
 		}
-	//	System.out.print(resultList);
+		if (DEBUG) System.out.print("ResultList:" +resultList);
 		return resultList;
 	}
 }

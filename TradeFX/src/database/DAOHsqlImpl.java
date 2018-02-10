@@ -19,7 +19,7 @@ import model.HistData;
 import model.Symbol;
 
 public class DAOHsqlImpl<T> {
-
+	static Boolean DEBUG=true;
 	String tablename;
 	Class<T> c;
 	Map<String, Method> mapSetter = new HashMap<String, Method>();
@@ -30,8 +30,8 @@ public class DAOHsqlImpl<T> {
 	public DAOHsqlImpl(Class<T> c) {
 		this.c = c;
 		this.tablename = c.getSimpleName();
+		if (DEBUG) System.out.println("Building new SQL Adapter for Class " + c + " table: "+tablename);
 		buildGetterSetterMap();
-		System.out.println("Building new SQL Adapter for Class " + c.getSimpleName());
 		getSignature();
 		q = new HSQLQuery();
 		if (!exists()) {
@@ -49,7 +49,7 @@ public class DAOHsqlImpl<T> {
 	}
 	
 	private void create() {
-		System.out.println("Creating table " + tablename);
+		System.out.println("CREATE TABLE " + tablename + "(" + getSignature() + ")");
 		q.query("CREATE TABLE " + tablename + "(" + getSignature() + ")");
 	}
 
@@ -60,7 +60,7 @@ public class DAOHsqlImpl<T> {
 	private String getSignature() {
 		String s = "";
 		for (Field o : c.getDeclaredFields()) {
-			System.out.println(o.getGenericType().toString());
+			//System.out.println(o.getGenericType().toString());
 			s += o.getName() + " ";
 			switch (o.getGenericType().toString()) {
 			case "class java.lang.Integer":
@@ -105,15 +105,28 @@ public class DAOHsqlImpl<T> {
 				String name = pd.getName();
 				Method getter = pd.getReadMethod();
 				Class<?> type = pd.getPropertyType();
+				System.out.print("property name "+ name+" getter "+getter.getName()+"  of type "+type.getName()+" class "+t);
 
 				try {
 					Object value = getter.invoke(t);
+					if (DEBUG) System.out.println("vValue: "+value);
 					switch (value.getClass().toString()) {
 					case "class java.lang.String":
 						columnString += name + ", ";
 						valueString += "'" + value + "', ";
 						break;
 					case "class java.util.Date":
+						System.out.println("llll-2");
+						columnString += name + ", ";
+						valueString += "'" + ft.format(value) + "', ";
+						break;
+					case "java.util.Date":
+						System.out.println("llll-");
+						columnString += name + ", ";
+						valueString += "'" + ft.format(value) + "', ";
+						break;
+					case "class java.sql.Date":
+						System.out.println("llll-");
 						columnString += name + ", ";
 						valueString += "'" + ft.format(value) + "', ";
 						break;
@@ -126,7 +139,7 @@ public class DAOHsqlImpl<T> {
 						valueString += value + ", ";
 						break;
 					default:
-					//	System.out.println(pd.getName()+","+pd.getPropertyType());
+						if (DEBUG) System.out.println("Could not determine class "+pd.getName()+", type "+pd.getPropertyType()+ " use "+value.getClass().toString());
 						break;
 					}
 				} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
@@ -138,14 +151,17 @@ public class DAOHsqlImpl<T> {
 		} catch (IntrospectionException e) {
 			e.printStackTrace();
 		}
-		//System.out.println(columnString+"+"+valueString);
-		q.query("INSERT INTO " + tablename + "(" + columnString + ")" + " VALUES (" + valueString + ");");
+		if (DEBUG) System.out.println("INSERT INTO " + tablename + "(" + columnString + ")" + " VALUES (" + valueString + ");");
+		q.query("INSERT INTO " + tablename.toUpperCase() + "(" + columnString + ")" + " VALUES (" + valueString + ");");
+		
 	}
 	
 	public void insertAll(ArrayList <T> al){
 		for (T t : al) {
+			if (DEBUG) System.out.println("Inserting "+t);
 			insert(t);
 		}
+		q.close();
 	}
 
 	/**
@@ -188,6 +204,7 @@ public class DAOHsqlImpl<T> {
 	 */
 	public ArrayList<T> getAllWhere(String where) {
 		System.out.println("getAll");
+		q = new HSQLQuery();
 		where="pk="+where;
 		T t = null;
 		ArrayList al, alTable;
@@ -218,6 +235,7 @@ public class DAOHsqlImpl<T> {
 			}
 			al.add(t);
 		}
+		q.close();
 		System.out.println("alTable has "+alTable.size()+" Entrys");
 		System.out.println("Result has "+al.size()+" Entrys");
 		return al;
@@ -236,7 +254,8 @@ public class DAOHsqlImpl<T> {
 	}
 	public void dropTable() {
 		ArrayList al;
-		al = q.query("DROP TABLE " + tablename);
+		al = q.query("DROP TABLE " + tablename.toUpperCase());
+		System.out.println("drop table "+tablename.toUpperCase());
 		for (Object object : al) {
 			System.out.println(object);
 		}
@@ -244,7 +263,7 @@ public class DAOHsqlImpl<T> {
 	
 	
 	private void buildGetterSetterMap(){
-		// Build Setters Map
+		if (DEBUG) System.out.print("Build GetterSetters Map");
 		try {
 			t = c.newInstance();
 			info = Introspector.getBeanInfo(t.getClass());
@@ -252,6 +271,7 @@ public class DAOHsqlImpl<T> {
 			for (PropertyDescriptor pd : props) {
 				mapSetter.put(pd.getName().toUpperCase(), pd.getWriteMethod());
 			}
+			if (DEBUG) System.out.println(mapSetter);
 		} catch (InstantiationException | IllegalAccessException | IntrospectionException e1) {
 			e1.printStackTrace();
 		}
