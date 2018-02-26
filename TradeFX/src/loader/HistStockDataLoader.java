@@ -26,6 +26,7 @@ public class HistStockDataLoader {
 
 	HistData histData;
 	ArrayList<HistData> alHistData;
+	static Boolean DEBUG=false;
 
 	public HistStockDataLoader() {
 	}
@@ -121,25 +122,25 @@ public class HistStockDataLoader {
 				histData.setClose(close);
 				histData.setVolume(volume);
 				if (s.getPk() == 2) {
-					System.out.println(histData);
+					if (DEBUG) System.out.println(histData);
 				}
 				alHistData.add(histData);
 				if (s.getPk() == 2) {
-					System.out.println("Rows:" + alHistData.size());
+					if (DEBUG) System.out.println("Rows:" + alHistData.size());
 				}
 			}
 			br.close();
-			System.out.println("Close: " + request);
+			if (DEBUG) System.out.println("Close: " + request);
 		} catch (
 
 		MalformedURLException e) {
-			System.out.println("a");
+			if (DEBUG) System.out.println("a");
 			e.printStackTrace();
 		} catch (IOException e) {
-			System.out.println("a");
+			if (DEBUG) System.out.println("a");
 			e.printStackTrace();
 		} catch (ParseException e) {
-			System.out.println("c");
+			if (DEBUG) System.out.println("c");
 			e.printStackTrace();
 		}
 		long millisStop = Calendar.getInstance().getTimeInMillis();

@@ -17,6 +17,7 @@ public class SymbolLoaderTask extends Task{
 	@Override
 	protected ArrayList<Symbol> call() throws Exception {
 		System.out.println("Start Task");
+		this.updateMessage("Loading Symbols");
 		// Load Symbols
 		DAOHsqlImpl<Symbol> SymbolsLoader = new DAOHsqlImpl(Symbol.class);
 		ArrayList<Symbol> alSymbols = SymbolsLoader.getAll();

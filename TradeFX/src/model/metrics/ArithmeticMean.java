@@ -1,8 +1,13 @@
-package model;
+package model.metrics;
 
 import java.util.ArrayList;
 
-public class ArithmeticMean {
+import model.HistData;
+
+public class ArithmeticMean implements IMetric{
+	public ArithmeticMean() {
+		// TODO Auto-generated constructor stub
+	}
 	public ArrayList<HistData> calc(ArrayList<HistData> data) {
 		ArrayList<HistData> erg = new ArrayList<HistData>(); 
 		HistData set;
@@ -20,4 +25,12 @@ public class ArithmeticMean {
 		
 		return erg;
 	}
+	public ArithmeticMean getInstance(){
+		return new ArithmeticMean();
+	}
+	@Override
+	public String getName() {
+		return this.getClass().getSimpleName();
+	}
+
 }

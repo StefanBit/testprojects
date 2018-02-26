@@ -11,10 +11,10 @@ import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import model.ArithmeticMean;
 import model.HistData;
 import model.Symbol;
 import model.TradeFXModel;
+import model.metrics.ArithmeticMean;
 
 public class HistStockDataLoaderTask<T> extends Task{
 

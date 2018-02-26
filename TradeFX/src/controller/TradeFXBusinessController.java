@@ -10,70 +10,68 @@ import gui.stage.ChartStage;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.ProgressIndicator;
 import loader.HistStockDataLoaderTask;
+import loader.HistStockDataLoaderWorker;
 import loader.SymbolLoaderTask;
 import model.*;
+import model.metrics.ArithmeticMean;
+import model.metrics.FloatingMean;
 
 public class TradeFXBusinessController {
 
-	public static TradeFXBusinessController tfxc=null;
-	
+	public static TradeFXBusinessController tfxc = null;
+	static Boolean DEBUG = true;
+	static Boolean USE_SYNCRONIZE = true;
 	public SymbolLoaderTask symbolsLoaderTask;
+	public HistStockDataLoaderWorker worker;
 	ArrayList<Thread> threads;
 	TradeFXModel model;
-	
+
 	public TradeFXBusinessController() {
 		model = new TradeFXModel();
-		tfxc=this;
-		//TradeFXModel.tasks = new HashMap<Symbol,HistStockDataLoaderTask>();
-		//threads = new ArrayList<Thread>();
+		
+		model.aMetrics.add(new FloatingMean(100));
+		model.aMetrics.add(new ArithmeticMean());
 	}
-	
+
+	static public TradeFXBusinessController getInstance() {
+		if (tfxc == null) {
+			tfxc = new TradeFXBusinessController();
+		}
+		return tfxc;
+	}
+
 	public void init() {
 		loadSymbols();
-		loadHistData();
 	}
-	
-	public TradeFXModel getModel(){
+
+	public TradeFXModel getModel() {
 		return this.model;
 	}
-	
-	public void loadSymbols(){
-		System.out.println("Loading Symbols"); 
+
+	public void loadSymbols() {
+		if (DEBUG) System.out.println("Loading Symbols");
 		symbolsLoaderTask = new SymbolLoaderTask();
 		Thread thread = new Thread(symbolsLoaderTask);
 		thread.start();
-		while (thread.isAlive()){
-		}
-		System.out.println("Ok."+TradeFXModel.StockSymbols);
-		//System.out.println("Ok."+TradeFXModel.StockHistData);
-		model.symbolsLoaded=true;
 	}
-	
-	public void loadHistData(){
-		Thread currentThread=null;
-		for (Map.Entry<Symbol, ArrayList<HistData>> entry : TradeFXModel.StockHistData.entrySet()) {
-			Symbol currentSymbol = entry.getKey();
-			HistStockDataLoaderTask currenttask = new HistStockDataLoaderTask();
-			TradeFXModel.tasks.put(currentSymbol, currenttask);
-			currenttask.alSymbol = currentSymbol;
-			currentThread = new Thread(currenttask);
-			currentThread.start();
-			while (currentThread.isAlive()){
-				//System.out.print("-");
-			}
-			System.out.println(currentSymbol.toString()+"loaded");
-		}
-		while (currentThread.isAlive()){
-			//System.out.print("-");
-		}
-		TradeFXModel.histDataLoaded=true;
-	}
-	
-	
 
+	public void loadHistData() {
+		if (DEBUG) System.out.println("Loading HistData");
+		Thread thread;
+		worker= new HistStockDataLoaderWorker();
+		thread = new Thread(worker);
+		thread.start();
+	}
 	
+	public void loadSymbolMetrics(){
+		model.symbolMetric.registerMetricClasses( new FloatingMean(6), new ArithmeticMean());
+		model.symbolMetric.build();
+	}
+
+
 }

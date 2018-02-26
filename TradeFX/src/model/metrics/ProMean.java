@@ -1,6 +1,8 @@
-package model;
+package model.metrics;
 
 import java.util.ArrayList;
+
+import model.HistData;
 
 public class ProMean {
 	public ArrayList<HistData> calc(ArrayList<HistData> data,ArrayList<HistData> data2) {

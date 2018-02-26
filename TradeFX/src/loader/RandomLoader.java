@@ -2,8 +2,6 @@ package loader;
 import java.util.Date;
 import java.util.Random;
 
-import application.Data;
-import application.Loader;
 import model.Symbol;
 
 public class RandomLoader implements Loader {

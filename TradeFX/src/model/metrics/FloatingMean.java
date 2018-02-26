@@ -1,9 +1,21 @@
-package model;
+package model.metrics;
 
 import java.util.ArrayList;
 
-public class FloatingMean {
-	public ArrayList<HistData> calc(ArrayList<HistData> data, int n) {
+import model.HistData;
+
+public class FloatingMean implements IMetric{
+	
+	int n=0;
+	public FloatingMean (int n){
+		this.n=n;
+	}
+	
+	public void setTimeSpan(int n){
+		this.n=n;
+	}
+	
+	public ArrayList<HistData> calc(ArrayList<HistData> data) {
 		ArrayList<HistData> erg = new ArrayList<HistData>();
 		HistData set;
 		double nc;
@@ -35,5 +47,15 @@ public class FloatingMean {
 		}
 
 		return erg;
+	}
+	
+	public FloatingMean getInstance(){
+		return new FloatingMean(6);
+	}
+
+	@Override
+	public String getName() {
+		
+		return "fm";
 	}
 }

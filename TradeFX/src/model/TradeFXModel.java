@@ -4,7 +4,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import javafx.collections.ObservableList;
 import loader.HistStockDataLoaderTask;
+import loader.MetricLoaderTask;
+import loader.SymbolMetric;
+import model.metrics.IMetric;
 
 
 public class TradeFXModel {
@@ -15,12 +19,18 @@ public class TradeFXModel {
 	public static ArrayList<Transaction> trades;
 	public static Boolean symbolsLoaded = false;
 	public static Boolean histDataLoaded = false;
+	public ArrayList<IMetric> aMetrics;
+	public static Map<Symbol, ArrayList<MetricLoaderTask>> mSymbolMetricsTask;
+	public SymbolMetric symbolMetric;
 	
 	public TradeFXModel() {
 		StockSymbols=new ArrayList<>();
 		StockHistData=new HashMap<Symbol, ArrayList<HistData>>();
+		mSymbolMetricsTask= new HashMap<Symbol, ArrayList<MetricLoaderTask>>();
 		tasks=new HashMap<Symbol, HistStockDataLoaderTask>();
 		trades=new ArrayList<Transaction>();
+		aMetrics=new ArrayList<IMetric>();
+		symbolMetric=new SymbolMetric();
 	}
 	
 	public ArrayList<Symbol> getStockSymbols(){
@@ -47,10 +57,10 @@ public class TradeFXModel {
 		result = null;
 		for (Map.Entry<Symbol, ArrayList<HistData>> entry : TradeFXModel.StockHistData.entrySet()) {
 			if (entry.getKey().pk.equals(s.pk)) {
-				System.out.println("StockHistData Key:"+entry.getKey());
-				System.out.println("StockHistData Value:"+entry.getValue().size());
+			//	System.out.println("StockHistData Key:"+entry.getKey());
+			//	System.out.println("StockHistData Value:"+entry.getValue().size());
 				result = entry.getValue();
-				System.out.println("StockHistData:"+TradeFXModel.StockHistData);
+				//System.out.println("StockHistData:"+TradeFXModel.StockHistData);
 			}
 			}
 		

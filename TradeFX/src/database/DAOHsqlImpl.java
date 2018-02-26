@@ -19,7 +19,7 @@ import model.HistData;
 import model.Symbol;
 
 public class DAOHsqlImpl<T> {
-	static Boolean DEBUG=true;
+	static Boolean DEBUG=false;
 	String tablename;
 	Class<T> c;
 	Map<String, Method> mapSetter = new HashMap<String, Method>();
@@ -105,7 +105,7 @@ public class DAOHsqlImpl<T> {
 				String name = pd.getName();
 				Method getter = pd.getReadMethod();
 				Class<?> type = pd.getPropertyType();
-				System.out.print("property name "+ name+" getter "+getter.getName()+"  of type "+type.getName()+" class "+t);
+				if (DEBUG)  System.out.print("property name "+ name+" getter "+getter.getName()+"  of type "+type.getName()+" class "+t);
 
 				try {
 					Object value = getter.invoke(t);
@@ -116,17 +116,14 @@ public class DAOHsqlImpl<T> {
 						valueString += "'" + value + "', ";
 						break;
 					case "class java.util.Date":
-						System.out.println("llll-2");
 						columnString += name + ", ";
 						valueString += "'" + ft.format(value) + "', ";
 						break;
 					case "java.util.Date":
-						System.out.println("llll-");
 						columnString += name + ", ";
 						valueString += "'" + ft.format(value) + "', ";
 						break;
 					case "class java.sql.Date":
-						System.out.println("llll-");
 						columnString += name + ", ";
 						valueString += "'" + ft.format(value) + "', ";
 						break;

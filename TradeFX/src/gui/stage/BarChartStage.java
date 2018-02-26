@@ -12,11 +12,11 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
-import model.FloatingMean;
 import model.HistData;
 import model.MyArrayList;
 import model.Symbol;
 import model.TradeFXModel;
+import model.metrics.FloatingMean;
 
 public class BarChartStage extends Stage{
 	
@@ -53,7 +53,7 @@ public class BarChartStage extends Stage{
 	        MyArrayList alHIstoricalData2, p365;
 	        HistData d=null;
 	        
-	        FloatingMean fm=new FloatingMean();
+	        FloatingMean fm=new FloatingMean(50);
 	        int len;
 	        
 	        for (Symbol s : TradeFXModel.StockSymbols) {

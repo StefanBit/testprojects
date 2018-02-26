@@ -11,24 +11,26 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.TradeFXApplicationController">
+<BorderPane prefHeight="1024.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.TradeFXApplicationController">
    <center>
-      <TabPane prefHeight="100.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+      <TabPane tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
         <tabs>
           <Tab text="Dashboard">
                <content>
-                  <VBox prefHeight="200.0" prefWidth="100.0">
+                  <VBox>
                      <children>
                         <Pane prefHeight="50.0" prefWidth="200.0">
                            <children>
                               <Button maxHeight="1.7976931348623157E308" minHeight="-Infinity" mnemonicParsing="false" text="Button" />
                            </children>
                         </Pane>
-                        <HBox maxHeight="1.7976931348623157E308">
+                        <HBox VBox.vgrow="ALWAYS">
                            <children>
-                              <TitledPane fx:id="BarChartPane" animated="false" prefHeight="400.0" prefWidth="500.0" text="Barchart" />
+                              <TitledPane fx:id="BarChartPane" animated="false" text="Barchart" />
+                              <TitledPane fx:id="AvaiableMetricsPane" animated="false" text="Avaiable Metrics" HBox.hgrow="ALWAYS" />
                            </children>
                         </HBox>
+                        <Pane maxWidth="1.7976931348623157E308" prefHeight="200.0" />
                      </children>
                   </VBox>
                </content></Tab>
@@ -43,7 +45,12 @@
                         </Pane>
                         <HBox prefWidth="200.0">
                            <children>
-                              <TitledPane fx:id="SymbolPane" animated="false" prefHeight="400.0" prefWidth="400.0" text="Symbol List1" />
+                              <TitledPane fx:id="SymbolPane" animated="false" prefHeight="500.0" prefWidth="500.0" text="Symbol List1" />
+                              <TitledPane fx:id="ChartPane" animated="false" maxHeight="1.7976931348623157E308" text="Chart" HBox.hgrow="ALWAYS" />
+                           </children></HBox>
+                        <HBox prefWidth="200.0" VBox.vgrow="ALWAYS">
+                           <children>
+                              <TitledPane fx:id="DataPane" animated="false" text="Data" HBox.hgrow="ALWAYS" />
                            </children>
                         </HBox>
                      </children>
@@ -54,14 +61,11 @@
       </TabPane>
    </center>
    <bottom>
-      <HBox BorderPane.alignment="CENTER_LEFT">
+      <HBox style="-fx-border-color: grey;" BorderPane.alignment="CENTER_LEFT">
          <children>
-            <Label maxWidth="1.7976931348623157E308" text="Status" HBox.hgrow="ALWAYS" />
-            <ProgressBar prefWidth="200.0" progress="0.0" />
+            <Label fx:id="Status" maxWidth="1.7976931348623157E308" prefHeight="20.0" text="Status" HBox.hgrow="ALWAYS" />
+            <ProgressBar fx:id="OverallProgress" prefHeight="20.0" prefWidth="200.0" progress="0.0" />
          </children>
       </HBox>
    </bottom>
-   <right>
-      <Pane fx:id="ConsolePane" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
-   </right>
 </BorderPane>

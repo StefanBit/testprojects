@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import model.Symbol;
 
 public class HSQLQuery {
-	static Boolean DEBUG=true;
+	static Boolean DEBUG=false;
 	Connection con = null;
 	String Databasefile;
 	ResultSetMetaData m;
@@ -62,7 +62,7 @@ public class HSQLQuery {
 		try {
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery(q);
-			System.out.println("lölö"+q);
+			if (DEBUG) System.out.println("lölö"+q);
 			
 			if (DEBUG) System.out.println("Result: "+rs );
 			

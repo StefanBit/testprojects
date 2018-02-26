@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import database.DAOHsqlImpl;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
@@ -33,10 +35,10 @@ import model.TradeFXModel;
  * 
  */
 
-public class MyTablePane<T> extends StackPane implements EventHandler<ActionEvent> {
+public class MyTablePane<T> extends StackPane implements EventHandler<ActionEvent>, ChangeListener {
 
 	static Boolean DEBUG=true; 
-	TableView datatable,inserttable;
+	public MyTableView datatable,inserttable;
 	ArrayList<T> dataTableObjectList,insertTableObjectList;
 	Class c;
 	Button buttonInsert,buttonSave; 
@@ -44,25 +46,35 @@ public class MyTablePane<T> extends StackPane implements EventHandler<ActionEven
 	HBox hBox;
 	
 	
-	public MyTablePane(ArrayList<T> dataTableObjectList, Class c) {
+	public MyTablePane(Class c) {
 		super();
 		this.c = c;
-		this.dataTableObjectList = dataTableObjectList;
 		vBox = new VBox();
 		hBox = new HBox();
 		buttonInsert = new Button("insert");
 		buttonInsert.setOnAction(this);
 		buttonSave = new Button("save");
 		buttonSave.setOnAction(this);
-
-		datatable = new MyTableView(dataTableObjectList, c);
-		
-		addNewInsertable();
+		datatable = new MyTableView(c);
 		this.getChildren().addAll(vBox);
+		addNewInsertable();
 		vBox.getChildren().add(datatable);
 		vBox.getChildren().add(inserttable);
 		vBox.getChildren().add(hBox);
 		hBox.getChildren().addAll(buttonInsert,buttonSave);
+		
+	}
+	
+	public MyTablePane(ArrayList<T> dataTableObjectList, Class c) {
+		this(c);
+		//setData(dataTableObjectList);
+	}
+	
+	public void setData(ArrayList<T> dataTableObjectList) {
+		this.dataTableObjectList = dataTableObjectList;
+		datatable.setData(dataTableObjectList);
+		datatable.getSelectionModel().selectedItemProperty().addListener(this);
+		datatable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 	}
 	
 	public void addNewInsertable(){
@@ -74,7 +86,9 @@ public class MyTablePane<T> extends StackPane implements EventHandler<ActionEven
 			e.printStackTrace();
 		}
 		insertTableObjectList.add(newentiti);
-		inserttable = new MyTableView(insertTableObjectList,c);
+		inserttable = new MyTableView(c);
+		inserttable.setData(insertTableObjectList);
+		inserttable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 		inserttable.setPrefHeight(100);
 	}
 	public void changeInserttable(){
@@ -94,7 +108,6 @@ public class MyTablePane<T> extends StackPane implements EventHandler<ActionEven
 			} catch (InstantiationException | IllegalAccessException e) {
 				e.printStackTrace();
 			}
-			//System.out.println("llll:"+(inserttable.getItems().get(0)));
 			
 			datatable.getItems().add(inserttable.getItems().get(0));
 			addNewInsertable();
@@ -108,5 +121,10 @@ public class MyTablePane<T> extends StackPane implements EventHandler<ActionEven
 			ArrayList alt = new ArrayList<>(Arrays.asList(datatable.getItems().toArray()));
 			sSymbol.insertAll(alt);
 		}
+	}
+	@Override
+	public void changed(ObservableValue arg0, Object arg1, Object arg2) {
+		System.out.println("selection changed");  
+		
 	}
 }

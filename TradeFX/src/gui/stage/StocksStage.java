@@ -29,11 +29,11 @@ import javafx.util.Callback;
 import javafx.util.StringConverter;
 import loader.HistStockDataLoader;
 import loader.HistStockDataLoaderTask;
-import model.ArithmeticMean;
 import model.HistData;
-import model.ProMean;
 import model.Symbol;
 import model.TradeFXModel;
+import model.metrics.ArithmeticMean;
+import model.metrics.ProMean;
 
 public class StocksStage<T> extends Stage {
 

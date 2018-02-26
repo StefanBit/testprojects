@@ -3,9 +3,10 @@ package model;
 import java.util.Date;
 
 public class HistData {
-	Integer pk;
-	Date date;
-	Double open, hight, low, close, volume;
+	public Integer pk;
+	public Date date;
+	public Double open, hight, low, close;
+	public Double volume;
 	
 	public HistData() {
 		this.pk=0;

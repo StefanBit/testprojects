@@ -52,7 +52,6 @@ public class PortfolioView implements ChangeListener {
 		series = new XYChart.Series();
 			data = m.StockHistData.get(iterable_element);
 			int scale = data.size() / 50;
-			//System.out.println(iterable_element.getName() + "llll"+data.size());
 			for (int i = 0; i < data.size(); i = i + scale) {
 				dat = new XYChart.Data(data.get(i).getDate().toString(), data.get(i).getClose());
 				series.getData().add(dat);

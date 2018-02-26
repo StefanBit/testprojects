@@ -7,11 +7,12 @@ import javafx.collections.ObservableList;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
-import model.ArithmeticMean;
-import model.FloatingMean;
 import model.HistData;
 import model.Symbol;
 import model.TradeFXModel;
+import model.metrics.ArithmeticMean;
+import model.metrics.FloatingMean;
+import model.metrics.IMetric;
 
 public class CandleStickChartView {
 
@@ -33,23 +34,26 @@ public class CandleStickChartView {
 		dataSetsToShow=data.size();
 		lineChart.setTitle("MSFT");
 	}
+
 	
 	public void setDataForSymbol(Symbol symbol) {
 		ArrayList<HistData> data;
 		data= TradeFXModel.getHistDataFor(symbol);
 		dataSetsToShow=data.size();
 		setDataSeries(data);
+		IMetric iml=new FloatingMean(50);
+		setAdditonalDataSeries(data, iml);
+		IMetric iml2= new ArithmeticMean();
+		setAdditonalDataSeries(data, iml2);
 		lineChart.setTitle(symbol.getName());
 	}
 
+	// Candlestick Line
 	public XYChart.Series setDataSeries(ArrayList<HistData> data) {
-
 		XYChart.Series series = new XYChart.Series();
-		XYChart.Series series2 = new XYChart.Series();
 		XYChart.Data dat;
 		//series.setName(String.valueOf(data.get(0).getPk()));
 		series.setName("Chart");
-
 		for (int i = 0; i < dataSetsToShow; i++) {
 			HistData day = data.get(i);
 			final CandleStickExtraValues extras = new CandleStickExtraValues(day.getClose(), day.getHight(),
@@ -63,11 +67,16 @@ public class CandleStickChartView {
 		} else {
 			lineChart.getData().add(series);
 		}
-
+		return series;
+	}
+	
+	// Some other Line
+	public void setAdditonalDataSeries(ArrayList<HistData> data, IMetric fm){
+		XYChart.Series series2 = new XYChart.Series();
 		series2.setName("Floating Mean");
 		//series2.setName(String.valueOf(data.get(0).getPk()));
-		FloatingMean fm = new FloatingMean();
-		data=fm.calc(data,300);
+		
+		data=fm.calc(data);
 		for (int i = 0; i < dataSetsToShow; i++) {
 			HistData day = data.get(i);
 			final CandleStickExtraValues extras2 = null; //new CandleStickExtraValues(day.getClose() - 10, day.getHight() - 10,day.getLow() - 10, (day.getHight() + day.getLow()) / 2 - 10);
@@ -80,6 +89,6 @@ public class CandleStickChartView {
 		} else {
 			lineChart.getData().add(series2);
 		}
-		return series;
 	}
+	
 }

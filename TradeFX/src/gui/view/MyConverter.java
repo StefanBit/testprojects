@@ -7,7 +7,6 @@ class MyConverter extends StringConverter {
 
 	public MyConverter(Class c) {
 		this.c = c;
-		//System.out.println("llll"+c);
 	}
 
 	// Translates Cells String Value to desired Field Type

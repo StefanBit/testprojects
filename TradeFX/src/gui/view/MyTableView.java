@@ -9,6 +9,8 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 import javafx.beans.property.Property;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -45,17 +47,26 @@ public class MyTableView<T> extends TableView implements EventHandler<KeyEvent> 
 	Tooltip tooltip;
 	Label label;
 	String ColumnObjectType="";
-	public static final boolean DEBUG = true; 
+	Class c;
+	public static final boolean DEBUG = false; 
 			
-	public MyTableView(ArrayList<T> lObjects, Class c) {
+	public MyTableView(Class c) {
 		super();
-		items = FXCollections.observableList(lObjects);
+		this.c = c;
 		
+	}
+	
+//	public MyTableView(ArrayList<T> lObjects, Class c) {
+//		this(c);
+//		setData(lObjects);
+//	}
+	
+	public void setData(ArrayList<T> lObjects){
+		items = FXCollections.observableList(lObjects);
 		aColumns = new ArrayList();
 		setEditable(true);
-
 		try {
-			info = Introspector.getBeanInfo(c);
+			info = Introspector.getBeanInfo(this.c);
 			aPropertys = info.getPropertyDescriptors();
 			
 			// New Column for each Property of Object
@@ -67,10 +78,10 @@ public class MyTableView<T> extends TableView implements EventHandler<KeyEvent> 
 				tableColumn = new TableColumn();
 				label.setTooltip(tooltip);
 				tableColumn.setGraphic(label);
-
+				
 				// Verknüpft mit den Properties der Bean
 				tableColumn.setCellValueFactory(new PropertyValueFactory<T, String>(property.getName()));
-
+				
 				// Zellenfabrik wird nach Typ definiert
 				switch (property.getPropertyType().getName()) {
 				case "java.util.Date":
@@ -110,11 +121,14 @@ public class MyTableView<T> extends TableView implements EventHandler<KeyEvent> 
 		} catch (IntrospectionException e) {
 			e.printStackTrace();
 		}
-
+		
 		getColumns().addAll(aColumns);
 		setItems(items);
 		this.setOnKeyPressed(this);
+		//this.getSelectionModel().selectedItemProperty().addListener(this);
 	}
+	
+
 
 	public void handle(final KeyEvent keyEvent) {
 		T selectedItem;
@@ -126,6 +140,13 @@ public class MyTableView<T> extends TableView implements EventHandler<KeyEvent> 
 			if (keyEvent.getCode().equals(KeyCode.SPACE)) {
 				System.out.println("hehe" + ((Symbol) selectedItem).getName());
 			}
+			System.out.println("kklkl");
 		}
 	}
+
+//	@Override
+//	public void changed(ObservableValue arg0, Object arg1, Object arg2) {
+//		System.out.println("selection changed");  
+//		
+//	}
 }
