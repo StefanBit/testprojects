@@ -14,6 +14,9 @@ import javafx.scene.chart.ValueAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.chart.XYChart.Data;
 import javafx.scene.chart.XYChart.Series;
+import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Arc;
 import javafx.scene.shape.Circle;
@@ -32,6 +35,8 @@ import javafx.util.Duration;
  */
 public class CandleStickChart extends XYChart<String, Number> {
 
+	public HBox myLegend;
+	public Paint paintingColor;
 	/**
 	 * Construct a new CandleStickChart with the given axis.
 	 */
@@ -42,8 +47,9 @@ public class CandleStickChart extends XYChart<String, Number> {
 		setAnimated(false);
 		xAxis.setAnimated(false);
 		yAxis.setAnimated(false);
-		//yAxis.setLabel("kkkk");
-
+		myLegend = new HBox();
+		paintingColor= Paint.valueOf("green");
+		setLegend(myLegend);
 	}
 
 	/**
@@ -52,9 +58,15 @@ public class CandleStickChart extends XYChart<String, Number> {
 	 */
 	public CandleStickChart(Axis<String> xAxis, Axis<Number> yAxis, ObservableList<Series<String, Number>> data) {
 		this(xAxis, yAxis);
-
 		setData(data);
 	}
+	
+	
+//	@Override
+//	protected void updateLegend() {
+//		super.updateLegend();
+//		
+//	}
 
 	/** Called to update and layout the content for the plot */
 	@Override
@@ -66,6 +78,7 @@ public class CandleStickChart extends XYChart<String, Number> {
 		// update candle positions
 		for (int index = 0; index < getData().size(); index++) {
 			Series<String, Number> series = getData().get(index);
+			this.updateLegend();
 			Iterator<XYChart.Data<String, Number>> iter = getDisplayedDataIterator(series);
 			Path seriesPath = null;
 			if (series.getNode() instanceof Path) {
@@ -127,31 +140,6 @@ public class CandleStickChart extends XYChart<String, Number> {
 						}
 					}
 				} else {
-					/////////////////////////
-//					CandleStickExtraValues extra = (CandleStickExtraValues) item.getExtraValue();
-//					if (itemNode instanceof Candle && extra != null) {
-//						double close = yAxis.getDisplayPosition(extra.getClose());
-//						double high = yAxis.getDisplayPosition(extra.getHigh());
-//						double low = yAxis.getDisplayPosition(extra.getLow());
-//						// calculate candle width
-//						double candleWidth = -1;
-//						if (getXAxis() instanceof ValueAxis) {
-//							// use 90% width between ticks
-//							ValueAxis xa = (ValueAxis) getXAxis();
-//							double unit = xa.getDisplayPosition(xa.getTickLength());
-//							candleWidth = unit * 0.90;
-//						}
-//						// update candle
-//						Candle candle = (Candle) itemNode;
-//						// candleWidth=30;
-//						candle.update(close - y, high - y, low - y, candleWidth);
-//						candle.updateTooltip(item.getYValue().doubleValue(), extra.getClose(), extra.getHigh(),
-//								extra.getLow(), extra.getAverage());
-//						// System.out.println(candleWidth);
-//						// position the candle
-//						candle.setLayoutX(x);
-//						candle.setLayoutY(y);
-//					}
 
 					if (seriesPath != null) {
 						//System.out.println("klkk");
@@ -225,7 +213,12 @@ public class CandleStickChart extends XYChart<String, Number> {
 	@Override
 	protected void seriesAdded(Series<String, Number> series, int seriesIndex) {
 		// handle any data already in series
+		
 		System.out.println("Series added" + series.getData().get(0).getExtraValue());
+		Label seriesLegendLabel = new Label(series.getName()+" ");
+		seriesLegendLabel.setTextFill(paintingColor);
+		this.myLegend.getChildren().add(seriesLegendLabel);
+		
 		if (series.getData().get(0).getExtraValue() != null) {
 			System.out.println("Extravalue not null");
 			for (int j = 0; j < series.getData().size(); j++) {
@@ -247,31 +240,18 @@ public class CandleStickChart extends XYChart<String, Number> {
 			// -------------------------------
 			System.out.println("Extravalue null");
 			System.out.println("Series size"+series.getData().size());
-//			for (int j = 0; j < series.getData().size(); j++) {
-//				XYChart.Data item = series.getData().get(j);
-//				Circle candle = new Circle(j*50, (Double) item.getYValue(),5.0,Paint.valueOf("blue"));
-//				System.out.println(item.toString());
-//				if (shouldAnimate()) {
-//					candle.setOpacity(0);
-//					getPlotChildren().add(candle);
-//					// fade in new candle
-//					final FadeTransition ft = new FadeTransition(Duration.millis(500), candle);
-//					ft.setToValue(1);
-//					ft.play();
-//
-//				} else {
-//					getPlotChildren().add(candle);
-//				}
-//			}
+
 		}
 		// create series path
 		Path seriesPath = new Path();
+		
+		
 		if (series.getData().get(0).getExtraValue() != null) {
 			seriesPath.getStyleClass().setAll("candlestick-average-line", "series" + seriesIndex);
 			
 		} else {
 			
-			seriesPath.setStroke(Paint.valueOf("grey"));
+			seriesPath.setStroke(paintingColor);
 		}
 		series.setNode(seriesPath);
 		updateLegend();

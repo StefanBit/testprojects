@@ -44,7 +44,7 @@ public class TradeFXApplicationController implements EventHandler, ChangeListene
 	TradeFXBusinessController tfxc;
 	BarChartView v;
 	CandleStickChartView chartview;
-	ExpandableTableView etv;
+	ExpandableTableView metricTableView;
 	public TradeFXApplicationController() {
 		System.out.println("Constructor");
 	}
@@ -65,8 +65,8 @@ public class TradeFXApplicationController implements EventHandler, ChangeListene
 		 ChartPane.setContent(chartview.lineChart);
 		 DataPane.setContent(dataTablePane);
 		// MetricListViev.setItems(FXCollections.observableList(tfxc.getModel().aMetrics));
-		 etv= new ExpandableTableView();
-		 AvaiableMetricsPane.setContent(etv);
+		 metricTableView= new ExpandableTableView();
+		 AvaiableMetricsPane.setContent(metricTableView);
 		 v=new BarChartView();
 		 BarChartPane.setContent(v);
 		 symbolTablePane.datatable.getSelectionModel().selectedItemProperty().addListener(this);
@@ -84,20 +84,29 @@ public class TradeFXApplicationController implements EventHandler, ChangeListene
 			symbolTablePane.setData(tfxc.getModel().getStockSymbols());
 			OverallProgress.progressProperty().unbind();
 			tfxc.loadHistData();
-			OverallProgress.progressProperty().bind(tfxc.worker.progressProperty());
-			Status.textProperty().bind(tfxc.worker.messageProperty());
-			tfxc.worker.setOnSucceeded(this);
+			OverallProgress.progressProperty().bind(tfxc.histDataLoaderWorker.progressProperty());
+			Status.textProperty().bind(tfxc.histDataLoaderWorker.messageProperty());
+			tfxc.histDataLoaderWorker.setOnSucceeded(this);
 			
 		}
 		if (arg0.getSource().getClass().toString().equals("class loader.HistStockDataLoaderWorker")){
 			v.load();
-			System.out.println("Finished Task******---**** ");
+			System.out.println("Finished Task HistStockDataLoaderWorker ");
 			OverallProgress.progressProperty().unbind();
-			Symbol s= tfxc.getModel().StockSymbols.get(0);
-			chartview.setDataForSymbol(s);
-			dataTablePane.setData(tfxc.getModel().getHistDataFor(s));
+			// Load Metrics
+			System.out.println("load metrics");
 			tfxc.loadSymbolMetrics();
-			etv.addColumn();
+			OverallProgress.progressProperty().bind(tfxc.metricLoaderWorker.progressProperty());
+			Status.textProperty().bind(tfxc.metricLoaderWorker.messageProperty());
+			tfxc.metricLoaderWorker.setOnSucceeded(this);
+			//metricTableView.addColumn();
+		}
+		if (arg0.getSource().getClass().toString().equals("class loader.MetricLoaderWorker")){
+			System.out.println("Finished Task MetricLoaderWorker");
+			metricTableView.addColumn();
+			Symbol s= tfxc.getModel().StockSymbols.get(0);
+			dataTablePane.setData(tfxc.getModel().getHistDataFor(s));
+			chartview.setDataForSymbol(s);
 		}
 	}
 

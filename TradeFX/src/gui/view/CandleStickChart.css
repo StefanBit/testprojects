@@ -3,9 +3,13 @@
 .chart {
     -fx-background-color: lightgrey;   
     -fx-font-size: 1.4em;  
+    -fx-padding: 20px;
 }
 .chart-plot-background {
     -fx-background-color: lightgrey;
+}
+.chart-content {
+    -fx-padding: 30px;    
 }
 
 .chart-vertical-grid-lines {
@@ -95,3 +99,18 @@
     -demo-bar-fill: #ce2700;
 
 }
+
+.chart-legend {
+   -fx-background-color:  transparent;
+   -fx-padding: 20px;
+}
+ 
+.chart-legend-item-symbol{
+   -fx-background-radius: 0;
+}
+ 
+.chart-legend-item{
+    -fx-text-fill: #191970;
+}
+
+

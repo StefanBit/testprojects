@@ -15,6 +15,20 @@
    <center>
       <TabPane tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
         <tabs>
+            <Tab text="Metrics">
+               <content>
+                  <VBox prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <Pane prefHeight="50.0" prefWidth="200.0" />
+                        <HBox>
+                           <children>
+                              <TitledPane fx:id="AvaiableMetricsPane" animated="false" text="Avaiable Metrics" HBox.hgrow="ALWAYS" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </content>
+            </Tab>
           <Tab text="Dashboard">
                <content>
                   <VBox>
@@ -27,7 +41,6 @@
                         <HBox VBox.vgrow="ALWAYS">
                            <children>
                               <TitledPane fx:id="BarChartPane" animated="false" text="Barchart" />
-                              <TitledPane fx:id="AvaiableMetricsPane" animated="false" text="Avaiable Metrics" HBox.hgrow="ALWAYS" />
                            </children>
                         </HBox>
                         <Pane maxWidth="1.7976931348623157E308" prefHeight="200.0" />
@@ -46,7 +59,7 @@
                         <HBox prefWidth="200.0">
                            <children>
                               <TitledPane fx:id="SymbolPane" animated="false" prefHeight="500.0" prefWidth="500.0" text="Symbol List1" />
-                              <TitledPane fx:id="ChartPane" animated="false" maxHeight="1.7976931348623157E308" text="Chart" HBox.hgrow="ALWAYS" />
+                              <TitledPane fx:id="ChartPane" animated="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="800.0" prefWidth="800.0" text="Chart" HBox.hgrow="ALWAYS" />
                            </children></HBox>
                         <HBox prefWidth="200.0" VBox.vgrow="ALWAYS">
                            <children>
