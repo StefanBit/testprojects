@@ -17,16 +17,24 @@ public class MetricLoaderTask extends Task {
 	
 	public MetricLoaderTask(Symbol symbol, IMetric iMetric) {
 		controller=TradeFXBusinessController.getInstance();
+		this.alHistData=null;
 		this.symbol=symbol;
 		this.iMetric=iMetric;
 	}
 
 	@Override
 	protected Double call() throws Exception {
-		alHistData = controller.getModel().StockHistData.get(this.symbol);
+		this.alHistData=controller.getModel().StockHistData.get(this.symbol);;
+		System.out.println("Calculate "+iMetric.getClass().getSimpleName()+" for "+symbol.getName()+" in "+alHistData.size());
 		alHistData =iMetric.calc(alHistData);
-		updateProgress(1, 1);
 		return alHistData.get(0).open;
+	}
+	@Override
+	protected void succeeded() {
+		// TODO Auto-generated method stub
+		System.out.println("Calculate "+iMetric.getClass().getSimpleName()+" for "+symbol.getName()+" out "+alHistData.size());
+		updateProgress(iMetric.getData().size(),alHistData.size());
+		super.succeeded();
 	}
 
 }

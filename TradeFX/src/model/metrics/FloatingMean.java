@@ -5,9 +5,12 @@ import java.util.ArrayList;
 import model.HistData;
 
 public class FloatingMean implements IMetric{
+	ArrayList<HistData> data;
+	
 	
 	int n=0;
 	public FloatingMean (int n){
+		data= new ArrayList<HistData>();
 		this.n=n;
 	}
 	
@@ -45,7 +48,7 @@ public class FloatingMean implements IMetric{
 			
 			erg.add(new HistData(set.pk, set.date, open, hight, low, close, set.volume));
 		}
-
+		this.data=erg;
 		return erg;
 	}
 	
@@ -57,5 +60,8 @@ public class FloatingMean implements IMetric{
 	public String getName() {
 		
 		return "fm";
+	}
+	public ArrayList<HistData> getData(){
+		return data;
 	}
 }

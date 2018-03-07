@@ -5,8 +5,12 @@ import java.util.ArrayList;
 import model.HistData;
 
 public class ArithmeticMean implements IMetric{
+	
+	ArrayList<HistData> data;
+	
 	public ArithmeticMean() {
 		// TODO Auto-generated constructor stub
+		data= new ArrayList<HistData>();
 	}
 	public ArrayList<HistData> calc(ArrayList<HistData> data) {
 		ArrayList<HistData> erg = new ArrayList<HistData>(); 
@@ -22,7 +26,7 @@ public class ArithmeticMean implements IMetric{
 			}
 			erg.add(new HistData(set.pk, set.date, nc, nc, nc, nc, set.volume));
 		}
-		
+		this.data=erg;
 		return erg;
 	}
 	public ArithmeticMean getInstance(){
@@ -31,6 +35,9 @@ public class ArithmeticMean implements IMetric{
 	@Override
 	public String getName() {
 		return this.getClass().getSimpleName();
+	}
+	public ArrayList<HistData> getData(){
+		return data;
 	}
 
 }

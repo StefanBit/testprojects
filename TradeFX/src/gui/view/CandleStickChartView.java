@@ -53,12 +53,8 @@ public class CandleStickChartView {
 		
 		
 		for (Map<String, Object> item : model.items) {
-			System.out.println("oooooooooooooooooooooooooooooooooooooooooooooooooooooooooo"+item.toString());
-			System.out.println(symbol.getClass().getSimpleName()+"->"+item.get("Symbol").equals(symbol.getName()));
-			System.out.println("oo"+item.get("Symbol")+"?"+symbol.getName());
 			if (item.get("Symbol").equals(symbol.getName())){
 				for (IMetric metric : model.aMetrics) {
-					System.out.println("pülplülüü"+item.get(metric.getClass().getSimpleName()));
 					metricLoader=( MetricLoader ) item.get(metric.getClass().getSimpleName());
 					iml3=metricLoader.metric.getInstance();
 					Random r=new Random();
@@ -67,12 +63,6 @@ public class CandleStickChartView {
 				}
 			}
 		}
-//		IMetric iml=new FloatingMean(50);
-//		IMetric iml2= new ArithmeticMean();
-//		lineChart.paintingColor=Paint.valueOf("yellow");
-//		setAdditonalDataSeries(data, iml);
-//		lineChart.paintingColor=Paint.valueOf("red");
-//		setAdditonalDataSeries(data, iml2);
 		lineChart.setTitle(symbol.getName());
 	}
 
@@ -80,7 +70,6 @@ public class CandleStickChartView {
 	public XYChart.Series setDataSeries(ArrayList<HistData> data) {
 		XYChart.Series series = new XYChart.Series();
 		XYChart.Data dat;
-		//series.setName(String.valueOf(data.get(0).getPk()));
 		series.setName("Chart");
 		for (int i = 0; i < dataSetsToShow; i++) {
 			HistData day = data.get(i);
@@ -104,9 +93,11 @@ public class CandleStickChartView {
 		additionalSeries.setName(fm.getClass().getSimpleName());
 				
 		data=fm.calc(data);
+		//data=fm.getData();
+		dataSetsToShow=data.size();
 		for (int i = 0; i < dataSetsToShow; i++) {
 			HistData day = data.get(i);
-			final CandleStickExtraValues extraValues = null; //new CandleStickExtraValues(day.getClose() - 10, day.getHight() - 10,day.getLow() - 10, (day.getHight() + day.getLow()) / 2 - 10);
+			final CandleStickExtraValues extraValues = null;
 			additionalSeries.getData().add(new XYChart.Data<String, Number>((String) day.getDate().toString(),(double) day.getOpen(),null));
 		}
 		ObservableList<XYChart.Series<String, Number>> lineChartData = lineChart.getData();

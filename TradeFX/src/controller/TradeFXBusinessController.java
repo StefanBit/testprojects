@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import controller.TradeFXApplicationController.MetricLoaderWorkerListener;
 import database.DAOHsqlImpl;
 import gui.stage.ChartStage;
 import javafx.concurrent.Task;
@@ -16,33 +17,30 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ProgressIndicator;
 import loader.HistStockDataLoaderTask;
 import loader.HistStockDataLoaderWorker;
-import loader.MetricLoaderWorker;
+import loader.MetricMapLoaderWorker;
 import loader.SymbolLoaderTask;
 import model.*;
 import model.metrics.ArithmeticMean;
 import model.metrics.FloatingMean;
 import model.metrics.FloatingMean2;
+import model.metrics.IMetric;
 import model.metrics.ProMean;
 
 public class TradeFXBusinessController {
 
 	public static TradeFXBusinessController tfxc = null;
 	static Boolean DEBUG = true;
-	static Boolean USE_SYNCRONIZE = true;
 	public SymbolLoaderTask symbolsLoaderTask;
 	public HistStockDataLoaderWorker histDataLoaderWorker;
-	public MetricLoaderWorker metricLoaderWorker;
+	public MetricMapLoaderWorker metricLoaderWorker;
 	ArrayList<Thread> threads;
 	TradeFXModel model;
 
-	public TradeFXBusinessController() {
+	private TradeFXBusinessController() {
 		model = new TradeFXModel();
-		
-		//model.aMetrics.add(new FloatingMean(100));
-		//model.aMetrics.add(new ArithmeticMean());
 	}
 
-	static public TradeFXBusinessController getInstance() {
+	static synchronized public TradeFXBusinessController getInstance() {
 		if (tfxc == null) {
 			tfxc = new TradeFXBusinessController();
 		}
@@ -50,6 +48,7 @@ public class TradeFXBusinessController {
 	}
 
 	public void init() {
+		registerMetricClasses( new FloatingMean(6), new ArithmeticMean(),new FloatingMean2(100));
 		loadSymbols();
 	}
 
@@ -57,30 +56,32 @@ public class TradeFXBusinessController {
 		return this.model;
 	}
 
+	public void registerMetricClasses(IMetric... aMetricClass) {
+		for (IMetric iMetric : aMetricClass) {
+			model.aMetrics.add(iMetric);
+		}
+	}
+
 	public void loadSymbols() {
-		if (DEBUG) System.out.println("Loading Symbols");
 		symbolsLoaderTask = new SymbolLoaderTask();
-		Thread thread = new Thread(symbolsLoaderTask);
-		thread.start();
+		startThread(symbolsLoaderTask);
 	}
 
 	public void loadHistData() {
-		if (DEBUG) System.out.println("Loading HistData");
-		Thread thread;
 		histDataLoaderWorker= new HistStockDataLoaderWorker();
-		thread = new Thread(histDataLoaderWorker);
-		thread.start();
+		startThread(histDataLoaderWorker);
 	}
 	
-	public void loadSymbolMetrics(){
-		//model.symbolMetricLoader
-		//model.symbolMetricLoader.build();
-		metricLoaderWorker=new MetricLoaderWorker();
-		metricLoaderWorker.registerMetricClasses( new FloatingMean(6), new ArithmeticMean(),new FloatingMean2(100));
+	public void loadSymbolMetrics(MetricLoaderWorkerListener metricLoaderWorkerListener){
+		metricLoaderWorker=new MetricMapLoaderWorker();
+		metricLoaderWorker.setOnSucceeded(metricLoaderWorkerListener);
+		startThread(metricLoaderWorker);
+	}
+	
+	private void startThread(Task task){
+		if (DEBUG) System.out.println(task.getClass().getSimpleName()+ " started.");
 		Thread thread;
-		thread = new Thread(metricLoaderWorker);
+		thread = new Thread(task);
 		thread.start();
 	}
-
-
 }

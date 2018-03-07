@@ -22,7 +22,6 @@ public class TradeFXModel {
 	public static Boolean histDataLoaded = false;
 	public ArrayList<IMetric> aMetrics;
 	public static Map<Symbol, ArrayList<MetricLoaderTask>> mSymbolMetricsTask;
-//	public SymbolMetricLoader symbolMetricLoader;
 	public ObservableList<Map<String, Object>> items;
 	
 	public TradeFXModel() {
@@ -32,7 +31,6 @@ public class TradeFXModel {
 		tasks = new HashMap<Symbol, HistStockDataLoaderTask>();
 		trades = new ArrayList<Transaction>();
 		aMetrics = new ArrayList<IMetric>();
-	//	symbolMetricLoader = new SymbolMetricLoader();
 		items=FXCollections.<Map<String,Object>>observableArrayList();
 		mSymbolMetric= new HashMap<Symbol,Map<Object,IMetric>>();
 	}

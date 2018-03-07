@@ -16,7 +16,7 @@ import model.Symbol;
 import model.TradeFXModel;
 import model.metrics.IMetric;
 
-public class MetricLoaderWorker extends Task implements InvalidationListener {
+public class MetricMapLoaderWorker extends Task implements InvalidationListener {
 	TradeFXModel model;
 	private ArrayList<IMetric> aMetric;
 	ArrayList<Symbol> StockSymbols;
@@ -24,55 +24,55 @@ public class MetricLoaderWorker extends Task implements InvalidationListener {
 	IMetric[] metrics;
 	private ObservableList<Map<String, Object>> items;
 	int metricLoaderCount;
+	int elementsTODO;
 	
-	public MetricLoaderWorker() {
+	public MetricMapLoaderWorker() {
 		model = TradeFXBusinessController.getInstance().getModel();
 		StockSymbols = model.getStockSymbols();
+		aMetric = model.aMetrics;	
 		items = FXCollections.<Map<String,Object>>observableArrayList() ;
-		aMetric = model.aMetrics;
-		
-	}
+		metricLoaderCount=0;
+		}
 
 	@Override
 	protected Object call() throws Exception {
-		Thread currentThread = null;
-		this.updateMessage("Loading MetricLoader start for "+ StockSymbols.size()*aMetric.size());
-		// Fill with MetricLoader's 
-		StockSymbols = model.getStockSymbols();
-		
 		MetricLoader metricLoader;
-		System.out.println("start");
+		elementsTODO=StockSymbols.size()*aMetric.size();
+		this.updateMessage("Loading MetricLoader start for "+ elementsTODO);
+		// Fill with MetricLoader's 
+
 		for (Symbol symbol : StockSymbols) {
 			mCell=new HashMap<String,Object>(); 
 			mCell.put(symbol.getClass().getSimpleName(), symbol.getName().toString());
-			System.out.println(".");
 			for (IMetric metric : aMetric) {
-				System.out.println("--");
 				metricLoader=new MetricLoader(symbol, metric.getInstance());
+				metricLoader.ready.addListener(this);
 				metricLoader.start();
 				mCell.put(metric.getClass().getSimpleName(), metricLoader);
-				metricLoader.ready.addListener(this);
 			}
 			items.add(mCell);
 		}
 		model.items=items;
-		updateProgress(metricLoaderCount, StockSymbols.size()*aMetric.size());
-		this.updateMessage("Loading MetricLoader finished");
+//		while (metricLoaderCount!=(StockSymbols.size()*aMetric.size())){
+//			System.out.print("kkklklklk:"+metricLoaderCount+"/"+StockSymbols.size()*aMetric.size());
+//		}
+		//System.out.print("kkklklklk:"+metricLoaderCount+"/"+StockSymbols.size()*aMetric.size());
 		return null;
-	}
-	
-	public void registerMetricClasses(IMetric... aMetricClass) {
-		metrics = aMetricClass;
-		for (IMetric iMetric : aMetricClass) {
-			model.aMetrics.add(iMetric);
-		}
-		
 	}
 
 	@Override
 	public void invalidated(Observable arg0) {
 		if (((BooleanProperty) arg0).getValue().booleanValue()) metricLoaderCount++;
-		this.updateMessage("Loading MetricLoader:"+metricLoaderCount+"/"+StockSymbols.size()*aMetric.size());
+		this.updateMessage("Loading MetricLoader finished");
+		updateProgress(metricLoaderCount, elementsTODO);
+		this.updateMessage("Loading MetricLoader:"+metricLoaderCount+"/"+StockSymbols.size()*aMetric.size()+" finished");
+		System.out.println("Loading MetricLoader:"+metricLoaderCount+"/"+StockSymbols.size()*aMetric.size()+" finished");
 	}
-
+@Override
+protected void succeeded() {
+	// TODO Auto-generated method stub
+	super.succeeded();
+	
+	System.out.println("Fertig "+this.progressProperty());
+}
 }

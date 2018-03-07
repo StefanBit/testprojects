@@ -21,32 +21,30 @@ public class MetricLoader extends Region implements EventHandler {
 	Thread currentThread;
 	BooleanPropertyBase ready;
 	Symbol symbol;
-	
+
 	public MetricLoader(Symbol symbol, IMetric iMetric) {
 		ready = new SimpleBooleanProperty(false);
-		this.symbol=symbol;
-		metric=iMetric;
-	}
-	
-	public void start(){
-			currentProgress = new ProgressIndicator();	
-		this.getChildren().add(currentProgress);
-		metricLoaderTask=new MetricLoaderTask(symbol,metric);
+		this.symbol = symbol;
+		metric = iMetric;
+		currentProgress = new ProgressIndicator();
+		metricLoaderTask = new MetricLoaderTask(symbol, metric);
 		currentProgress.progressProperty().bind(metricLoaderTask.progressProperty());
 		currentThread = new Thread(metricLoaderTask);
-		//Platform.runLater(currentThread);
-		currentThread.start();
+		this.getChildren().add(currentProgress);
+	}
 
+	public void start() {
+		// this.getChildren().add(currentProgress);
+		currentThread.start();
 		metricLoaderTask.setOnSucceeded(this);
 	}
 
 	@Override
 	public void handle(Event arg0) {
+		this.metric = metricLoaderTask.iMetric;
+		ready.set(true);
 		this.getChildren().remove(0);
 		this.getChildren().add(new Label(Double.toString((double) metricLoaderTask.getValue())));
-		this.metric=metricLoaderTask.iMetric;
-		ready.set(true);
-		
+		System.out.println("MetricLoader finished "+ symbol.getName()+":"+metric.getClass().getSimpleName());
 	}
-
 }

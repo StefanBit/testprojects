@@ -9,6 +9,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -18,9 +19,11 @@ import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.Pane;
+import model.HistData;
 import model.Symbol;
+import model.TradeFXModel;
 
-public class TradeFXApplicationController implements EventHandler, ChangeListener {
+public class TradeFXApplicationController {
 	
 	@FXML
 	TitledPane BarChartPane;
@@ -39,10 +42,11 @@ public class TradeFXApplicationController implements EventHandler, ChangeListene
 	@FXML
 	TitledPane AvaiableMetricsPane;
 	
-	MyTablePane symbolTablePane;
-	MyTablePane dataTablePane;
-	TradeFXBusinessController tfxc;
-	BarChartView v;
+	MyTablePane<Symbol> symbolTablePane;
+	MyTablePane<HistData> dataTablePane;
+	TradeFXBusinessController tradeFXBuissnesController;
+	TradeFXModel model;
+	BarChartView barchartview;
 	CandleStickChartView chartview;
 	ExpandableTableView metricTableView;
 	public TradeFXApplicationController() {
@@ -52,72 +56,89 @@ public class TradeFXApplicationController implements EventHandler, ChangeListene
 	@FXML
 	public void initialize() {
 		 System.out.println("Initialize");
-		 tfxc = new TradeFXBusinessController();
-		 tfxc = TradeFXBusinessController.getInstance();
-		 tfxc.init();
-		 OverallProgress.progressProperty().bind(tfxc.symbolsLoaderTask.progressProperty());
-		 Status.textProperty().bind(tfxc.symbolsLoaderTask.messageProperty());
-		 tfxc.symbolsLoaderTask.setOnSucceeded(this);
+		 tradeFXBuissnesController = TradeFXBusinessController.getInstance();
+		 tradeFXBuissnesController.init();		 
 		 chartview = new CandleStickChartView();
 		 symbolTablePane = new MyTablePane(model.Symbol.class);
 		 dataTablePane = new MyTablePane(model.HistData.class);
-		 SymbolPane.setContent(symbolTablePane);
-		 ChartPane.setContent(chartview.lineChart);
-		 DataPane.setContent(dataTablePane);
-		// MetricListViev.setItems(FXCollections.observableList(tfxc.getModel().aMetrics));
 		 metricTableView= new ExpandableTableView();
+		 barchartview=new BarChartView();
+		 model=tradeFXBuissnesController.getModel();
+		 SymbolPane.setContent(symbolTablePane);
+		 DataPane.setContent(dataTablePane);
+		 BarChartPane.setContent(barchartview);
 		 AvaiableMetricsPane.setContent(metricTableView);
-		 v=new BarChartView();
-		 BarChartPane.setContent(v);
-		 symbolTablePane.datatable.getSelectionModel().selectedItemProperty().addListener(this);
-		
+		 
+		 bindProgressfrom(tradeFXBuissnesController.symbolsLoaderTask);
+		 tradeFXBuissnesController.symbolsLoaderTask.setOnSucceeded(new SymbolLoaderTaskListener() );
 		 //ConsolePane.getChildren().add(new Console());
 	}
-
-	@Override
-	public void handle(Event arg0) {
-		System.out.println("Event:"+arg0);
-		System.out.println("Finished Task--- "+arg0.getSource().getClass().toString());
-		
-		if (arg0.getSource().getClass().toString().equals("class loader.SymbolLoaderTask")){
-			System.out.println("Finished Task********** "+arg0.getSource().getClass().toString());
-			symbolTablePane.setData(tfxc.getModel().getStockSymbols());
-			OverallProgress.progressProperty().unbind();
-			tfxc.loadHistData();
-			OverallProgress.progressProperty().bind(tfxc.histDataLoaderWorker.progressProperty());
-			Status.textProperty().bind(tfxc.histDataLoaderWorker.messageProperty());
-			tfxc.histDataLoaderWorker.setOnSucceeded(this);
-			
-		}
-		if (arg0.getSource().getClass().toString().equals("class loader.HistStockDataLoaderWorker")){
-			v.load();
-			System.out.println("Finished Task HistStockDataLoaderWorker ");
-			OverallProgress.progressProperty().unbind();
-			// Load Metrics
-			System.out.println("load metrics");
-			tfxc.loadSymbolMetrics();
-			OverallProgress.progressProperty().bind(tfxc.metricLoaderWorker.progressProperty());
-			Status.textProperty().bind(tfxc.metricLoaderWorker.messageProperty());
-			tfxc.metricLoaderWorker.setOnSucceeded(this);
-			//metricTableView.addColumn();
-		}
-		if (arg0.getSource().getClass().toString().equals("class loader.MetricLoaderWorker")){
-			System.out.println("Finished Task MetricLoaderWorker");
-			metricTableView.addColumn();
-			Symbol s= tfxc.getModel().StockSymbols.get(0);
-			dataTablePane.setData(tfxc.getModel().getHistDataFor(s));
-			chartview.setDataForSymbol(s);
-		}
+	
+	private void addChartPane(){
+		ChartPane.setContent(chartview.lineChart);
+		symbolTablePane.datatable.getSelectionModel().selectedItemProperty().addListener(new SymbolPaneChangedListener());
+	}
+	
+	private void bindProgressfrom(Task o) {
+		Status.textProperty().unbind();
+		OverallProgress.progressProperty().unbind();
+		Status.textProperty().bind(((Task) o).messageProperty());
+		OverallProgress.progressProperty().bind(((Task) o).progressProperty());
 	}
 
-	@Override
-	public void changed(ObservableValue arg0, Object arg1, Object arg2) {
-		System.out.println("Datatablechanged "+arg0+" ö"+arg1+" ll "+arg2);
-		chartview = new CandleStickChartView();
-		chartview.setDataForSymbol((Symbol) arg2);
-		dataTablePane=new MyTablePane(model.HistData.class);
-		dataTablePane.setData(tfxc.getModel().getHistDataFor((Symbol) arg2));
-		DataPane.setContent(dataTablePane);
-		ChartPane.setContent(chartview.lineChart);
+		
+	class SymbolPaneChangedListener implements ChangeListener{
+
+		@Override
+		public void changed(ObservableValue arg0, Object arg1, Object arg2) {
+			System.out.println("Datatablechanged "+arg0+" ö"+arg1+" ll "+arg2);
+			chartview = new CandleStickChartView();
+			chartview.setDataForSymbol((Symbol) arg2);
+			dataTablePane=new MyTablePane(model.HistData.class);
+			dataTablePane.setData(model.getHistDataFor((Symbol) arg2));
+			DataPane.setContent(dataTablePane);
+			ChartPane.setContent(chartview.lineChart);
+		}
+		
+	}
+
+	class SymbolLoaderTaskListener implements EventHandler{
+		@Override
+		public void handle(Event event) {
+			symbolTablePane.setData(model.getStockSymbols());
+			tradeFXBuissnesController.loadHistData();
+			bindProgressfrom(tradeFXBuissnesController.histDataLoaderWorker); 
+			tradeFXBuissnesController.histDataLoaderWorker.setOnSucceeded(new HistStockDataLoaderWorkerListener());
+		}
+	}
+	class HistStockDataLoaderWorkerListener implements EventHandler{
+		@Override
+		public void handle(Event event) {
+			barchartview.load();
+			System.out.println("Finished Task HistStockDataLoaderWorker ");
+			tradeFXBuissnesController.loadSymbolMetrics(new MetricLoaderWorkerListener());
+			//tradeFXBuissnesController.metricLoaderWorker.setOnSucceeded(new MetricLoaderWorkerListener());
+			bindProgressfrom(tradeFXBuissnesController.metricLoaderWorker);
+		}
+	}
+	class MetricLoaderWorkerListener implements EventHandler{
+		@Override
+		public void handle(Event event) {
+			System.out.println("Finished Task MetricLoaderWorker "+tradeFXBuissnesController.metricLoaderWorker.getProgress());
+			//Status.textProperty().unbind();
+			metricTableView.addColumn();
+			Symbol s= model.StockSymbols.get(0);
+			dataTablePane.setData(model.getHistDataFor(s));
+			addChartPane();
+			chartview.setDataForSymbol(s);
+			//ChartPane.setContent(chartview.lineChart);
+			//symbolTablePane.datatable.getSelectionModel().selectedItemProperty().addListener(new SymbolPaneChangedListener());
+		}
 	}
 }
+
+
+
+
+
+
