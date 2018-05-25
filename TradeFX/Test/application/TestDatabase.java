@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 
-import database.DAOHsqlImpl;
-import database.HSQLQuery;
-import gui.stage.ConsoleStage;
+import gui.Console.ConsoleStage;
 import model.HistData;
 import model.Symbol;
+import util.database.DAOHsqlImpl;
+import util.database.HSQLQuery;
 
 public class TestDatabase {
 

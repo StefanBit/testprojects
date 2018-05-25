@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import controller.TradeFXBusinessController;
-import database.DAOHsqlImpl;
-import gui.stage.BarChartStage;
+import gui.BarChart.BarChartStage;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import model.HistData;
 import model.MyArrayList;
 import model.Symbol;
 import model.TradeFXModel;
+import util.database.DAOHsqlImpl;
 
 public class TestBarChart extends Application {
 

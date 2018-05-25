@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-import database.DAOHsqlImpl;
-import loader.HistStockDataLoader;
 import model.HistData;
 import model.Symbol;
+import util.database.DAOHsqlImpl;
+import util.loader.HistoricalData.HistStockDataLoader;
 
 public class TestHistLoader {
 public TestHistLoader() {

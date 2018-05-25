@@ -1,7 +1,9 @@
 package model.metrics;
 
 import java.util.ArrayList;
+import java.util.Random;
 
+import javafx.scene.paint.Color;
 import model.HistData;
 
 public class ArithmeticMean implements IMetric{
@@ -37,7 +39,11 @@ public class ArithmeticMean implements IMetric{
 		return this.getClass().getSimpleName();
 	}
 	public ArrayList<HistData> getData(){
-		return data;
+		return this.data;
 	}
-
+	@Override
+	public Color getColor() {
+		return Color.DARKSLATEBLUE;
+	}
+	
 }

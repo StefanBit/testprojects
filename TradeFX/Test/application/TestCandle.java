@@ -4,18 +4,18 @@ import java.util.Calendar;
 import java.util.Date;
 
 import controller.TradeFXBusinessController;
-import database.DAOHsqlImpl;
-import gui.stage.BarChartStage;
-import gui.stage.CandleStickChartStage;
-import gui.stage.MyTableStage;
+import gui.BarChart.BarChartStage;
+import gui.CandleChart.CandleStickChartStage;
+import gui.Table.MyTableStage;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import loader.HistStockDataLoader;
 import model.HistData;
 import model.MyArrayList;
 import model.Symbol;
+import util.database.DAOHsqlImpl;
+import util.loader.HistoricalData.HistStockDataLoader;
 
 
 public class TestCandle extends Application {

@@ -15,14 +15,24 @@
    <center>
       <TabPane tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
         <tabs>
-            <Tab text="Metrics">
+          <Tab text="Stocks">
                <content>
                   <VBox prefHeight="200.0" prefWidth="100.0">
                      <children>
-                        <Pane prefHeight="50.0" prefWidth="200.0" />
-                        <HBox>
+                        <Pane prefHeight="50.0" prefWidth="200.0">
+                           <children>
+                              <Button fx:id="ReloadButton" maxHeight="1.7976931348623157E308" minHeight="-Infinity" mnemonicParsing="false" text="Reload" />
+                           </children>
+                        </Pane>
+                        <HBox prefWidth="200.0">
+                           <children>
+                              <TitledPane fx:id="SymbolPane" animated="false" prefHeight="500.0" prefWidth="500.0" text="Symbol List1" />
+                              <TitledPane fx:id="ChartPane" animated="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="800.0" prefWidth="800.0" text="Chart" HBox.hgrow="ALWAYS" />
+                           </children></HBox>
+                        <HBox prefWidth="200.0" VBox.vgrow="ALWAYS">
                            <children>
                               <TitledPane fx:id="AvaiableMetricsPane" animated="false" text="Avaiable Metrics" HBox.hgrow="ALWAYS" />
+                              <TitledPane fx:id="DataPane" animated="false" expanded="false" maxHeight="1.7976931348623157E308" prefHeight="25.0" prefWidth="382.0" text="Data" />
                            </children>
                         </HBox>
                      </children>
@@ -47,25 +57,12 @@
                      </children>
                   </VBox>
                </content></Tab>
-          <Tab text="Stocks">
+            <Tab text="Metrics">
                <content>
                   <VBox prefHeight="200.0" prefWidth="100.0">
                      <children>
-                        <Pane prefHeight="50.0" prefWidth="200.0">
-                           <children>
-                              <Button maxHeight="1.7976931348623157E308" minHeight="-Infinity" mnemonicParsing="false" text="Button" />
-                           </children>
-                        </Pane>
-                        <HBox prefWidth="200.0">
-                           <children>
-                              <TitledPane fx:id="SymbolPane" animated="false" prefHeight="500.0" prefWidth="500.0" text="Symbol List1" />
-                              <TitledPane fx:id="ChartPane" animated="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="800.0" prefWidth="800.0" text="Chart" HBox.hgrow="ALWAYS" />
-                           </children></HBox>
-                        <HBox prefWidth="200.0" VBox.vgrow="ALWAYS">
-                           <children>
-                              <TitledPane fx:id="DataPane" animated="false" text="Data" HBox.hgrow="ALWAYS" />
-                           </children>
-                        </HBox>
+                        <Pane prefHeight="50.0" prefWidth="200.0" />
+                        <HBox />
                      </children>
                   </VBox>
                </content>
@@ -81,4 +78,7 @@
          </children>
       </HBox>
    </bottom>
+   <right>
+      <TitledPane fx:id="DetailPane" alignment="CENTER" animated="false" maxHeight="1.7976931348623157E308" text="Detail" BorderPane.alignment="TOP_LEFT" />
+   </right>
 </BorderPane>

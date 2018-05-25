@@ -72,6 +72,15 @@ public class HistData {
 	
 	@Override
 	public String toString() {
-		return super.toString()+":"+pk+"["+getDate()+","+getOpen()+","+getHight()+","+getLow()+","+getClose()+","+getVolume()+"]";
+		return super.toString()
+				+":\n"+pk+"\n"
+				+"[\n"
+				+"Date: "+getDate()+",\n"
+				+"open"+getOpen()+",\n"
+				+"hight: "+getHight()+",\n"
+				+ "low: "+getLow()+",\n"
+				+"close: "+getClose()+",\n"
+				+"volume: "+getVolume()+"\n"
+				+"]\n";
 	}
 }

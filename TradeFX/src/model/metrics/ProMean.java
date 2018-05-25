@@ -26,6 +26,6 @@ public class ProMean {
 		return erg;
 	}
 	public ArrayList<HistData> getData(){
-		return data;
+		return this.data;
 	}
 }

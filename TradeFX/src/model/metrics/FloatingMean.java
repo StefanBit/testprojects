@@ -1,7 +1,9 @@
 package model.metrics;
 
 import java.util.ArrayList;
+import java.util.Random;
 
+import javafx.scene.paint.Color;
 import model.HistData;
 
 public class FloatingMean implements IMetric{
@@ -59,9 +61,16 @@ public class FloatingMean implements IMetric{
 	@Override
 	public String getName() {
 		
-		return "fm";
+		return "floating mean";
 	}
 	public ArrayList<HistData> getData(){
-		return data;
+		return this.data;
 	}
+	
+	@Override
+	public Color getColor() {
+		Random r = new Random();
+		return Color.DARKSEAGREEN;
+	}
+
 }
