@@ -26,7 +26,7 @@ public class HistStockDataLoaderTask<T> extends Task{
 	Boolean DEBUG;
 	
 	public Symbol alSymbol;
-	HistStockDataLoader histStockDataLoader;
+	HistoricalDataFromAlphavantage histStockDataLoader;
 	ArrayList<HistData> alHistData;
 	ArrayList<HistData> al2;
 	DAOHsqlImpl<HistData> sHistData;
@@ -36,15 +36,12 @@ public class HistStockDataLoaderTask<T> extends Task{
 	
 	@Override
 	protected ArrayList<HistData> call() throws Exception {
-		
-		
-
 		DEBUG=true;
 		
 		RELOAD=Boolean.valueOf(TradeFXBusinessController.getInstance().myProperties.getProperty("reload").toString());
 		if (DEBUG) System.out.println("Start Task HistLoader");
 		
-		histStockDataLoader = new HistStockDataLoader();
+		histStockDataLoader = new HistoricalDataFromAlphavantage();
 		sHistData = new DAOHsqlImpl(HistData.class);
 		cal = Calendar.getInstance();
 		today = cal.getTime();

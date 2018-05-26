@@ -16,7 +16,7 @@ import model.HistData;
 import model.MyArrayList;
 import model.Symbol;
 import util.database.DAOHsqlImpl;
-import util.loader.HistoricalData.HistStockDataLoader;
+import util.loader.HistoricalData.HistoricalDataFromAlphavantage;
 
 
 public class TestTable extends Application {

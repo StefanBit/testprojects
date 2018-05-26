@@ -24,7 +24,8 @@ import util.loader.Metric.MetricMapLoaderWorker;
 
 public class HistoricalDataFromRandom implements IHistoricalDataLoader {
 
-	//private static final Logger log = Logger.getLogger(HistoricalDataFromRandom.class.getName());
+	// private static final Logger log =
+	// Logger.getLogger(HistoricalDataFromRandom.class.getName());
 
 	ArrayList<HistData> aHistData;
 	HistData histData;
@@ -46,11 +47,17 @@ public class HistoricalDataFromRandom implements IHistoricalDataLoader {
 
 	@Override
 	public ArrayList<HistData> load(Symbol s, LocalDate startDate, LocalDate endDate) {
+		if (!startDate.isAfter(endDate)) {
+			Log.info("Loading Data from " + startDate + " to " + endDate);
+			do {
+				aHistData.add(getHistDataFor(startDate));
+				startDate = startDate.plusDays(1);
+			} while (!startDate.isAfter(endDate));
+			Log.info(aHistData.size() + " Days loaded.");
+		} else {
+			Log.warning("Loading Data fails cause " + startDate + " is after " + endDate);
 
-		do {
-			aHistData.add(getHistDataFor(startDate));
-			startDate = startDate.plusDays(1);
-		} while (startDate.isBefore(endDate));
+		}
 		return aHistData;
 	}
 

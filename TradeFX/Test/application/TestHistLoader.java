@@ -7,13 +7,13 @@ import java.util.Date;
 import model.HistData;
 import model.Symbol;
 import util.database.DAOHsqlImpl;
-import util.loader.HistoricalData.HistStockDataLoader;
+import util.loader.HistoricalData.HistoricalDataFromAlphavantage;
 
 public class TestHistLoader {
 public TestHistLoader() {
 	Symbol alSymbol;
 	alSymbol=new Symbol(1,"NASDAQ:MSFT",new Date());
-	HistStockDataLoader l = new HistStockDataLoader();
+	HistoricalDataFromAlphavantage l = new HistoricalDataFromAlphavantage();
 	Calendar cal = Calendar.getInstance();
 	Date today = cal.getTime();
 	cal.add(Calendar.YEAR, -1); // to get previous year add -1

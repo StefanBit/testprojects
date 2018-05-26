@@ -32,7 +32,7 @@ import model.Symbol;
 import model.TradeFXModel;
 import model.metrics.ArithmeticMean;
 import model.metrics.ProMean;
-import util.loader.HistoricalData.HistStockDataLoader;
+import util.loader.HistoricalData.HistoricalDataFromAlphavantage;
 import util.loader.HistoricalData.HistStockDataLoaderTask;
 
 public class StocksStage<T> extends Stage {
