@@ -34,6 +34,10 @@ public class HistoricalDataFromRandomTest {
 	}
 	
 	
+	
+	// if Datasource doesnt exist -> 
+	// if Datasource doesn't cover full Daterange
+	
 	@Test
 	public void ReturnValueIsNotNull() {
 		assertTrue(histDataLoader.load(s, startDate, endDate) != null);

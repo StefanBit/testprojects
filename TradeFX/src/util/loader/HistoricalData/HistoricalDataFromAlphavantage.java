@@ -9,7 +9,10 @@ import java.net.URLConnection;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -40,6 +43,10 @@ public class HistoricalDataFromAlphavantage implements IHistoricalDataLoader {
 	public ArrayList<HistData> load(Symbol s, Date firstDate, Date lastDate) {
 
 		URL url;
+		LocalDate firstLocalDate,lastLocalDate;
+		firstLocalDate=getLocalDate(firstDate);
+		lastLocalDate=getLocalDate(lastDate);
+		
 		MyProperties.getDebugSettingFor("DbgHistStockDataLoader");
 		alHistData = new ArrayList<HistData>();
 
@@ -95,7 +102,8 @@ public class HistoricalDataFromAlphavantage implements IHistoricalDataLoader {
 			int maxLines = (int) TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
 			maxLines = maxLines - (2 * (maxLines % 7));
 			System.out.println(maxLines - (2 * (maxLines % 7)));
-			Log.info("From:" + firstDate + " to " + lastDate);
+			
+			Log.info("From:" + firstLocalDate + " to " + lastLocalDate);
 
 			// int maxLines= 400;
 			int i = 0;
@@ -118,6 +126,10 @@ public class HistoricalDataFromAlphavantage implements IHistoricalDataLoader {
 
 			}
 			br.close();
+			
+
+			
+			
 			Log.info("Collected " + alHistData.size() + " Days");
 			// if (DEBUG) System.out.println("Close: " + request);
 		} catch (MalformedURLException e) {
@@ -136,6 +148,13 @@ public class HistoricalDataFromAlphavantage implements IHistoricalDataLoader {
 		Log.info("request took " + (millisStop - millisStart) + "ms");
 
 		return alHistData;
+	}
+	
+	
+	LocalDate getLocalDate(Date date) {
+		Instant instant = date.toInstant();
+		ZonedDateTime zdt = instant.atZone(ZoneId.systemDefault());
+		return zdt.toLocalDate();
 	}
 
 	double convertValue(String s) {
