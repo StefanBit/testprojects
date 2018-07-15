@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 
 import controller.TradeFXBusinessController;
 import util.Log;
-import util.loader.HistoricalData.HistoricalDataFromRandom;
+import util.loader.HistoricalDataLoader.HistoricalDataFromRandom;
 
 public class MyProperties extends Properties {
 //	private static final Logger log = Logger.getLogger(MyProperties.class.getName());

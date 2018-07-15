@@ -30,8 +30,8 @@ import model.metrics.TotalMean;
 import util.Log;
 import util.database.DAOHsqlImpl;
 import util.loader.SymbolLoaderTask;
-import util.loader.HistoricalData.HistStockDataLoaderTask;
-import util.loader.HistoricalData.HistStockDataLoaderWorker;
+import util.loader.HistoricalDataLoader.HistStockDataLoaderTask;
+import util.loader.HistoricalDataLoader.HistStockDataLoaderWorker;
 import util.loader.Metric.MetricMapLoaderWorker;
 
 public class TradeFXBusinessController {
@@ -62,7 +62,8 @@ public class TradeFXBusinessController {
 	}
 
 	public void init() {
-		registerMetricClasses( new FloatingMean(6), new ArithmeticMean(),new FloatingMean2(100),new TotalMean(),new LowerConvexHull());
+		registerMetricClasses( new FloatingMean(6), new ArithmeticMean(),new FloatingMean2(100),new TotalMean());
+		//,new LowerConvexHull()
 		loadSymbols();
 	}
 

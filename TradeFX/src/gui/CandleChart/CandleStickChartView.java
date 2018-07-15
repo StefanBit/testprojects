@@ -11,6 +11,10 @@ import javafx.collections.ObservableList;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
+import javafx.scene.chart.XYChart.Series;
+import javafx.scene.control.Label;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import model.HistData;
@@ -21,17 +25,20 @@ import model.metrics.FloatingMean;
 import model.metrics.IMetric;
 import util.loader.Metric.MetricLoader;
 
-public class CandleStickChartView {
+public class CandleStickChartView extends BorderPane {
 
 	public CandleStickChart lineChart;
 	private int dataSetsToShow;
-	int offsetToShow=400;
-	int offsetFromShow=100;
+	int offsetToShow=0;
+	int offsetFromShow=0;
 	TradeFXModel model;
 	Symbol symbol;
 	Boolean DEBUG=true;
-
+	BorderPane bp;
+	Label dataLabel;
+	
 	public CandleStickChartView() {
+		bp=new BorderPane();
 		final CategoryAxis xAxis = new CategoryAxis();
 		final NumberAxis yAxis = new NumberAxis();
 		xAxis.setLabel("Date");
@@ -39,37 +46,34 @@ public class CandleStickChartView {
 		yAxis.setForceZeroInRange(false);
 		lineChart = new CandleStickChart(xAxis, yAxis);
 		model = TradeFXBusinessController.getInstance().getModel();
+		dataLabel= new Label();
+		this.setCenter(lineChart);
+		this.setBottom(dataLabel);
+		dataLabel.setText("new");
+
 	}
 
-//	public void setData(ArrayList<HistData> data) {
-//		setDataSeries(data);
-//		dataSetsToShow = data.size();
-//	}
 
 	public void setDataForSymbol(Symbol symbol) {
 		ArrayList<HistData> data;
+		MetricLoader metricLoader;
+		IMetric iml3;
 		this.symbol=symbol;
 		data = TradeFXModel.getHistDataFor(symbol);
 		dataSetsToShow = data.size();
 		setDataSeries(data);
-		IMetric iml3;
-		MetricLoader metricLoader;
-		if (DEBUG) System.out.println("Model.items :" + model.MetricLoaderMaps);
-
 		// Legede
-		for (Map<String, Object> item : model.MetricLoaderMaps) {
-			if (item.get("Symbol").equals(symbol.getName())) {
+		for (Map<String, Object> mMetricLoader : model.MetricLoaderMaps) {
+			if (mMetricLoader.get("Symbol").equals(symbol.getName())) {
 				for (IMetric metric : model.aMetrics) {
-					metricLoader = (MetricLoader) item.get(metric.getClass().getSimpleName());
-//					iml3 = metricLoader.metric.getInstance();
+					metricLoader = (MetricLoader) mMetricLoader.get(metric.getClass().getSimpleName());
 					iml3 = metricLoader.metric;
-					//Random r = new Random();
 					lineChart.paintingColor = iml3.getColor();
 					setAdditonalDataSeries(data, iml3);
 				}
 			}
 		}
-
+		dataLabel.setText("From:"+data.get(offsetFromShow).getDate()+" To:"+data.get(offsetToShow).getDate());
 		lineChart.setTitle(symbol.getName());
 	}
 	
@@ -87,49 +91,47 @@ public class CandleStickChartView {
 	// Candlestick Line
 	public XYChart.Series setDataSeries(ArrayList<HistData> data) {
 		XYChart.Series series = new XYChart.Series();
-		XYChart.Data dat;
 		series.setName("Chart");
+		XYChart.Data dat;
+		dataSetsToShow = data.size();
 		
-		if (DEBUG) System.out.println("Days to Show from "+this.symbol.getFromDate()+" to "+data.get(data.size()-1).getDate()+ " diff: "+getPositionOfDate(data,this.symbol.getFromDate()));
-		offsetFromShow=getPositionOfDate(data,this.symbol.getFromDate());
 		for (int i = offsetFromShow; i < dataSetsToShow; i++) {
 			HistData day = data.get(i);
-			final CandleStickExtraValues extras = new CandleStickExtraValues(day.getClose(), day.getHight(),
+			final CandleStickExtraValues extraValues = new CandleStickExtraValues(day.getClose(), day.getHight(),
 					day.getLow(), (day.getHight() + day.getLow()) / 2);
-			series.getData().add(new XYChart.Data<String, Number>((String) day.getDate().toString(),
-					(double) day.getOpen(), extras));
+			addDayToDataSerie(data.get(i),series,extraValues);
 		}
-		ObservableList<XYChart.Series<String, Number>> data1 = lineChart.getData();
-		if (data1 == null) {
-			data1 = FXCollections.observableArrayList(series);
-			lineChart.setData(data1);
-		} else {
-			lineChart.getData().add(series);
-		}
+		addSeries(series);
 		return series;
 	}
 
 	// Some other Line
 	public void setAdditonalDataSeries(ArrayList<HistData> data, IMetric metric) {
-		XYChart.Series additionalSeries = new XYChart.Series();
-		additionalSeries.setName(metric.getClass().getSimpleName());
-
-		//data = metric.calc(data);
+		XYChart.Series series = new XYChart.Series();
+		series.setName(metric.getClass().getSimpleName());
 		data = metric.getData();
-		
 		dataSetsToShow = data.size();
+		
 		for (int i = offsetFromShow; i < dataSetsToShow; i++) {
 			HistData day = data.get(i);
 			final CandleStickExtraValues extraValues = null;
-			additionalSeries.getData().add(
-					new XYChart.Data<String, Number>((String) day.getDate().toString(), (double) day.getOpen(), null));
+			addDayToDataSerie(data.get(i),series,extraValues);
 		}
+		addSeries(series);
+	}
+	
+	void addDayToDataSerie(HistData day,XYChart.Series series, CandleStickExtraValues extras){
+		series.getData().add(new XYChart.Data<String, Number>((String) day.getDate().toString(),(double) day.getOpen(), extras));
+	}
+	
+	
+	private void addSeries(Series Series) {
 		ObservableList<XYChart.Series<String, Number>> lineChartData = lineChart.getData();
 		if (lineChartData == null) {
-			lineChartData = FXCollections.observableArrayList(additionalSeries);
+			lineChartData = FXCollections.observableArrayList(Series);
 			lineChart.setData(lineChartData);
 		} else {
-			lineChart.getData().add(additionalSeries);
+			lineChart.getData().add(Series);
 		}
 	}
 

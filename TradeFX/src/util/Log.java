@@ -2,7 +2,7 @@ package util;
 
 import java.util.logging.Logger;
 
-import util.loader.HistoricalData.HistoricalDataFromRandom;
+import util.loader.HistoricalDataLoader.HistoricalDataFromRandom;
 
 public class Log {
 	

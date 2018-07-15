@@ -1,5 +1,6 @@
 package model;
 
+import java.time.ZoneId;
 import java.util.Date;
 
 public class HistData {
@@ -82,5 +83,15 @@ public class HistData {
 				+"close: "+getClose()+",\n"
 				+"volume: "+getVolume()+"\n"
 				+"]\n";
+	}
+	
+	public HistData clone() {
+		return new HistData(this.getPk(),
+				this.getDate(),
+				this.getOpen(),
+				this.getHight(),
+				this.getLow(),
+				this.getClose(),
+				this.getVolume());
 	}
 }

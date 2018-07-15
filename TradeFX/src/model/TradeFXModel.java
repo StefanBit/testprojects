@@ -9,7 +9,7 @@ import application.MyProperties;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.metrics.IMetric;
-import util.loader.HistoricalData.HistStockDataLoaderTask;
+import util.loader.HistoricalDataLoader.HistStockDataLoaderTask;
 import util.loader.Metric.MetricLoaderTask;
 
 public class TradeFXModel {

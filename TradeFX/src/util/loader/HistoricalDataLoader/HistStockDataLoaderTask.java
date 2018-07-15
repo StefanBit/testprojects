@@ -1,4 +1,4 @@
-package util.loader.HistoricalData;
+package util.loader.HistoricalDataLoader;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -14,9 +14,11 @@ import javafx.concurrent.WorkerStateEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import model.HistData;
+import model.MyArrayList;
 import model.Symbol;
 import model.TradeFXModel;
 import model.metrics.ArithmeticMean;
+import util.Log;
 import util.database.DAOHsqlImpl;
 import util.loader.Metric.MetricMapLoaderWorker;
 
@@ -32,23 +34,29 @@ public class HistStockDataLoaderTask<T> extends Task{
 	DAOHsqlImpl<HistData> sHistData;
 	Calendar cal;
 	Date today;
-	private static final Logger log = Logger.getLogger(MetricMapLoaderWorker.class.getName());
+	
+	public HistStockDataLoaderTask() {
+		Log.info("Create Task HistStockDataLoaderTask");
+		al2= new MyArrayList();
+	}
 	
 	@Override
 	protected ArrayList<HistData> call() throws Exception {
 		DEBUG=true;
-		
-		RELOAD=Boolean.valueOf(TradeFXBusinessController.getInstance().myProperties.getProperty("reload").toString());
-		if (DEBUG) System.out.println("Start Task HistLoader");
+		//RELOAD=Boolean.valueOf(TradeFXBusinessController.getInstance().myProperties.getProperty("reload").toString());
+		RELOAD=true;
+		Log.info("Start Task HistStockDataLoaderTask");
 		
 		histStockDataLoader = new HistoricalDataFromAlphavantage();
+		
 		sHistData = new DAOHsqlImpl(HistData.class);
 		cal = Calendar.getInstance();
 		today = cal.getTime();
 		//cal.add(Calendar.YEAR, -1); // to get previous year add -1
 		cal.setTime(alSymbol.getFromDate());
 		
-		if (DEBUG) System.out.println("Update dbfrom Web? "+RELOAD);
+		Log.info("Update dbfrom Web? "+RELOAD);
+		
 		if (RELOAD) updateDBFromWeb();
 		getFromDB();
 		 
@@ -58,10 +66,18 @@ public class HistStockDataLoaderTask<T> extends Task{
 		return al2;
 	}
 	
+	void loadFromWeb(){
+		Date lastYear;
+		lastYear = cal.getTime();
+		Log.info("Loading"+ alSymbol + "from Web between"+  lastYear+ " and "+ new Date());
+		alHistData = histStockDataLoader.load(alSymbol, lastYear, new Date());
+	}
 	
 	void updateDB(){
 		//update Data
+		Log.info("Clear Database");
 		sHistData.deleteAllWhere(alSymbol);
+		Log.info("Insert "+alHistData.size() +" values in Database") ;
 		sHistData.insertAll(alHistData);
 	}
 	
@@ -70,13 +86,6 @@ public class HistStockDataLoaderTask<T> extends Task{
 		al2 = sHistData.getAllWhere(alSymbol.getPk().toString());
 	}
 	
-	void loadFromWeb(){
-		Date lastYear;
-		lastYear = cal.getTime();
-		if (DEBUG) System.out.println();
-		log.info("Loading"+ alSymbol + "from Web between"+  lastYear+ " and "+ new Date());
-		alHistData = histStockDataLoader.load(alSymbol, lastYear, new Date());
-	}
 	
 	void updateDBFromWeb(){
 		if (DEBUG) System.out.println("UpdateDB from Web");	

@@ -1,4 +1,4 @@
-package util.loader.HistoricalData;
+package util.loader.HistoricalDataLoader;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -23,8 +23,8 @@ public class HistStockDataLoaderWorker extends Task{
 			i++;
 			Symbol currentSymbol = entry.getKey();
 			HistStockDataLoaderTask currenttask = new HistStockDataLoaderTask();
-			TradeFXModel.tasks.put(currentSymbol, currenttask);
 			currenttask.alSymbol = currentSymbol;
+			TradeFXModel.tasks.put(currentSymbol, currenttask);
 			currentThread = new Thread(currenttask);
 			currentThread.start();
 			updateMessage("Loading Hist Data for "+i);

@@ -5,7 +5,6 @@ import java.util.Date;
 
 import controller.TradeFXBusinessController;
 import gui.BarChart.BarChartStage;
-import gui.CandleChart.CandleStickChartStage;
 import gui.Table.MyTableStage;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -15,7 +14,7 @@ import model.HistData;
 import model.MyArrayList;
 import model.Symbol;
 import util.database.DAOHsqlImpl;
-import util.loader.HistoricalData.HistoricalDataFromAlphavantage;
+import util.loader.HistoricalDataLoader.HistoricalDataFromAlphavantage;
 
 
 public class TestCandle extends Application {

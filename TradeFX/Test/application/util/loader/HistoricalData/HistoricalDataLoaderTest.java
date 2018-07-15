@@ -1,4 +1,4 @@
-package util.loader.HistoricalData;
+package application.util.loader.HistoricalData;
 
 import static org.junit.Assert.*;
 
@@ -11,8 +11,10 @@ import java.util.Date;
 import org.junit.Test;
 
 import model.Symbol;
+import util.loader.HistoricalDataLoader.HistoricalDataFromAlphavantage;
+import util.loader.HistoricalDataLoader.IHistoricalDataLoader;
 
-public class HistoricalDataFromRandomTest {
+public class HistoricalDataLoaderTest {
 
 	IHistoricalDataLoader histDataLoader = new HistoricalDataFromAlphavantage();
 	Symbol s = new Symbol();
@@ -21,7 +23,7 @@ public class HistoricalDataFromRandomTest {
 	Date startDate,endDate;
 	int diff;
 	 
-	public HistoricalDataFromRandomTest() {
+	public HistoricalDataLoaderTest() {
 		//Symbol
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.YEAR, -1);
@@ -44,20 +46,20 @@ public class HistoricalDataFromRandomTest {
 	}
 	@Test
 	public void ReturnedArrayHasRightSizeBYSameDay(){
-		assertTrue(histDataLoader.load(s, startDate, endDate).size()==diff+1);
+		calcDays(0);
+		assertEquals(histDataLoader.load(s, startDate, endDate).size(), diff+1);
 	}
 	@Test
 	public void ReturnedArrayHasRightSizeWithMoreDays(){
 		calcDays(8);
-		assertTrue(histDataLoader.load(s, startDate, endDate).size()==diff+1);
+		assertEquals(histDataLoader.load(s, startDate, endDate).size(),diff+1);
+		
 	}
 	@Test
 	public void ReturnedArrayHasRightSizeWithNegativeDays(){
 		calcDays(-8);
 		assertTrue(histDataLoader.load(s, startDate, endDate).size()==0);
 	}
-	
-	
 	
 	
 	void calcDays(int diff){

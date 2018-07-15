@@ -113,7 +113,7 @@ public class TradeFXApplicationController {
 	
 	public void changeChartPane(Symbol s){
 		chartview = new CandleStickChartView();
-		ChartPane.setContent(chartview.lineChart);
+		ChartPane.setContent(chartview);
 		chartview.setDataForSymbol((Symbol) s);
 		symbolTablePane.datatable.getSelectionModel().selectedItemProperty().removeListener(symbolPaneChangeListener);
 		symbolTablePane.datatable.getSelectionModel().selectedItemProperty().addListener(symbolPaneChangeListener);

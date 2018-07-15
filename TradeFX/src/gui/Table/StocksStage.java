@@ -6,7 +6,7 @@ import java.beans.PropertyDescriptor;
 import java.util.ArrayList;
 import java.util.Map;
 
-import gui.CandleChart.CandleStickChartStage;
+import application.CandleStickChartStage;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
@@ -32,8 +32,8 @@ import model.Symbol;
 import model.TradeFXModel;
 import model.metrics.ArithmeticMean;
 import model.metrics.ProMean;
-import util.loader.HistoricalData.HistoricalDataFromAlphavantage;
-import util.loader.HistoricalData.HistStockDataLoaderTask;
+import util.loader.HistoricalDataLoader.HistStockDataLoaderTask;
+import util.loader.HistoricalDataLoader.HistoricalDataFromAlphavantage;
 
 public class StocksStage<T> extends Stage {
 

@@ -17,6 +17,7 @@ import java.util.Map;
 import javafx.concurrent.Task;
 import model.HistData;
 import model.Symbol;
+import util.Log;
 
 public class DAOHsqlImpl<T> {
 	static Boolean DEBUG=false;
@@ -249,11 +250,14 @@ public class DAOHsqlImpl<T> {
 			System.out.println(object);
 		}
 	}
+	
 	public void deleteAllWhere(Symbol s) {
 		ArrayList al;
+		Log.info("Deleting values for pk="+s.getPk());
 		al = q.query("DELETE FROM " + tablename +" WHERE pk="+s.getPk());
+		Log.info("Deleting values result"+al);
 		for (Object object : al) {
-			System.out.println(object);
+			System.out.println("Deleted "+ object);
 		}
 	}
 	

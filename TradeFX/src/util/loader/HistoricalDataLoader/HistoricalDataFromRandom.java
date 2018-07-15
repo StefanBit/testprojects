@@ -1,4 +1,4 @@
-package util.loader.HistoricalData;
+package util.loader.HistoricalDataLoader;
 
 import java.time.Instant;
 import java.time.LocalDate;

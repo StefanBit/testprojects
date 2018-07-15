@@ -10,6 +10,8 @@ public class Symbol {
 	public Symbol() {
 		// TODO Auto-generated constructor stub
 	}
+	
+	
 
 	public Symbol newInstance() {
 		return new Symbol();
@@ -18,7 +20,7 @@ public class Symbol {
 	public Symbol(Integer pk, String name,Date from) {
 		this.pk = pk;
 		this.name = name;
-		this.fromDate = new Date();
+		this.fromDate = from;
 	}
 
 	public Integer getPk() {

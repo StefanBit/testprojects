@@ -7,7 +7,7 @@ import java.util.Date;
 import model.HistData;
 import model.Symbol;
 import util.database.DAOHsqlImpl;
-import util.loader.HistoricalData.HistoricalDataFromAlphavantage;
+import util.loader.HistoricalDataLoader.HistoricalDataFromAlphavantage;
 
 public class TestHistLoader {
 public TestHistLoader() {
