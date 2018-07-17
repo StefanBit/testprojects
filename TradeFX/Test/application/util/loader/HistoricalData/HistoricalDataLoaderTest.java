@@ -39,28 +39,28 @@ public class HistoricalDataLoaderTest {
 	
 	// if Datasource doesnt exist -> 
 	// if Datasource doesn't cover full Daterange
-	
-	@Test
-	public void ReturnValueIsNotNull() {
-		assertTrue(histDataLoader.load(s, startDate, endDate) != null);
-	}
-	@Test
-	public void ReturnedArrayHasRightSizeBYSameDay(){
-		calcDays(0);
-		assertEquals(histDataLoader.load(s, startDate, endDate).size(), diff+1);
-	}
+//	
+//	@Test
+//	public void ReturnValueIsNotNull() {
+//		assertTrue(histDataLoader.load(s, startDate, endDate) != null);
+//	}
+//	@Test
+//	public void ReturnedArrayHasRightSizeBYSameDay(){
+//		calcDays(0);
+//		assertEquals(histDataLoader.load(s, startDate, endDate).size(), diff+1);
+//	}
 	@Test
 	public void ReturnedArrayHasRightSizeWithMoreDays(){
 		calcDays(8);
 		assertEquals(histDataLoader.load(s, startDate, endDate).size(),diff+1);
 		
 	}
-	@Test
-	public void ReturnedArrayHasRightSizeWithNegativeDays(){
-		calcDays(-8);
-		assertTrue(histDataLoader.load(s, startDate, endDate).size()==0);
-	}
-	
+//	@Test
+//	public void ReturnedArrayHasRightSizeWithNegativeDays(){
+//		calcDays(-8);
+//		assertTrue(histDataLoader.load(s, startDate, endDate).size()==0);
+//	}
+//	
 	
 	void calcDays(int diff){
 		this.diff=diff;
