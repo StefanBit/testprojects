@@ -12,11 +12,13 @@ import org.junit.Test;
 
 import model.Symbol;
 import util.loader.HistoricalDataLoader.HistoricalDataFromAlphavantage;
+import util.loader.HistoricalDataLoader.HistoricalDataFromRandom;
 import util.loader.HistoricalDataLoader.IHistoricalDataLoader;
 
 public class HistoricalDataLoaderTest {
 
-	IHistoricalDataLoader histDataLoader = new HistoricalDataFromAlphavantage();
+	//IHistoricalDataLoader histDataLoader = new HistoricalDataFromAlphavantage();
+	IHistoricalDataLoader histDataLoader = new HistoricalDataFromRandom();
 	Symbol s = new Symbol();
 	
 	LocalDate startLocalDate,endLocalDate;

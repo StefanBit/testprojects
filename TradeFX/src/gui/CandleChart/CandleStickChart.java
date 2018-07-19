@@ -223,7 +223,7 @@ public class CandleStickChart extends XYChart<String, Number> {
 		this.myLegend.getChildren().add(seriesLegendLabel);
 		
 		if (series.getData().get(0).getExtraValue() != null) {
-			System.out.println("Extravalue not null");
+			//System.out.println("Extravalue not null");
 			for (int j = 0; j < series.getData().size(); j++) {
 				XYChart.Data item = series.getData().get(j);
 				Node candle = createCandle(seriesIndex, item, j);
