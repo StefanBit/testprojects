@@ -1,9 +1,12 @@
 package application;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Properties;
 import java.util.logging.Logger;
@@ -52,6 +55,19 @@ public class MyProperties extends Properties {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public void safeProperties() {
+		 try {
+			FileWriter writer = new FileWriter( sPropertiesFile );
+			this.store(writer, "");
+			Log.info("Safing "+sPropertiesFile);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		 
+		 
 	}
 	
 	

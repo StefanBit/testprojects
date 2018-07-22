@@ -12,6 +12,7 @@ import org.junit.Rule;
 import org.junit.runner.RunWith;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.concurrent.Worker;
 import javafx.fxml.FXMLLoader;
@@ -41,7 +42,7 @@ public class HistStockDataLoaderTaskTest extends Application {
 	
 	
 	public void start(Stage stage) throws Exception {
-		new HistStockDataLoaderTaskTest();    
+		//new HistStockDataLoaderTaskTest();    
     }
 	
 	public HistStockDataLoaderTaskTest() {
@@ -51,10 +52,8 @@ public class HistStockDataLoaderTaskTest extends Application {
 		catch ( Exception e ) { e.printStackTrace(); }
 		LocalDate myDate=LocalDate.now();
 		fromDate= myDate.minusDays(100);
-		System.out.println(fromDate);
-		Log.fine("test");
 		Date from= Date.from(fromDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
-		System.out.println(from);
+		Log.info(this.getClass().getSimpleName()+": from"+from);
 		
 		currentSymbol = new Symbol(
 				1,
@@ -70,7 +69,7 @@ public class HistStockDataLoaderTaskTest extends Application {
 		currentThread = new Thread(currenttask);
 		currentThread.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
 			public void uncaughtException(Thread t, Throwable e) {
-				System.out.println(",kml√∂kj"+e);
+				System.out.println(",kml√"+e);
 			}
 		});
 		currentThread.start();
@@ -78,10 +77,7 @@ public class HistStockDataLoaderTaskTest extends Application {
 		while (currentThread.isAlive()) {
 			
 		}
-		
 		Log.info("Finished"+currenttask.getValue());
+		Platform.exit();
 	}
-
-
-
 }

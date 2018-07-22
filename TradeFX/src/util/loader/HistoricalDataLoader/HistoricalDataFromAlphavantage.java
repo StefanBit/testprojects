@@ -86,9 +86,8 @@ public class HistoricalDataFromAlphavantage implements IHistoricalDataLoader {
 		int iPosOfStartDay = findPositionOfDay(startDate, alHistData);
 		int iPosOfEndDay = findPositionOfDay(endDate, alHistData);
 		
-		//Log.info("Starting with " + alHistData.get(iPosOfDay) + " " + iPosOfDay);
 
-		for (int iPosOfCurrentDay= iPosOfStartDay; iPosOfCurrentDay<=iPosOfEndDay;iPosOfCurrentDay++) {
+		for (int iPosOfCurrentDay= iPosOfStartDay; iPosOfCurrentDay<iPosOfEndDay;iPosOfCurrentDay++) {
 			alHistData2.add(alHistData.get(iPosOfCurrentDay));
 		}
 		
@@ -182,9 +181,20 @@ public class HistoricalDataFromAlphavantage implements IHistoricalDataLoader {
 		
 		Log.info("Looking for Poition of " + startDate + " in Data with Size " + alHistData.size());
 		int iCurrenDay=0;
-		while (!startDate.equals(getLocalDate(alHistData.get(iCurrenDay).getDate()))) {
-			iCurrenDay++;
+		Boolean found=false;
+		for (int i=0;i<alHistData.size();i++) {
+			if (startDate.equals(getLocalDate(alHistData.get(i).getDate()))){
+				iCurrenDay=i;
+				found=true;
+			}
 		}
+		if (!found) {
+			iCurrenDay=alHistData.size();
+		}
+		
+//		while (!startDate.equals(getLocalDate(alHistData.get(iCurrenDay).getDate()))) {
+//			iCurrenDay++;
+//		}
 		Log.info("Pos is"+iCurrenDay);
 		return iCurrenDay;
 	}
