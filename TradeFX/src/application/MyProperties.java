@@ -9,8 +9,8 @@ import java.util.Properties;
 import java.util.logging.Logger;
 
 import controller.TradeFXBusinessController;
-import util.Log;
 import util.loader.HistoricalDataLoader.HistoricalDataFromRandom;
+import util.log.Log;
 
 public class MyProperties extends Properties {
 //	private static final Logger log = Logger.getLogger(MyProperties.class.getName());
@@ -27,6 +27,7 @@ public class MyProperties extends Properties {
 		String fileName = "TradeFX.properties";
 		sPropertiesFile = System.getProperty("user.home") + fileSeperator + fileName;
 		File file = new File(sPropertiesFile);
+		Log.info("Trying to use "+sPropertiesFile);
 		if (!file.exists()) {
 			sPropertiesFile = System.getProperty("user.dir") + fileSeperator + fileName;
 		}

@@ -8,8 +8,8 @@ import javafx.concurrent.Task;
 import model.HistData;
 import model.Symbol;
 import model.TradeFXModel;
-import util.Log;
 import util.database.DAOHsqlImpl;
+import util.log.Log;
 
 public class SymbolLoaderTask extends Task{
 	public SymbolLoaderTask() {

@@ -26,9 +26,9 @@ import controller.TradeFXBusinessController;
 import model.HistData;
 import model.MyArrayList;
 import model.Symbol;
-import util.Log;
 import util.database.DAOHsqlImpl;
 import util.loader.Metric.MetricMapLoaderWorker;
+import util.log.Log;
 
 /* Loads Historical Data from URL and returns Array*/
 

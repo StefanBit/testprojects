@@ -27,8 +27,8 @@ import model.TradeFXModel;
 import model.metrics.ArithmeticMean;
 import model.metrics.FloatingMean;
 import model.metrics.IMetric;
-import util.Log;
 import util.loader.Metric.MetricLoader;
+import util.log.Log;
 
 public class CandleStickChartView extends BorderPane {
 

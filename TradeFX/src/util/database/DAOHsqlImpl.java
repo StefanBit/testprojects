@@ -17,7 +17,7 @@ import java.util.Map;
 import javafx.concurrent.Task;
 import model.HistData;
 import model.Symbol;
-import util.Log;
+import util.log.Log;
 
 public class DAOHsqlImpl<T> {
 	static Boolean DEBUG=false;

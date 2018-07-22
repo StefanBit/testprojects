@@ -12,8 +12,8 @@ import java.util.logging.Logger;
 
 import model.HistData;
 import model.Symbol;
-import util.Log;
 import util.loader.Metric.MetricMapLoaderWorker;
+import util.log.Log;
 
 /**
  * Liefert Historische Daten aus zufälligen Werten.

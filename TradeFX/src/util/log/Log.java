@@ -1,4 +1,4 @@
-package util;
+package util.log;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -16,17 +16,6 @@ public class Log {
 	private static final Logger log = Logger.getLogger(HistoricalDataFromRandom.class.getName());
 	
 	public Log() {
-		Handler  handler = new ConsoleHandler();
-		handler.setFormatter(new Formatter() {
-		      public String format(LogRecord record) {
-		        return record.getLevel() + "  :  "
-		            + record.getSourceClassName() + " -:- "
-		            + record.getSourceMethodName() + " -:- "
-		            + record.getMessage() + "\n";
-		      }
-		    });
-		    log.addHandler(handler);
-
 	}
 	
 	public static void info(String s){
@@ -35,6 +24,13 @@ public class Log {
 	public static void warning(String s){
 		log.warning(s);
 	}
+	public static void fine(String s){
+		log.fine(s);
+	}
+	public static void config(String s){
+		log.config(s);
+	}
+
 
 
 

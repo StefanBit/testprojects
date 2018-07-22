@@ -27,12 +27,12 @@ import model.metrics.IMetric;
 import model.metrics.LowerConvexHull;
 import model.metrics.ProMean;
 import model.metrics.TotalMean;
-import util.Log;
 import util.database.DAOHsqlImpl;
 import util.loader.SymbolLoaderTask;
 import util.loader.HistoricalDataLoader.HistStockDataLoaderTask;
 import util.loader.HistoricalDataLoader.HistStockDataLoaderWorker;
 import util.loader.Metric.MetricMapLoaderWorker;
+import util.log.Log;
 
 public class TradeFXBusinessController {
 

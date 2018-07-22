@@ -1,4 +1,4 @@
-package application;
+package application.util.loader.HistoricalData;
 
 
 
@@ -6,6 +6,7 @@ import java.lang.Thread.UncaughtExceptionHandler;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.logging.LogManager;
 
 import org.junit.Rule;
 import org.junit.runner.RunWith;
@@ -21,6 +22,7 @@ import javafx.stage.StageStyle;
 import model.MyArrayList;
 import model.Symbol;
 import util.loader.HistoricalDataLoader.HistStockDataLoaderTask;
+import util.log.Log;
 
 
 
@@ -43,19 +45,24 @@ public class HistStockDataLoaderTaskTest extends Application {
     }
 	
 	public HistStockDataLoaderTaskTest() {
-		
+		System.setProperty( "java.util.logging.config.file", "C:\\Users\\sbili\\git\\testprojects\\TradeFX\\src\\util\\log\\logging.properties" );
+
+		try { LogManager.getLogManager().readConfiguration(); }
+		catch ( Exception e ) { e.printStackTrace(); }
 		LocalDate myDate=LocalDate.now();
 		fromDate= myDate.minusDays(100);
 		System.out.println(fromDate);
+		Log.fine("test");
 		Date from= Date.from(fromDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
 		System.out.println(from);
+		
 		currentSymbol = new Symbol(
 				1,
 				"MSFT",
 				from
 				);
 		
-		System.out.println(currentSymbol);
+		Log.config(currentSymbol.toString());
 		MyArrayList al2 = new MyArrayList();
 		HistStockDataLoaderTask currenttask;
 		currenttask = new HistStockDataLoaderTask();
@@ -72,7 +79,7 @@ public class HistStockDataLoaderTaskTest extends Application {
 			
 		}
 		
-		System.out.print("Finished"+currenttask.getValue());
+		Log.info("Finished"+currenttask.getValue());
 	}
 
 

@@ -18,9 +18,9 @@ import model.MyArrayList;
 import model.Symbol;
 import model.TradeFXModel;
 import model.metrics.ArithmeticMean;
-import util.Log;
 import util.database.DAOHsqlImpl;
 import util.loader.Metric.MetricMapLoaderWorker;
+import util.log.Log;
 
 public class HistStockDataLoaderTask<T> extends Task{
 
@@ -47,9 +47,10 @@ public class HistStockDataLoaderTask<T> extends Task{
 		RELOAD=true;
 		Log.info("Start Task HistStockDataLoaderTask");
 		
-		histStockDataLoader = new HistoricalDataFromAlphavantage();
 		
-		sHistData = new DAOHsqlImpl(HistData.class);
+		
+		
+		
 		cal = Calendar.getInstance();
 		today = cal.getTime();
 		//cal.add(Calendar.YEAR, -1); // to get previous year add -1
@@ -74,6 +75,7 @@ public class HistStockDataLoaderTask<T> extends Task{
 	}
 	
 	void updateDB(){
+		sHistData = new DAOHsqlImpl(HistData.class);
 		//update Data
 		Log.info("Clear Database");
 		sHistData.deleteAllWhere(alSymbol);
@@ -88,7 +90,8 @@ public class HistStockDataLoaderTask<T> extends Task{
 	
 	
 	void updateDBFromWeb(){
-		if (DEBUG) System.out.println("UpdateDB from Web");	
+		histStockDataLoader = new HistoricalDataFromAlphavantage();
+		if (DEBUG) Log.info("UpdateDB from Web");	
 			loadFromWeb();
 			updateDB();
 	}

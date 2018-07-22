@@ -8,7 +8,7 @@ import javafx.concurrent.Worker;
 import model.HistData;
 import model.Symbol;
 import model.TradeFXModel;
-import util.Log;
+import util.log.Log;
 
 public class HistStockDataLoaderWorker extends Task{
 
