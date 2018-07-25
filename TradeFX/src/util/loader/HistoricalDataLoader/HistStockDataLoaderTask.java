@@ -25,7 +25,7 @@ import util.database.DAOHsqlImpl;
 import util.loader.Metric.MetricMapLoaderWorker;
 import util.log.Log;
 
-public class HistStockDataLoaderTask<T> extends Task{
+public class HistStockDataLoaderTask extends Task<ArrayList<HistData>>{
 
 	Boolean RELOAD;
 	Boolean DEBUG;
@@ -46,6 +46,7 @@ public class HistStockDataLoaderTask<T> extends Task{
 	@Override
 	protected ArrayList<HistData> call() throws Exception {
 		DEBUG=true;
+		sHistData = new DAOHsqlImpl(HistData.class);
 		RELOAD=Boolean.valueOf(TradeFXBusinessController.getInstance().myProperties.getProperty("reload").toString());
 		Log.info("Start Task HistStockDataLoaderTask");	
 		Log.config("Update dbfrom Web? "+RELOAD);
@@ -54,6 +55,7 @@ public class HistStockDataLoaderTask<T> extends Task{
 
 		TradeFXModel.StockHistData.put(alSymbol, (ArrayList<HistData>) al2);
 		updateProgress(1, 1);
+		Log.info("End Task HistStockDataLoaderTask");	
 		return al2;
 	}
 	
@@ -67,12 +69,12 @@ public class HistStockDataLoaderTask<T> extends Task{
 		lastYear = cal.getTime();
 		Log.info("Loading "+ alSymbol + "from Web between"+  lastYear+ " and "+ new Date());
 		alHistData = histStockDataLoader.load(alSymbol, lastYear, new Date());
+		//alHistData = histStockDataLoader.load(alSymbol);
 		Log.info("loadFrormWeb Finished");
 	}
 	
 	void updateDB(){
 		Log.info("Update Database");
-		sHistData = new DAOHsqlImpl(HistData.class);
 		//update Data
 		Log.info("Clear Database");
 		sHistData.deleteAllWhere(alSymbol);
@@ -112,5 +114,19 @@ public class HistStockDataLoaderTask<T> extends Task{
 		System.out.println("Fertig");
 		TradeFXModel.StockHistData.put(alSymbol, (ArrayList<HistData>) this.getValue());
 		super.succeeded();
+	}
+	
+
+	
+	static public Thread getHistStockDataLoaderThreadFor(Symbol symbol) {
+		Thread thread;
+		thread = null;
+		HistStockDataLoaderTask currenttask = new HistStockDataLoaderTask();
+		currenttask.alSymbol = symbol;
+		thread = new Thread(currenttask);
+		thread.start();
+
+		return thread;
+		
 	}
 }

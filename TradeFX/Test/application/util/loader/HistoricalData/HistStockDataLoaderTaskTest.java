@@ -25,11 +25,6 @@ import model.Symbol;
 import util.loader.HistoricalDataLoader.HistStockDataLoaderTask;
 import util.log.Log;
 
-
-
-
-
-
 public class HistStockDataLoaderTaskTest extends Application {
 
 	Symbol currentSymbol;
@@ -61,6 +56,7 @@ public class HistStockDataLoaderTaskTest extends Application {
 				from
 				);
 		
+		
 		Log.config(currentSymbol.toString());
 		MyArrayList al2 = new MyArrayList();
 		HistStockDataLoaderTask currenttask;
@@ -76,8 +72,9 @@ public class HistStockDataLoaderTaskTest extends Application {
 		
 		while (currentThread.isAlive()) {
 			
+			
 		}
-		Log.info("Finished"+currenttask.getValue());
+		Log.info("Finished");
 		Platform.exit();
 	}
 }
