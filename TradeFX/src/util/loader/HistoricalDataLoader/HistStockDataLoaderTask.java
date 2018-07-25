@@ -1,132 +1,105 @@
 package util.loader.HistoricalDataLoader;
 
-import java.time.Instant;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.logging.Logger;
-
-import application.MyProperties;
 import controller.TradeFXBusinessController;
-import gui.CandleChart.ChartStage;
-import gui.Table.StocksStage;
 import javafx.concurrent.Task;
-import javafx.concurrent.WorkerStateEvent;
-import javafx.event.Event;
-import javafx.event.EventHandler;
 import model.HistData;
 import model.MyArrayList;
 import model.Symbol;
 import model.TradeFXModel;
-import model.metrics.ArithmeticMean;
 import util.database.DAOHsqlImpl;
-import util.loader.Metric.MetricMapLoaderWorker;
 import util.log.Log;
 
-public class HistStockDataLoaderTask extends Task<ArrayList<HistData>>{
+public class HistStockDataLoaderTask extends Task<ArrayList<HistData>> {
 
 	Boolean RELOAD;
-	Boolean DEBUG;
-	
+
 	public Symbol alSymbol;
 	HistoricalDataFromAlphavantage histStockDataLoader;
-	ArrayList<HistData> alHistData;
-	ArrayList<HistData> al2;
+	ArrayList<HistData> data;
 	DAOHsqlImpl<HistData> sHistData;
-	Calendar cal;
-	Date today;
-	
+
 	public HistStockDataLoaderTask() {
-		Log.info("Create Task HistStockDataLoaderTask");
-		al2= new MyArrayList();
+		Log.info("Create HistStockDataLoaderTask");
+		RELOAD = Boolean.valueOf(TradeFXBusinessController.getInstance().myProperties.getProperty("reload").toString());
+		data= new MyArrayList();
 	}
-	
+
 	@Override
 	protected ArrayList<HistData> call() throws Exception {
-		DEBUG=true;
+		Log.info("Start Task HistStockDataLoaderTask");
 		sHistData = new DAOHsqlImpl(HistData.class);
-		RELOAD=Boolean.valueOf(TradeFXBusinessController.getInstance().myProperties.getProperty("reload").toString());
-		Log.info("Start Task HistStockDataLoaderTask");	
-		Log.config("Update dbfrom Web? "+RELOAD);
-		if (!isDbUpToDate()|| RELOAD) updateDBFromWeb();
-		getFromDB();	 
+		Log.config("Update dbfrom Web? " + RELOAD);
+		if (!isDbUpToDate() || RELOAD)
+			updateDBFromWeb();
+		getFromDB();
 
-		TradeFXModel.StockHistData.put(alSymbol, (ArrayList<HistData>) al2);
+		TradeFXModel.StockHistData.put(alSymbol, (ArrayList<HistData>) data);
 		updateProgress(1, 1);
-		Log.info("End Task HistStockDataLoaderTask");	
-		return al2;
+		Log.info("End Task HistStockDataLoaderTask");
+		return data;
 	}
-	
-	void loadFromWeb(){
+
+	void loadFromWeb() {
 		histStockDataLoader = new HistoricalDataFromAlphavantage();
 		Date lastYear;
+		Calendar cal;
+		Date today;
 		cal = Calendar.getInstance();
 		today = cal.getTime();
-		//cal.add(Calendar.YEAR, -1); // to get previous year add -1
+		// cal.add(Calendar.YEAR, -1); // to get previous year add -1
 		cal.setTime(alSymbol.getFromDate());
 		lastYear = cal.getTime();
-		Log.info("Loading "+ alSymbol + "from Web between"+  lastYear+ " and "+ new Date());
-		alHistData = histStockDataLoader.load(alSymbol, lastYear, new Date());
-		//alHistData = histStockDataLoader.load(alSymbol);
+		Log.info("Loading " + alSymbol + "from Web between" + lastYear + " and " + new Date());
+		data = histStockDataLoader.load(alSymbol, lastYear, new Date());
+		// alHistData = histStockDataLoader.load(alSymbol);
 		Log.info("loadFrormWeb Finished");
 	}
-	
-	void updateDB(){
+
+	void updateDB() {
 		Log.info("Update Database");
-		//update Data
-		Log.info("Clear Database");
+		Log.fine("Clear Database");
 		sHistData.deleteAllWhere(alSymbol);
-		Log.info("Insert "+alHistData.size() +" values in Database") ;
-		sHistData.insertAll(alHistData);
+		sHistData.insertAll(data);
+		Log.info("Insert " + data.size() + " values in Database");
 	}
-	
-	void getFromDB(){
-	     // Get from DB
-		al2 = sHistData.getAllWhere(alSymbol.getPk().toString());
+
+	// Get from DB
+	void getFromDB() {
+		data = sHistData.getAllWhere(alSymbol.getPk().toString());
 	}
-	
+
 	Boolean isDbUpToDate() {
 		Boolean dbNotUpToDate;
-		LocalDate dDbLastUpdate=null;
-		String date=TradeFXBusinessController.getInstance().myProperties.getProperty("DbLastUpdate");
+		LocalDate dDbLastUpdate = null;
+		String date = TradeFXBusinessController.getInstance().myProperties.getProperty("DbLastUpdate");
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		dDbLastUpdate = LocalDate.parse(date, formatter);
 		dbNotUpToDate = dDbLastUpdate.isBefore(LocalDate.now());
-		Log.info("Last Database Update was "+dDbLastUpdate+", today is "+LocalDate.now()+" Outdatet? "+dbNotUpToDate);
+		Log.info("Last Database Update was " + dDbLastUpdate + ", today is " + LocalDate.now() + " Outdatet? "
+				+ dbNotUpToDate);
 		return !dbNotUpToDate;
 	}
-	
-	void updateDBFromWeb(){
-		
-		Log.info("UpdateDB from Web");	
-			loadFromWeb();
-			updateDB();
-			TradeFXBusinessController.getInstance().myProperties.setProperty("DbLastUpdate",LocalDate.now().toString());
-			TradeFXBusinessController.getInstance().myProperties.safeProperties();
+
+	void updateDBFromWeb() {
+
+		Log.info("UpdateDB from Web");
+		loadFromWeb();
+		updateDB();
+		TradeFXBusinessController.getInstance().myProperties.setProperty("DbLastUpdate", LocalDate.now().toString());
+		TradeFXBusinessController.getInstance().myProperties.safeProperties();
 	}
-	
-	
-	
+
 	@Override
 	protected void succeeded() {
 		System.out.println("Fertig");
 		TradeFXModel.StockHistData.put(alSymbol, (ArrayList<HistData>) this.getValue());
 		super.succeeded();
 	}
-	
 
-	
-	static public Thread getHistStockDataLoaderThreadFor(Symbol symbol) {
-		Thread thread;
-		thread = null;
-		HistStockDataLoaderTask currenttask = new HistStockDataLoaderTask();
-		currenttask.alSymbol = symbol;
-		thread = new Thread(currenttask);
-		thread.start();
-
-		return thread;
-		
-	}
 }

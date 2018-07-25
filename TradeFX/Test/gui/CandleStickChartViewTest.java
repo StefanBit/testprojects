@@ -63,7 +63,6 @@ public class CandleStickChartViewTest extends Application {
 		
 		HistStockDataLoaderTask currenttask = new HistStockDataLoaderTask();
 		currenttask.alSymbol = s;
-		Thread currentThread = null;
 		
 		ExecutorService executorService1 = Executors.newSingleThreadExecutor();
 		
