@@ -44,7 +44,7 @@ public class CandleStickChartViewTest extends Application {
 	
 	@Override
 	public void start(Stage stage) throws Exception {
-		System.setProperty( "java.util.logging.config.file", "C:\\Users\\sbili\\git\\testprojects\\TradeFX\\src\\util\\log\\logging.properties" );
+		System.setProperty( "java.util.logging.config.file", System.getProperty("user.dir")+"\\src\\util\\log\\logging.properties" );
 
 		CandleStickChartView node;
 		node = new CandleStickChartView();
