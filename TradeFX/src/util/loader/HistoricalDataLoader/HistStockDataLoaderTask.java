@@ -35,8 +35,10 @@ public class HistStockDataLoaderTask extends Task<ArrayList<HistData>> {
 		Log.info("Start Task HistStockDataLoaderTask");
 		sHistData = new DAOHsqlImpl(HistData.class);
 		Log.config("Update dbfrom Web? " + RELOAD);
-		if (!isDbUpToDate() || RELOAD)
+		if (!isDbUpToDate() || RELOAD) {
+			Log.config("Update db from Web! ");
 			updateDBFromWeb();
+		}
 		getFromDB();
 
 		TradeFXModel.StockHistData.put(alSymbol, (ArrayList<HistData>) data);
@@ -77,12 +79,13 @@ public class HistStockDataLoaderTask extends Task<ArrayList<HistData>> {
 	Boolean isDbUpToDate() {
 		Boolean dbNotUpToDate;
 		LocalDate dDbLastUpdate = null;
+		Log.info("Checking if DB ist Up to Date");
 		String date = TradeFXBusinessController.getInstance().myProperties.getProperty("DbLastUpdate");
+		Log.info("Last Database Update was " + date );
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		dDbLastUpdate = LocalDate.parse(date, formatter);
 		dbNotUpToDate = dDbLastUpdate.isBefore(LocalDate.now());
-		Log.info("Last Database Update was " + dDbLastUpdate + ", today is " + LocalDate.now() + " Outdatet? "
-				+ dbNotUpToDate);
+		Log.info("Last Database Update was " + dDbLastUpdate  +" Today is "+ LocalDate.now()+" Outdatet? "	+ dbNotUpToDate);
 		return !dbNotUpToDate;
 	}
 

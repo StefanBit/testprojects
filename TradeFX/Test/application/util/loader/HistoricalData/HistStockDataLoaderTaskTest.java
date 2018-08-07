@@ -41,7 +41,7 @@ public class HistStockDataLoaderTaskTest extends Application {
     }
 	
 	public HistStockDataLoaderTaskTest() {
-		System.setProperty( "java.util.logging.config.file", "C:\\Users\\sbili\\git\\testprojects\\TradeFX\\src\\util\\log\\logging.properties" );
+		System.setProperty( "java.util.logging.config.file", System.getProperty("user.dir")+"\\src\\util\\log\\logging.properties" );
 
 		try { LogManager.getLogManager().readConfiguration(); }
 		catch ( Exception e ) { e.printStackTrace(); }
@@ -65,7 +65,7 @@ public class HistStockDataLoaderTaskTest extends Application {
 		currentThread = new Thread(currenttask);
 		currentThread.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
 			public void uncaughtException(Thread t, Throwable e) {
-				System.out.println(",kml√"+e);
+				System.out.println(",kml"+e);
 			}
 		});
 		currentThread.start();
