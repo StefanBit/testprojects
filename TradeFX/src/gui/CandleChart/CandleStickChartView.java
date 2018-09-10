@@ -45,6 +45,7 @@ public class CandleStickChartView extends BorderPane {
 	ArrayList<HistData> data;
 
 	public CandleStickChartView() {
+		model = TradeFXBusinessController.getInstance().getModel();
 		bp = new BorderPane();
 		final CategoryAxis xAxis = new CategoryAxis();
 		final NumberAxis yAxis = new NumberAxis();
@@ -52,7 +53,6 @@ public class CandleStickChartView extends BorderPane {
 		yAxis.setLabel("Value");
 		yAxis.setForceZeroInRange(false);
 		lineChart = new CandleStickChart(xAxis, yAxis);
-		model = TradeFXBusinessController.getInstance().getModel();
 		dataLabel = new Label();
 		sItemsToShow = new Slider();
 		sItemsToShow.valueProperty().addListener(new ItemsToShowChangeListener());
@@ -61,7 +61,6 @@ public class CandleStickChartView extends BorderPane {
 		this.setBottom(sItemsToShow);
 		sItemsToShow.setValue(0);
 		dataLabel.setText("new");
-
 	}
 
 	public void setDataForSymbol(Symbol symbol) {
@@ -99,22 +98,18 @@ public class CandleStickChartView extends BorderPane {
 
 	// Candlestick Line
 	public XYChart.Series setDataSeries(ArrayList<HistData> data) {
-		
-		XYChart.Series series = new XYChart.Series();
-		
-		XYChart.Data dat;
-		this.data=data;
+		this.data = data;
+		HistData day;
+		CandleStickExtraValues extraValues;
+		XYChart.Series series;
+		series = new XYChart.Series();
 		dataSetsToShow = data.size();
-		sItemsToShow.setMax(data.size());
-
-
+		sItemsToShow.setMax(data.size()-1);
 		for (int i = offsetFromShow; i < dataSetsToShow; i++) {
-			HistData day = data.get(i);
-			final CandleStickExtraValues extraValues = new CandleStickExtraValues(day.getClose(), day.getHight(),
-					day.getLow(), (day.getHight() + day.getLow()) / 2);
+			day = data.get(i);
+			extraValues = new CandleStickExtraValues(day);
 			addDayToDataSerie(data.get(i), series, extraValues);
 		}
-
 		addSeries(series);
 		return series;
 	}

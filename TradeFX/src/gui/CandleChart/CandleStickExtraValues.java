@@ -1,6 +1,6 @@
 package gui.CandleChart;
 
- 
+import model.HistData;
 
 /** Data extra values for storing close, high and low. */
 
@@ -16,8 +16,23 @@ public class CandleStickExtraValues  {
         this.close = (double) close;
         this.average =(double) average;
     }
+    
+    public CandleStickExtraValues(HistData data) {
+
+    	   this.high = data.getHight();
+           this.low =data.getLow();
+           this.close = data.getClose();
+           this.average =(data.getHight() + data.getLow()) / 2;
+    }
  
-    public double getClose() {
+    private void CandleStickExtraValues(double close2, double hight, double low2, double d) {
+    	   this.high = (double) high;
+           this.low =(double) low;
+           this.close = (double) close;
+           this.average =(double) average;
+	}
+
+	public double getClose() {
         return close;
     }
  

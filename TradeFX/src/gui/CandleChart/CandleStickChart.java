@@ -40,6 +40,7 @@ public class CandleStickChart extends XYChart<String, Number> {
 	public VBox myLegend;
 	public Paint paintingColor;
 	Boolean DEBUG=true;
+	
 	/**
 	 * Construct a new CandleStickChart with the given axis.
 	 */
@@ -64,6 +65,76 @@ public class CandleStickChart extends XYChart<String, Number> {
 		setData(data);
 	}
 	
+	// When new Series is added
+	@Override
+	protected void seriesAdded(Series<String, Number> series, int seriesIndex) {
+		// handle any data already in series
+		
+		//	System.out.println("Series added" + series.getData().get(0).getExtraValue());
+		Label seriesLegendLabel = new Label(series.getName()+" ");
+		seriesLegendLabel.setTextFill(paintingColor);
+		//this.myLegend.getChildren().add(seriesLegendLabel);
+		
+		if (series.getData().get(0).getExtraValue() != null) {
+			//System.out.println("Extravalue not null");
+			getPlotChildren().clear();
+			for (int j = 0; j < series.getData().size(); j++) {
+				XYChart.Data item = series.getData().get(j);
+				Node candle = createCandle(seriesIndex, item, j);
+				if (shouldAnimate()) {
+					candle.setOpacity(0);
+					getPlotChildren().add(candle);
+					// fade in new candle
+					final FadeTransition ft = new FadeTransition(Duration.millis(500), candle);
+					ft.setToValue(1);
+					ft.play();
+
+				} else {
+					getPlotChildren().add(candle);
+				}
+			}
+		} else {
+			if (DEBUG) System.out.println("Extravalue is null and Series size:"+series.getData().size()+ " adding "+series.getName());
+
+		}
+		// create series path
+		Path seriesPath = new Path();
+		
+		
+		if (series.getData().get(0).getExtraValue() != null) {
+			seriesPath.getStyleClass().setAll("candlestick-average-line", "series" + seriesIndex);
+			
+		} else {
+			
+			seriesPath.setStroke(paintingColor);
+		}
+		series.setNode(seriesPath);
+		updateLegend();
+		getPlotChildren().add(seriesPath);
+	}
+
+	@Override
+	protected void seriesRemoved(Series<String, Number> series) {
+		// remove all candle nodes
+		
+		for (XYChart.Data<String, Number> d : series.getData()) {
+			final Node candle = d.getNode();
+			if (shouldAnimate()) {
+				// fade out old candle
+
+				final FadeTransition ft = new FadeTransition(Duration.millis(500), candle);
+				ft.setToValue(0);
+				ft.setOnFinished((ActionEvent actionEvent) -> {
+					getPlotChildren().remove(candle);
+				});
+				ft.play();
+
+			} else {
+				getPlotChildren().remove(candle);
+			}
+
+		}
+	}
 	
 //	@Override
 //	protected void updateLegend() {
@@ -125,22 +196,12 @@ public class CandleStickChart extends XYChart<String, Number> {
 					if (seriesPath != null) {
 						if (extra != null) {
 							double ave = yAxis.getDisplayPosition(extra.getAverage());
-							if (seriesPath.getElements().isEmpty()) {
-								seriesPath.getElements().add(new MoveTo(x, ave));
-
-							} else {
-								seriesPath.getElements().add(new LineTo(x, ave));
-							}
+							drawPath(seriesPath, x, ave);
 						}
 
 					} else {
 						double ave = 45;
-						if (seriesPath.getElements().isEmpty()) {
-							seriesPath.getElements().add(new MoveTo(x, ave));
-
-						} else {
-							seriesPath.getElements().add(new LineTo(x, ave));
-						}
+						drawPath(seriesPath, x, ave);
 					}
 				} else {
 
@@ -148,29 +209,28 @@ public class CandleStickChart extends XYChart<String, Number> {
 						//System.out.println("klkk");
 						if (true) {
 							double ave = yAxis.getDisplayPosition(item.getYValue());
-							if (seriesPath.getElements().isEmpty()) {
-								seriesPath.getElements().add(new MoveTo(x, ave));
-
-							} else {
-								seriesPath.getElements().add(new LineTo(x, ave));
-							}
+							drawPath(seriesPath, x, ave);
 						}
 
 					} else {
 					//	System.out.println("klkk");
 						double ave = yAxis.getDisplayPosition(item.getYValue());;
-						if (seriesPath.getElements().isEmpty()) {
-							seriesPath.getElements().add(new MoveTo(x, ave));
-
-						} else {
-							seriesPath.getElements().add(new LineTo(x, ave));
-						}
+						drawPath(seriesPath, x, ave);
 					}
 				}
 					
 			}
 		}
 	}
+
+private void drawPath(Path seriesPath, double x, double ave) {
+	if (seriesPath.getElements().isEmpty()) {
+		seriesPath.getElements().add(new MoveTo(x, ave));
+
+	} else {
+		seriesPath.getElements().add(new LineTo(x, ave));
+	}
+}
 
 	@Override
 	protected void dataItemChanged(Data<String, Number> item) {
@@ -212,75 +272,6 @@ public class CandleStickChart extends XYChart<String, Number> {
 		}
 	}
 
-	// When new Series is added
-	@Override
-	protected void seriesAdded(Series<String, Number> series, int seriesIndex) {
-		// handle any data already in series
-		
-		//	System.out.println("Series added" + series.getData().get(0).getExtraValue());
-		Label seriesLegendLabel = new Label(series.getName()+" ");
-		seriesLegendLabel.setTextFill(paintingColor);
-		this.myLegend.getChildren().add(seriesLegendLabel);
-		
-		if (series.getData().get(0).getExtraValue() != null) {
-			//System.out.println("Extravalue not null");
-			for (int j = 0; j < series.getData().size(); j++) {
-				XYChart.Data item = series.getData().get(j);
-				Node candle = createCandle(seriesIndex, item, j);
-				if (shouldAnimate()) {
-					candle.setOpacity(0);
-					getPlotChildren().add(candle);
-					// fade in new candle
-					final FadeTransition ft = new FadeTransition(Duration.millis(500), candle);
-					ft.setToValue(1);
-					ft.play();
-
-				} else {
-					getPlotChildren().add(candle);
-				}
-			}
-		} else {
-			if (DEBUG) System.out.println("Extravalue is null and Series size:"+series.getData().size()+ " adding "+series.getName());
-
-		}
-		// create series path
-		Path seriesPath = new Path();
-		
-		
-		if (series.getData().get(0).getExtraValue() != null) {
-			seriesPath.getStyleClass().setAll("candlestick-average-line", "series" + seriesIndex);
-			
-		} else {
-			
-			seriesPath.setStroke(paintingColor);
-		}
-		series.setNode(seriesPath);
-		updateLegend();
-		getPlotChildren().add(seriesPath);
-	}
-
-	@Override
-	protected void seriesRemoved(Series<String, Number> series) {
-		// remove all candle nodes
-
-		for (XYChart.Data<String, Number> d : series.getData()) {
-			final Node candle = d.getNode();
-			if (shouldAnimate()) {
-				// fade out old candle
-
-				final FadeTransition ft = new FadeTransition(Duration.millis(500), candle);
-				ft.setToValue(0);
-				ft.setOnFinished((ActionEvent actionEvent) -> {
-					getPlotChildren().remove(candle);
-				});
-				ft.play();
-
-			} else {
-				getPlotChildren().remove(candle);
-			}
-
-		}
-	}
 
 	/**
 	 * Create a new Candle node to represent a single data item
