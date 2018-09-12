@@ -39,8 +39,8 @@ public class CandleStickChart extends XYChart<String, Number> {
 
 	public VBox myLegend;
 	public Paint paintingColor;
-	Boolean DEBUG=true;
-	
+	Boolean DEBUG = true;
+
 	/**
 	 * Construct a new CandleStickChart with the given axis.
 	 */
@@ -52,31 +52,45 @@ public class CandleStickChart extends XYChart<String, Number> {
 		xAxis.setAnimated(false);
 		yAxis.setAnimated(false);
 		myLegend = new VBox();
-		paintingColor= Paint.valueOf("green");
+		paintingColor = Paint.valueOf("green");
 		setLegend(myLegend);
 	}
 
 	/**
-	 * Construct a new CandleStickChart with the given axis and data. reflected
-	 * in the chart.
+	 * Construct a new CandleStickChart with the given axis and data. reflected in
+	 * the chart.
 	 */
 	public CandleStickChart(Axis<String> xAxis, Axis<Number> yAxis, ObservableList<Series<String, Number>> data) {
 		this(xAxis, yAxis);
 		setData(data);
 	}
-	
+
 	// When new Series is added
 	@Override
 	protected void seriesAdded(Series<String, Number> series, int seriesIndex) {
 		// handle any data already in series
-		
-		//	System.out.println("Series added" + series.getData().get(0).getExtraValue());
-		Label seriesLegendLabel = new Label(series.getName()+" ");
+
+		// System.out.println("Series added" + series.getData().get(0).getExtraValue());
+		Label seriesLegendLabel = new Label(series.getName() + " ");
 		seriesLegendLabel.setTextFill(paintingColor);
-		//this.myLegend.getChildren().add(seriesLegendLabel);
-		
+
+		Label label;
+		String lname, sname;
+		Boolean found = false;
+		for (int i = 0; i < myLegend.getChildren().size(); i++) {
+			label = (Label) myLegend.getChildren().get(i);
+			lname = label.getText();
+			sname = series.getName();
+		//Change Label
+			if (lname.contains(sname)) {
+				myLegend.getChildren().remove(i);
+				System.out.println("change");
+			}
+		}
+		myLegend.getChildren().add(seriesLegendLabel);
+
 		if (series.getData().get(0).getExtraValue() != null) {
-			//System.out.println("Extravalue not null");
+			// System.out.println("Extravalue not null");
 			getPlotChildren().clear();
 			for (int j = 0; j < series.getData().size(); j++) {
 				XYChart.Data item = series.getData().get(j);
@@ -94,18 +108,19 @@ public class CandleStickChart extends XYChart<String, Number> {
 				}
 			}
 		} else {
-			if (DEBUG) System.out.println("Extravalue is null and Series size:"+series.getData().size()+ " adding "+series.getName());
+			if (DEBUG)
+				System.out.println("Extravalue is null and Series size:" + series.getData().size() + " adding "
+						+ series.getName());
 
 		}
 		// create series path
 		Path seriesPath = new Path();
-		
-		
+
 		if (series.getData().get(0).getExtraValue() != null) {
 			seriesPath.getStyleClass().setAll("candlestick-average-line", "series" + seriesIndex);
-			
+
 		} else {
-			
+
 			seriesPath.setStroke(paintingColor);
 		}
 		series.setNode(seriesPath);
@@ -116,7 +131,7 @@ public class CandleStickChart extends XYChart<String, Number> {
 	@Override
 	protected void seriesRemoved(Series<String, Number> series) {
 		// remove all candle nodes
-		
+
 		for (XYChart.Data<String, Number> d : series.getData()) {
 			final Node candle = d.getNode();
 			if (shouldAnimate()) {
@@ -135,7 +150,7 @@ public class CandleStickChart extends XYChart<String, Number> {
 
 		}
 	}
-	
+
 //	@Override
 //	protected void updateLegend() {
 //		super.updateLegend();
@@ -206,31 +221,32 @@ public class CandleStickChart extends XYChart<String, Number> {
 				} else {
 
 					if (seriesPath != null) {
-						//System.out.println("klkk");
+						// System.out.println("klkk");
 						if (true) {
 							double ave = yAxis.getDisplayPosition(item.getYValue());
 							drawPath(seriesPath, x, ave);
 						}
 
 					} else {
-					//	System.out.println("klkk");
-						double ave = yAxis.getDisplayPosition(item.getYValue());;
+						// System.out.println("klkk");
+						double ave = yAxis.getDisplayPosition(item.getYValue());
+						;
 						drawPath(seriesPath, x, ave);
 					}
 				}
-					
+
 			}
 		}
 	}
 
-private void drawPath(Path seriesPath, double x, double ave) {
-	if (seriesPath.getElements().isEmpty()) {
-		seriesPath.getElements().add(new MoveTo(x, ave));
+	private void drawPath(Path seriesPath, double x, double ave) {
+		if (seriesPath.getElements().isEmpty()) {
+			seriesPath.getElements().add(new MoveTo(x, ave));
 
-	} else {
-		seriesPath.getElements().add(new LineTo(x, ave));
+		} else {
+			seriesPath.getElements().add(new LineTo(x, ave));
+		}
 	}
-}
 
 	@Override
 	protected void dataItemChanged(Data<String, Number> item) {
@@ -272,7 +288,6 @@ private void drawPath(Path seriesPath, double x, double ave) {
 		}
 	}
 
-
 	/**
 	 * Create a new Candle node to represent a single data item
 	 * 
@@ -295,11 +310,11 @@ private void drawPath(Path seriesPath, double x, double ave) {
 	}
 
 	/**
-	 * This is called when the range has been invalidated and we need to update
-	 * it. If the axis are auto ranging then we compile a list of
+	 * This is called when the range has been invalidated and we need to update it.
+	 * If the axis are auto ranging then we compile a list of
 	 * 
-	 * all data that the given axis has to plot and call invalidateRange() on
-	 * the axis passing it that data.
+	 * all data that the given axis has to plot and call invalidateRange() on the
+	 * axis passing it that data.
 	 * 
 	 */
 	@Override

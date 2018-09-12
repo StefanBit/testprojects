@@ -32,7 +32,7 @@ import util.log.Log;
 
 public class CandleStickChartView extends BorderPane {
 
-	public CandleStickChart lineChart;
+	public CandleStickChart chart;
 	private int dataSetsToShow;
 	int offsetToShow = 0;
 	int offsetFromShow = 0;
@@ -43,6 +43,7 @@ public class CandleStickChartView extends BorderPane {
 	Label dataLabel;
 	Slider sItemsToShow;
 	ArrayList<HistData> data;
+	Symbol currentSymbol;
 
 	public CandleStickChartView() {
 		model = TradeFXBusinessController.getInstance().getModel();
@@ -52,11 +53,11 @@ public class CandleStickChartView extends BorderPane {
 		xAxis.setLabel("Date");
 		yAxis.setLabel("Value");
 		yAxis.setForceZeroInRange(false);
-		lineChart = new CandleStickChart(xAxis, yAxis);
+		chart = new CandleStickChart(xAxis, yAxis);
 		dataLabel = new Label();
 		sItemsToShow = new Slider();
 		sItemsToShow.valueProperty().addListener(new ItemsToShowChangeListener());
-		this.setCenter(lineChart);
+		this.setCenter(chart);
 		this.setBottom(dataLabel);
 		this.setBottom(sItemsToShow);
 		sItemsToShow.setValue(0);
@@ -64,6 +65,7 @@ public class CandleStickChartView extends BorderPane {
 	}
 
 	public void setDataForSymbol(Symbol symbol) {
+		currentSymbol=symbol;
 		ArrayList<HistData> data;
 		MetricLoader metricLoader;
 		IMetric iml3;
@@ -77,13 +79,13 @@ public class CandleStickChartView extends BorderPane {
 				for (IMetric metric : model.aMetrics) {
 					metricLoader = (MetricLoader) mMetricLoader.get(metric.getClass().getSimpleName());
 					iml3 = metricLoader.metric;
-					lineChart.paintingColor = iml3.getColor();
+					chart.paintingColor = iml3.getColor();
 					setAdditonalDataSeries(data, iml3);
 				}
 			}
 		}
 		dataLabel.setText("From:" + data.get(offsetFromShow).getDate() + " To:" + data.get(offsetToShow).getDate());
-		lineChart.setTitle(symbol.getName());
+		chart.setTitle(symbol.getName());
 	}
 
 	int getPositionOfDate(ArrayList<HistData> data, Date date) {
@@ -103,8 +105,11 @@ public class CandleStickChartView extends BorderPane {
 		CandleStickExtraValues extraValues;
 		XYChart.Series series;
 		series = new XYChart.Series();
+		Log.info("Data"+data);
+		//System.out.println("Data"+data);
 		dataSetsToShow = data.size();
 		sItemsToShow.setMax(data.size()-1);
+		series.setName("Chart");
 		for (int i = offsetFromShow; i < dataSetsToShow; i++) {
 			day = data.get(i);
 			extraValues = new CandleStickExtraValues(day);
@@ -116,13 +121,13 @@ public class CandleStickChartView extends BorderPane {
 
 	// Some other Line
 	public void setAdditonalDataSeries(ArrayList<HistData> data, IMetric metric) {
+		HistData day;
 		XYChart.Series series = new XYChart.Series();
 		series.setName(metric.getClass().getSimpleName());
 		data = metric.getData();
 		dataSetsToShow = data.size();
-
 		for (int i = offsetFromShow; i < dataSetsToShow; i++) {
-			HistData day = data.get(i);
+			day = data.get(i);
 			final CandleStickExtraValues extraValues = null;
 			addDayToDataSerie(data.get(i), series, extraValues);
 		}
@@ -134,15 +139,21 @@ public class CandleStickChartView extends BorderPane {
 				(double) day.getOpen(), extras));
 	}
 
-	private void addSeries(Series Series) {
-		ObservableList<XYChart.Series<String, Number>> lineChartData = lineChart.getData();
-		if (lineChartData == null) {
-			lineChartData = FXCollections.observableArrayList(Series);
-			lineChart.setData(lineChartData);
+	private void addSeries(Series series) {
+		String name = series.getName();
+		ObservableList<XYChart.Series<String, Number>> chartDatalines = chart.getData();
+		if (chartDatalines == null) {
+			chartDatalines = FXCollections.observableArrayList(series);
+			chart.setData(chartDatalines);
 		} else {
-			lineChart.getData().remove(0);
-			Series.setName("Chart");
-			lineChart.getData().add(Series);
+			// Serie Austauschen
+			for (int i=0; i<chartDatalines.size();i++ ) {
+				if (chartDatalines.get(i).getName().equals(name)){
+					System.out.println("Add Serie "+chartDatalines.get(i).getName());
+					chartDatalines.remove(i);
+				}
+			}
+			chart.getData().add(series);
 		}
 	}
 
@@ -152,7 +163,9 @@ public class CandleStickChartView extends BorderPane {
 		@Override
 		public void changed(ObservableValue observable, Object oldValue, Object newValue) {
 			offsetFromShow = ((Double) newValue).intValue();
-			setDataSeries(data);
+			//setDataSeries(data);
+			setDataForSymbol(currentSymbol);
+
 		}
 	}
 }
