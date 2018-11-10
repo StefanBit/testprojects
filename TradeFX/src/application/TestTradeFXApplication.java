@@ -27,6 +27,7 @@ public class TestTradeFXApplication extends Application{
     	FXMLLoader loader = new FXMLLoader(getClass().getResource("TradeFXApplication.fxml"));
     	Parent root = loader.load(); 
         Scene scene = new Scene(root, 1224, 1224);
+        System.out.println(System.getProperties());
         stage.setTitle("TradeFXApplication");
         stage.initStyle(StageStyle.UNIFIED);
         stage.setScene(scene);

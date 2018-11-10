@@ -1,23 +1,23 @@
 /* ====== CANDLE STICK CHART =========================================================== */
 
 .chart {
-    -fx-background-color: lightgrey;   
+    -fx-background-color: rgb(40, 40, 40);   
     -fx-font-size: 1.4em;  
     -fx-padding: 20px;
 }
 .chart-plot-background {
-    -fx-background-color: lightgrey;
+    -fx-background-color: rgb(50, 50, 50);
 }
 .chart-content {
     -fx-padding: 30px;    
 }
 
 .chart-vertical-grid-lines {
-    -fx-stroke: darkgrey;
+    -fx-stroke: rgb(40, 40, 40);
      -fx-stroke-width: .5;
 }
 .chart-horizontal-grid-lines {
-    -fx-stroke: darkgrey;
+    -fx-stroke: rgb(40, 40, 40);
 }
 
 .axis-tick-mark {

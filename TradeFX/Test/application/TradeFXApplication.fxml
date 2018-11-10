@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="1024.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.TradeFXApplicationController">
+<BorderPane prefHeight="1024.0" prefWidth="1024.0" stylesheets="@dark.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.TradeFXApplicationController">
    <center>
       <TabPane tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
         <tabs>
@@ -19,20 +19,19 @@
                <content>
                   <VBox prefHeight="200.0" prefWidth="100.0">
                      <children>
-                        <Pane prefHeight="50.0" prefWidth="200.0">
+                        <Pane prefWidth="200.0">
                            <children>
                               <Button fx:id="ReloadButton" maxHeight="1.7976931348623157E308" minHeight="-Infinity" mnemonicParsing="false" text="Reload" />
                            </children>
                         </Pane>
-                        <HBox prefWidth="200.0">
+                        <HBox maxHeight="1.7976931348623157E308" prefWidth="200.0">
                            <children>
-                              <TitledPane fx:id="SymbolPane" animated="false" prefHeight="500.0" prefWidth="500.0" text="Symbol List1" />
+                              <TitledPane fx:id="SymbolPane" animated="false" minHeight="-Infinity" prefWidth="262.0" text="Verfügbare Idices" />
                               <TitledPane fx:id="ChartPane" animated="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="800.0" prefWidth="800.0" text="Chart" HBox.hgrow="ALWAYS" />
                            </children></HBox>
                         <HBox prefWidth="200.0" VBox.vgrow="ALWAYS">
                            <children>
-                              <TitledPane fx:id="AvaiableMetricsPane" animated="false" text="Avaiable Metrics" HBox.hgrow="ALWAYS" />
-                              <TitledPane fx:id="DataPane" animated="false" expanded="false" maxHeight="1.7976931348623157E308" prefHeight="25.0" prefWidth="382.0" text="Data" />
+                              <TitledPane fx:id="AvaiableMetricsPane" animated="false" text="Übersicht Kennzahlen" HBox.hgrow="ALWAYS" />
                            </children>
                         </HBox>
                      </children>
@@ -51,6 +50,7 @@
                         <HBox VBox.vgrow="ALWAYS">
                            <children>
                               <TitledPane fx:id="BarChartPane" animated="false" text="Barchart" />
+                              <TitledPane fx:id="DataPane" animated="false" expanded="false" maxHeight="1.7976931348623157E308" prefHeight="25.0" prefWidth="382.0" text="Data" />
                            </children>
                         </HBox>
                         <Pane maxWidth="1.7976931348623157E308" prefHeight="200.0" />
@@ -79,6 +79,6 @@
       </HBox>
    </bottom>
    <right>
-      <TitledPane fx:id="DetailPane" alignment="CENTER" animated="false" maxHeight="1.7976931348623157E308" text="Detail" BorderPane.alignment="TOP_LEFT" />
+      <TitledPane fx:id="DetailPane" alignment="CENTER" animated="false" maxHeight="1.7976931348623157E308" prefWidth="200.0" text="Detail" BorderPane.alignment="TOP_LEFT" />
    </right>
 </BorderPane>

@@ -1,4 +1,4 @@
-package controller;
+package controller.state;
 
 interface IState {
 

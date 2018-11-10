@@ -62,8 +62,7 @@ public class TradeFXBusinessController {
 	}
 
 	public void init() {
-		registerMetricClasses( new FloatingMean(6), new ArithmeticMean(),new FloatingMean2(100),new TotalMean());
-		//,new LowerConvexHull()
+		registerMetricClasses( new FloatingMean(6), new ArithmeticMean(),new FloatingMean2(100),new TotalMean());//,new LowerConvexHull());
 		loadSymbols();
 	}
 

@@ -10,6 +10,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.chart.Axis;
+import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.ValueAxis;
 import javafx.scene.chart.XYChart;
@@ -25,6 +26,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
+import javafx.scene.text.Font;
 import javafx.util.Duration;
 
 /**
@@ -73,7 +75,7 @@ public class CandleStickChart extends XYChart<String, Number> {
 		// System.out.println("Series added" + series.getData().get(0).getExtraValue());
 		Label seriesLegendLabel = new Label(series.getName() + " ");
 		seriesLegendLabel.setTextFill(paintingColor);
-
+		seriesLegendLabel.setFont(new Font("Arial", 10));
 		Label label;
 		String lname, sname;
 		Boolean found = false;
@@ -81,10 +83,10 @@ public class CandleStickChart extends XYChart<String, Number> {
 			label = (Label) myLegend.getChildren().get(i);
 			lname = label.getText();
 			sname = series.getName();
-		//Change Label
+			// Change Label
 			if (lname.contains(sname)) {
 				myLegend.getChildren().remove(i);
-				System.out.println("change");
+				// System.out.println("change");
 			}
 		}
 		myLegend.getChildren().add(seriesLegendLabel);
@@ -108,9 +110,9 @@ public class CandleStickChart extends XYChart<String, Number> {
 				}
 			}
 		} else {
-			if (DEBUG)
-				System.out.println("Extravalue is null and Series size:" + series.getData().size() + " adding "
-						+ series.getName());
+			if (DEBUG) {
+			//System.out.println("Extravalue is null and Series size:" + series.getData().size() + " adding "+ series.getName());
+			}
 
 		}
 		// create series path
