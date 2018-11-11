@@ -1,5 +1,7 @@
 package application;
 
+import java.net.URL;
+
 import controller.TradeFXBusinessController;
 import gui.Table.MyTablePane;
 import javafx.application.Application;
@@ -24,6 +26,7 @@ public class TestTradeFXApplication extends Application{
     public void start(Stage stage) throws Exception {
 
 
+    	//FXMLLoader loader = new FXMLLoader(getClass().getResource("TradeFXApplication.fxml"));
     	FXMLLoader loader = new FXMLLoader(getClass().getResource("TradeFXApplication.fxml"));
     	Parent root = loader.load(); 
         Scene scene = new Scene(root, 1224, 1224);
