@@ -42,7 +42,15 @@ public class MetricMapLoaderWorker extends Task implements InvalidationListener 
 	public MetricMapLoaderWorker() {
 		model = TradeFXBusinessController.getInstance().getModel();
 		aSymbols = model.getStockSymbols();
+		
+		log.warning("Accessing "+ model.toString());
+		
 		aMetrics = model.aMetrics;
+		log.warning("Avaiable Metrics "+aSymbols.toString());	
+		while (	aSymbols.size()==0) {
+			aSymbols = model.getStockSymbols();
+		}
+		
 		items = model.MetricLoaderMaps;
 		items.clear();
 		metricLoaderCount = 0;
@@ -50,7 +58,7 @@ public class MetricMapLoaderWorker extends Task implements InvalidationListener 
 		// Build Metric Structure
 
 		log.setLevel(Level.INFO);
-		log.warning("hello");
+	
 		for (Symbol symbol : aSymbols) {
 			mMetricLoaderRow = new HashMap<String, Object>();
 			mMetricLoaderRow.put(symbol.getClass().getSimpleName(), symbol.getName().toString());
