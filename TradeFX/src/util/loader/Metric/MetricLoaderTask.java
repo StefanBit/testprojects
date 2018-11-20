@@ -2,12 +2,12 @@ package util.loader.Metric;
 
 import java.util.ArrayList;
 
-import application.MyProperties;
 import controller.TradeFXBusinessController;
 import javafx.concurrent.Task;
 import model.HistData;
 import model.Symbol;
 import model.metrics.IMetric;
+import util.properties.MyProperties;
 
 public class MetricLoaderTask extends Task {
 	

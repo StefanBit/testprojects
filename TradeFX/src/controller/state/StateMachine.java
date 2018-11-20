@@ -1,30 +1,35 @@
 package controller.state;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
-import org.junit.Test;
+import model.TradeFXModel;
+import util.log.Log;
+import util.properties.MyProperties;
 
 public class StateMachine {
 
-	IState InitialState;
-	IState SymbolsLoadedState;
-	
 	IState state;
+	IState initialState;
+	IState propertiesLoadedState;
+	IState symbolsLoadedState;
+	IState modelLoadedState;
+	
+	MyProperties properties;
+	TradeFXModel model;
 	
 	public StateMachine() {
-		InitialState= new InitialState(this);
-		SymbolsLoadedState = new SybolsLoadedState(this);
-		state=InitialState;
+		Log.info("Start Construction of "+this.getClass().getSimpleName());
+		initialState = new InitialState(this);
+		modelLoadedState = new ModelLoadedState(this);
+		propertiesLoadedState = new PropertiesLoadedState(this);
+		symbolsLoadedState = new SybolsLoadedState(this);
+		setState(initialState);
+	}
+	
+	public void nextState() {
 		state.nextState();
 	}
 	
-	@Test
-	public void CreateClass(){
-		//assertNotNull(new StateMachine());
-	}
-	@Test
-	public void Test2(){
-		//assertNotNull(new StateMachine());
+	public void setState(IState state) {
+		Log.info("... Reached "+state.getClass().getSimpleName());
+		this.state=state;
 	}
 }

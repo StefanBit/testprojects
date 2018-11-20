@@ -10,7 +10,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
 
-import application.MyProperties;
 import gui.CandleChart.ChartStage;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
@@ -33,6 +32,7 @@ import util.loader.HistoricalDataLoader.HistStockDataLoaderTask;
 import util.loader.HistoricalDataLoader.HistStockDataLoaderWorker;
 import util.loader.Metric.MetricMapLoaderWorker;
 import util.log.Log;
+import util.properties.MyProperties;
 
 public class TradeFXBusinessController {
 
@@ -89,7 +89,10 @@ public class TradeFXBusinessController {
 	public void loadSymbolMetrics(){
 		if (DEBUG) System.out.println("Start loadSymbolMetrics()");
 		startThread(new MetricMapLoaderWorker(),new MetricLoaderWorkerListener());
+
+		finish();
 	}
+	
 	public void finish(){
 		tradeFXApplicationController.Status.textProperty().unbind();
 		tradeFXApplicationController.Status.textProperty().set("Ready");
@@ -133,6 +136,7 @@ public class TradeFXBusinessController {
 	class MetricLoaderWorkerListener implements EventHandler{
 		@Override
 		public void handle(Event event) {
+			System.out.println(event);
 			//System.out.println("Finished Task MetricLoaderWorker "+metricLoaderWorker.getProgress());
 			
 			model.selectedSymbol= model.StockSymbols.get(0);

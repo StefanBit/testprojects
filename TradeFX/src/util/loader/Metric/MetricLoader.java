@@ -1,6 +1,5 @@
 package util.loader.Metric;
 
-import application.MyProperties;
 import javafx.application.Platform;
 import javafx.beans.property.BooleanPropertyBase;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -14,6 +13,7 @@ import javafx.scene.control.ProgressIndicator;
 import javafx.scene.layout.Region;
 import model.Symbol;
 import model.metrics.IMetric;
+import util.properties.MyProperties;
 
 public class MetricLoader extends Region implements EventHandler {
 	ProgressIndicator currentProgress;

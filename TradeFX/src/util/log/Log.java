@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Formatter;
 import java.util.logging.Handler;
+import java.util.logging.LogManager;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
@@ -18,17 +19,23 @@ public class Log {
 	public Log() {
 	}
 	
+	public static void setLoggingProperties(String f){
+		System.setProperty( "java.util.logging.config.file", f );
+		try { LogManager.getLogManager().readConfiguration(); }
+		catch ( Exception e ) { e.printStackTrace(); }
+	}
+	
 	public static void info(String s){
-		log.info(s);
+		log.info("\t"+s);
 	}
 	public static void warning(String s){
 		log.warning(s);
 	}
 	public static void fine(String s){
-		log.fine(s);
+		log.fine("\t\t\t"+s);
 	}
 	public static void config(String s){
-		log.config(s);
+		log.config("\t\t"+s);
 	}
 
 

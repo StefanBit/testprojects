@@ -1,4 +1,4 @@
-package application;
+package util.properties;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -23,20 +23,25 @@ public class MyProperties extends Properties {
 		super();
 		establishPropertiesFileToUse();
 		loadProperties();
+		Log.config(this.toString());
 	}
 
 	public String establishPropertiesFileToUse() {
+		this.setProperty("DEMO", "true");
 		String fileSeperator = System.getProperty("file.separator");
 		String fileName = "TradeFX.properties";
 		sPropertiesFile = System.getProperty("user.home") + fileSeperator + fileName;
 		File file = new File(sPropertiesFile);
-		Log.info("Trying to use "+sPropertiesFile);
+		Log.fine("Trying to use "+sPropertiesFile);
 		if (!file.exists()) {
 			sPropertiesFile = System.getProperty("user.dir") + fileSeperator + fileName;
 		}
-		Log.info("Established "+sPropertiesFile+" as Properties File");
+		Log.fine("Established "+sPropertiesFile+" as Properties File");
 		return sPropertiesFile;
 	}
+	
+	
+	
 
 	public void loadProperties() {
 		BufferedInputStream stream = null;
@@ -66,9 +71,9 @@ public class MyProperties extends Properties {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		 
-		 
 	}
+	
+
 	
 	
 

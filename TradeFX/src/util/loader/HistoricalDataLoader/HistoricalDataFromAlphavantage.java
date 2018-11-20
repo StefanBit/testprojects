@@ -21,7 +21,6 @@ import java.util.StringTokenizer;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
-import application.MyProperties;
 import controller.TradeFXBusinessController;
 import model.HistData;
 import model.MyArrayList;
@@ -29,6 +28,7 @@ import model.Symbol;
 import util.database.DAOHsqlImpl;
 import util.loader.Metric.MetricMapLoaderWorker;
 import util.log.Log;
+import util.properties.MyProperties;
 
 /* Loads Historical Data from URL and returns Array*/
 

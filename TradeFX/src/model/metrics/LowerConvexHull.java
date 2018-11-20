@@ -5,9 +5,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
 
-import application.MyProperties;
 import javafx.scene.paint.Color;
 import model.HistData;
+import util.properties.MyProperties;
 
 public class LowerConvexHull implements IMetric{
 	

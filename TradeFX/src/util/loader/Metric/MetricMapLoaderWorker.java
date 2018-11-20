@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import application.MyProperties;
 import controller.TradeFXBusinessController;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
@@ -18,6 +17,7 @@ import model.HistData;
 import model.Symbol;
 import model.TradeFXModel;
 import model.metrics.IMetric;
+import util.properties.MyProperties;
 
 
 /**
@@ -47,9 +47,9 @@ public class MetricMapLoaderWorker extends Task implements InvalidationListener 
 		
 		aMetrics = model.aMetrics;
 		log.warning("Avaiable Metrics "+aSymbols.toString());	
-		while (	aSymbols.size()==0) {
-			aSymbols = model.getStockSymbols();
-		}
+//		while (	aSymbols.size()==0) {
+//			aSymbols = model.getStockSymbols();
+//		}
 		
 		items = model.MetricLoaderMaps;
 		items.clear();
@@ -63,10 +63,12 @@ public class MetricMapLoaderWorker extends Task implements InvalidationListener 
 			mMetricLoaderRow = new HashMap<String, Object>();
 			mMetricLoaderRow.put(symbol.getClass().getSimpleName(), symbol.getName().toString());
 			items.add(mMetricLoaderRow);
+			log.warning("Added ");	
 			for (IMetric metric : aMetrics) {
 				putMetricLoaderFor(symbol, metric);
 			}
 		}
+		log.warning("MetricMap constructed");	
 	}
 
 	void putMetricLoaderFor(Symbol symbol, IMetric metric) {
@@ -78,12 +80,14 @@ public class MetricMapLoaderWorker extends Task implements InvalidationListener 
 
 	@Override
 	protected Object call() throws Exception {
+		System.out.println("call Worker");
 		elementsTODO = aSymbols.size() * aMetrics.size();
 		this.updateMessage("Loading MetricLoader start for " + elementsTODO);
 		// Start Metric Loaders
 		MetricLoader metricLoader;
 		for (Symbol symbol : aSymbols) {
 			mMetricLoaderRow = getHashMapFor(symbol);
+			System.out.println(mMetricLoaderRow);
 			for (IMetric metric : aMetrics) {
 				metricLoader = (MetricLoader) mMetricLoaderRow.get(metric.getClass().getSimpleName());
 				metricLoader.start();
@@ -91,7 +95,7 @@ public class MetricMapLoaderWorker extends Task implements InvalidationListener 
 				}
 			}
 		}
-
+		System.out.println("call Worker ended");
 		return null;
 	}
 
