@@ -34,5 +34,6 @@ public class TestTradeFXApplication extends Application{
         stage.initStyle(StageStyle.UNIFIED);
         stage.setScene(scene);
         stage.show();
+        
     }
 }
