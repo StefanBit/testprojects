@@ -33,6 +33,7 @@ public class TestTradeFXApplication extends Application{
         stage.setTitle("TradeFXApplication");
         stage.initStyle(StageStyle.UNIFIED);
         stage.setScene(scene);
+        
         stage.show();
         
     }
