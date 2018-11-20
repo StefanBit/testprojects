@@ -35,6 +35,7 @@ public class TestTradeFXApplication extends Application{
         stage.setScene(scene);
         
         
+        
         stage.show();
         
     }
