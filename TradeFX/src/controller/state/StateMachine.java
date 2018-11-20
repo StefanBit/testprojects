@@ -18,9 +18,11 @@ public class StateMachine {
 	public StateMachine() {
 		Log.info("Start Construction of "+this.getClass().getSimpleName());
 		initialState = new InitialState(this);
+		
+		
 		modelLoadedState = new ModelLoadedState(this);
 		propertiesLoadedState = new PropertiesLoadedState(this);
-		symbolsLoadedState = new SybolsLoadedState(this);
+		symbolsLoadedState = new SymbolsLoadedState(this);
 		setState(initialState);
 	}
 	
