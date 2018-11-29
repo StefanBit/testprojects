@@ -1,15 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.PropertiesUIController">
+<GridPane maxWidth="1.7976931348623157E308" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.PropertiesUIController">
    <children>
-      <Label text="Database:" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-      <TextField fx:id="databasePath" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+      <Label text="Label" />
+      <CheckBox mnemonicParsing="false" text="CheckBox" GridPane.columnIndex="2" />
+      <Label text="Properties File:" GridPane.rowIndex="1" />
+      <TextField fx:id="propertiesFile" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
+      <Label text="Database:" GridPane.rowIndex="2" />
+      <TextField fx:id="databasePath" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+      <Slider blockIncrement="1.0" majorTickUnit="1.0" max="3.0" minorTickCount="0" showTickLabels="true" showTickMarks="true" snapToTicks="true" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+      <Label text="Loglevel:" GridPane.rowIndex="3" />
    </children>
    <columnConstraints>
       <ColumnConstraints />
@@ -17,7 +25,9 @@
       <ColumnConstraints minWidth="10.0" prefWidth="100.0" />
    </columnConstraints>
    <rowConstraints>
+      <RowConstraints minHeight="10.0" prefHeight="30.0" />
       <RowConstraints />
       <RowConstraints />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" />
    </rowConstraints>
 </GridPane>

@@ -81,5 +81,9 @@ public class MyProperties extends Properties {
 		}
 		return debug;
 	}
+	
+	public String getPropertiesFilename() {
+		return sPropertiesFile;
+	}
 
 }
