@@ -40,8 +40,6 @@ public class MyProperties extends Properties {
 		return sPropertiesFile;
 	}
 	
-	
-	
 
 	public void loadProperties() {
 		BufferedInputStream stream = null;
@@ -73,10 +71,6 @@ public class MyProperties extends Properties {
 		}
 	}
 	
-
-	
-	
-
 	static public Boolean getDebugSettingFor(String propertieName) {
 		Boolean debug;
 		String propertie = TradeFXBusinessController.getInstance().myProperties.getProperty(propertieName);

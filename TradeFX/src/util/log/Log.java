@@ -19,6 +19,11 @@ public class Log {
 	public Log() {
 	}
 	
+    public static void init() {
+    	String path=System.getProperty("user.dir");
+		Log.setLoggingProperties(path+"\\src\\util\\log\\logging.properties");
+    }
+	
 	public static void setLoggingProperties(String f){
 		System.setProperty( "java.util.logging.config.file", f );
 		try { LogManager.getLogManager().readConfiguration(); }

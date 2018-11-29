@@ -29,6 +29,14 @@ public class TradeFXModel {
 	public Symbol selectedSymbol;
 	public MyProperties myProperies;
 
+	public MyProperties getMyProperies() {
+		return myProperies;
+	}
+
+	public void setMyProperies(MyProperties myProperies) {
+		this.myProperies = myProperies;
+	}
+
 	public TradeFXModel() {
 		StockSymbols = new ArrayList<>();
 		StockHistData = new HashMap<Symbol, ArrayList<HistData>>();

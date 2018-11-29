@@ -11,9 +11,25 @@ public class StateMachine {
 	IState propertiesLoadedState;
 	IState symbolsLoadedState;
 	IState modelLoadedState;
+	static StateMachine stateMachine; 
 	
 	MyProperties properties;
+	public MyProperties getProperties() {
+		return properties;
+	}
+
+	public void setProperties(MyProperties properties) {
+		this.properties = properties;
+	}
+
 	TradeFXModel model;
+	
+	public static StateMachine getInstance() {
+		if (stateMachine==null) {
+			stateMachine = new StateMachine();
+		}
+		return stateMachine;
+	}
 	
 	public StateMachine() {
 		Log.info("Start Construction of "+this.getClass().getSimpleName());
