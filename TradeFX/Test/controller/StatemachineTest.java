@@ -1,23 +1,28 @@
 package controller;
 
-import static org.junit.Assert.assertEquals;
-
-import org.junit.Test;
-import org.omg.CORBA.Environment;
+import java.net.URL;
 
 import controller.state.StateMachine;
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 import util.log.Log;
 
-public class StatemachineTest {
-	public StatemachineTest() {
+public class StatemachineTest extends Application{
+
+	public static void main(String[] args) {
+		
+		Application.launch(args);
+	}
+
+	@Override
+	public void start(Stage stage) throws Exception {
 		Log.init();
 		StateMachine stateMachine = StateMachine.getInstance();
 		stateMachine.nextState();
 		stateMachine.nextState();
-	}
-
-	@Test
-	public void CreateClass() {
-		System.out.println();
+		stateMachine.nextState();
 	}
 }
