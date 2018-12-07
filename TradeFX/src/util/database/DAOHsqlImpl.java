@@ -45,7 +45,7 @@ public class DAOHsqlImpl<T> {
 		ArrayList al;
 		al = q.query(("SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = '" + tablename.toUpperCase() + "'"));
 		exists = ((al.size() == 0) ? false : true);
-		System.out.println("SQL Table for "+tablename + "? " + exists);
+		Log.fine("Exists SQL Table for "+tablename + "? " + exists);
 		return exists;
 	}
 	
@@ -82,7 +82,7 @@ public class DAOHsqlImpl<T> {
 			}
 		}
 		s = s.substring(0, s.length() - 2);
-	    System.out.println("Class " + c.getSimpleName() + " has Signature: (" + s+")");
+	    Log.config("Class " + c.getSimpleName() + " has Signature: (" + s+")");
 		return s;
 	}
 
@@ -166,8 +166,7 @@ public class DAOHsqlImpl<T> {
 	 * @return ArrayList<T>
 	 */
 	public ArrayList<T> getAll() {
-		System.out.println("getAll");
-		
+		Log.fine("getAll");
 		T t = null;
 		ArrayList al, alTable;
 		al = new ArrayList<>();
@@ -201,7 +200,7 @@ public class DAOHsqlImpl<T> {
 	 * @return ArrayList<T>
 	 */
 	public ArrayList<T> getAllWhere(String where) {
-		System.out.println("getAll");
+		Log.info("getting all Entrys where "+where);
 		q = new HSQLQuery();
 		where="pk="+where;
 		T t = null;

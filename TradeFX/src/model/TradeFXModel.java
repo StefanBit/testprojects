@@ -15,6 +15,7 @@ import util.properties.MyProperties;
 
 public class TradeFXModel {
 
+	public static TradeFXModel model;
 	public static ArrayList<Symbol> StockSymbols;
 	public static Map<Symbol, ArrayList<HistData>> StockHistData;
 	public static Map<Symbol, HistStockDataLoaderTask> tasks;
@@ -28,7 +29,15 @@ public class TradeFXModel {
 	public ObservableList<Map<String, Object>> MetricLoaderMaps;
 	public Symbol selectedSymbol;
 	public MyProperties myProperies;
-
+	
+	
+	public static TradeFXModel getInstance() {
+		if (model==null) {
+			model = new TradeFXModel();
+		}
+		return model;
+	}
+	
 	public MyProperties getMyProperies() {
 		return myProperies;
 	}
@@ -38,15 +47,18 @@ public class TradeFXModel {
 	}
 
 	public TradeFXModel() {
-		StockSymbols = new ArrayList<>();
-		StockHistData = new HashMap<Symbol, ArrayList<HistData>>();
-		mSymbolMetricsTask = new HashMap<Symbol, ArrayList<MetricLoaderTask>>();
-		tasks = new HashMap<Symbol, HistStockDataLoaderTask>();
-		trades = new ArrayList<Transaction>();
-		aMetrics = new ArrayList<IMetric>();
-		MetricLoaderMaps = FXCollections.<Map<String, Object>>observableArrayList();
-		// mSymbolMetric= new HashMap<Symbol,Map<Object,IMetric>>();
+		
+			StockSymbols = new ArrayList<>();
+			StockHistData = new HashMap<Symbol, ArrayList<HistData>>();
+			mSymbolMetricsTask = new HashMap<Symbol, ArrayList<MetricLoaderTask>>();
+			tasks = new HashMap<Symbol, HistStockDataLoaderTask>();
+			trades = new ArrayList<Transaction>();
+			aMetrics = new ArrayList<IMetric>();
+			MetricLoaderMaps = FXCollections.<Map<String, Object>>observableArrayList();
+			// mSymbolMetric= new HashMap<Symbol,Map<Object,IMetric>>();			
+		
 	}
+	
 
 	public ArrayList<Symbol> getStockSymbols() {
 		return StockSymbols;

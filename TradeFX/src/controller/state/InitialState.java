@@ -13,7 +13,7 @@ public class InitialState extends State{
 	@Override
 	public void loadModel() {
 		super.loadModel();
-		statemachine.model= new TradeFXModel();
+		statemachine.model= TradeFXModel.getInstance();
 		statemachine.model.showState();
 		statemachine.setState(statemachine.modelLoadedState);
 	}

@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import controller.TradeFXApplicationController;
 import controller.TradeFXBusinessController;
 import model.Symbol;
+import model.TradeFXModel;
+import util.log.Log;
 
 public class HSQLQuery {
 	static Boolean DEBUG=false;
@@ -22,7 +24,9 @@ public class HSQLQuery {
 	int count;
 
 	public HSQLQuery() {
-		Databasefile= Paths.get(".").toAbsolutePath().normalize().toString()+(String) TradeFXBusinessController.getInstance().myProperties.getProperty("dbfile").toString();
+//		Databasefile= Paths.get(".").toAbsolutePath().normalize().toString()+(String) TradeFXBusinessController.getInstance().myProperties.getProperty("dbfile").toString();
+		Databasefile= Paths.get(".").toAbsolutePath().normalize().toString()+(String) TradeFXModel.getInstance().getMyProperies().getProperty("dbfile").toString();
+
 		try {
 			Class.forName("org.hsqldb.jdbcDriver");
 			open();
@@ -35,7 +39,7 @@ public class HSQLQuery {
 	public void open() {
 		try {
 			con = DriverManager.getConnection("jdbc:hsqldb:file:"+Databasefile+";shutdown=true", "sa","");
-			System.out.println("Using DB File "+Databasefile);
+			Log.config("Using DB File "+Databasefile);
 		} catch (SQLException e) {
 			System.out.println("Mein Fehler");
 			e.printStackTrace();

@@ -48,8 +48,9 @@ public class TradeFXBusinessController {
 
 
 	private TradeFXBusinessController() {
-		this.model = new TradeFXModel();
-		this.myProperties = new MyProperties();
+		this.model = TradeFXModel.getInstance();
+		this.myProperties = new MyProperties();// ? entfernen?
+		this.model.myProperies=this.myProperties;
 		BufferedInputStream stream=null;
 	}
 

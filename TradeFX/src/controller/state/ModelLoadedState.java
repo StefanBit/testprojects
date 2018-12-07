@@ -11,7 +11,7 @@ public class ModelLoadedState extends State {
 	@Override
 	public void loadProperties() {
 		super.loadProperties();
-		statemachine.properties = new MyProperties();
+		statemachine.model.setMyProperies(new MyProperties());
 		statemachine.setState(statemachine.propertiesLoadedState);
 	}
 	

@@ -23,14 +23,13 @@ public class SymbolLoaderTask extends Task{
 		// Load Symbols
 		DAOHsqlImpl<Symbol> SymbolsLoader = new DAOHsqlImpl(Symbol.class);
 		ArrayList<Symbol> alSymbols = SymbolsLoader.getAll();
-		Log.info("Found "+alSymbols.size()+" Symbols.");
+		Log.fine("Found "+alSymbols.size()+" Symbols.");
 		// Create SymbolMap
 		TradeFXModel.StockHistData = new HashMap<Symbol, ArrayList<HistData>>();
 		
 		for (Symbol symbol : alSymbols) {
-			System.out.println(".");
 			TradeFXModel.StockHistData.put(symbol, null);
-			Log.info("Put "+ symbol + "in StockHIstData");
+			Log.fine("Put "+ symbol + "in StockHIstData");
 		}
 		Log.fine("Stop SymbolLoaderTask");
 		TradeFXModel.StockSymbols = alSymbols;
