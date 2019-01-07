@@ -17,6 +17,9 @@ public abstract class State implements IState{
 	public void loadSymbols() {
 		Log.info("Loading Symbols ...");
 	}
+	public void loadHistoricalData() {
+		Log.info("Loading Historical Data ...");
+	}
 	public void finish() {
 		Log.info("Finish ...");
 	}

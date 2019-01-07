@@ -1,6 +1,7 @@
 package controller.state;
 
 import gui.SymbolsUIController;
+import util.loader.HistoricalDataLoader.HistStockDataLoaderWorker;
 import util.log.Log;
 
 public class SybolsLoadedState extends State {
@@ -11,14 +12,16 @@ public class SybolsLoadedState extends State {
 	}
 	
 
-	public void finished() {
-		Log.info("Finished");
-		((SymbolsUIController) o).set();
+	public void loadHistoricalData() {
+		super.loadHistoricalData();
+		new HistStockDataLoaderWorker();
+		//((SymbolsUIController) o).set();
+		statemachine.setState(statemachine.historicalDataLoadedState);
 	}
 	
 	@Override
 	public void nextState() {
-		finished();
+		loadHistoricalData();
 	}
 	
 	

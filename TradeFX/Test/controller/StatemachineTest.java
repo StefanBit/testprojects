@@ -21,8 +21,6 @@ public class StatemachineTest extends Application{
 	public void start(Stage stage) throws Exception {
 		Log.init();
 		StateMachine stateMachine = StateMachine.getInstance();
-		stateMachine.nextState();
-		stateMachine.nextState();
-		stateMachine.nextState();
+		stateMachine.init();
 	}
 }

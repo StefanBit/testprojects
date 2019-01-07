@@ -9,6 +9,7 @@ public class StateMachine {
 	IState state;
 	IState initialState;
 	IState propertiesLoadedState;
+	IState historicalDataLoadedState;
 	public IState modelLoadedState;
 	public  IState symbolsLoadedState;
 	static StateMachine stateMachine; 
@@ -37,6 +38,7 @@ public class StateMachine {
 		modelLoadedState = new ModelLoadedState(this);
 		propertiesLoadedState = new PropertiesLoadedState(this);
 		symbolsLoadedState = new SybolsLoadedState(this);
+		historicalDataLoadedState = new HistoricalDataLoadedState(this);
 		setState(initialState);
 	}
 	
@@ -53,4 +55,12 @@ public class StateMachine {
 		Log.info("... Reached "+state.getClass().getSimpleName());
 		this.state=state;
 	}
+	
+	public void init() {
+		this.nextState();
+		this.nextState();
+		this.nextState();
+		this.nextState();
+	}
+	
 }
