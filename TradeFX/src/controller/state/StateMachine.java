@@ -9,9 +9,10 @@ public class StateMachine {
 	IState state;
 	IState initialState;
 	IState propertiesLoadedState;
-	IState symbolsLoadedState;
-	IState modelLoadedState;
+	public IState modelLoadedState;
+	public  IState symbolsLoadedState;
 	static StateMachine stateMachine; 
+	public TradeFXModel model;
 	
 	MyProperties properties;
 	public MyProperties getProperties() {
@@ -22,7 +23,6 @@ public class StateMachine {
 		this.properties = properties;
 	}
 
-	TradeFXModel model;
 	
 	public static StateMachine getInstance() {
 		if (stateMachine==null) {
@@ -43,6 +43,11 @@ public class StateMachine {
 	public void nextState() {
 		state.nextState();
 	}
+	public State getState() {
+		return null;
+	}
+	
+	
 	
 	public void setState(IState state) {
 		Log.info("... Reached "+state.getClass().getSimpleName());

@@ -11,27 +11,30 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import util.log.Log;
 
-public class TestPropertiesUI extends Application{
+public class TestSymbolsUI extends Application{
 
 	public static void main(String[] args) {
 		Log.init();
-		StateMachine stateMachine = StateMachine.getInstance();
-		stateMachine.nextState();
-		stateMachine.nextState();
 		Application.launch(args);
 	}
 
 	@Override
 	public void start(Stage stage) throws Exception {
+		StateMachine stateMachine = StateMachine.getInstance();
+		stateMachine.nextState();
+		
 		String path=System.getProperty("user.dir").toString();
 		System.out.println(path);
 		FXMLLoader loader = new FXMLLoader();
-		URL url=new URL("file:///"+path+"/src/gui/PropertiesUI.fxml");
+		URL url=new URL("file:///"+path+"/src/gui/SymbolsUI.fxml");
 		loader.setLocation(url);
 		System.out.println(loader.getLocation());
     	Parent root = loader.load(); 
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
+        stateMachine.nextState();
+        stateMachine.nextState();
+        stateMachine.nextState();
 	}
 }

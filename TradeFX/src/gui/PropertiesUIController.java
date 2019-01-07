@@ -15,8 +15,8 @@ public class PropertiesUIController {
 	public void initialize() {
 		StateMachine stateMachine =StateMachine.getInstance();
 		System.out.println("Const");
-		databasePath.setText(stateMachine.getProperties().getProperty("dbfile"));
-		propertiesFile.setText(stateMachine.getProperties().getPropertiesFilename());
+		databasePath.setText(stateMachine.model.getMyProperies().getProperty("dbfile"));
+		propertiesFile.setText(stateMachine.model.getMyProperies().getPropertiesFilename());
 		
 	}
 

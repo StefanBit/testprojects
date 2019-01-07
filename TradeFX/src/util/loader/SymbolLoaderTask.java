@@ -3,7 +3,9 @@ package util.loader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.Callable;
 
+import controller.state.StateMachine;
 import javafx.concurrent.Task;
 import model.HistData;
 import model.Symbol;
@@ -11,13 +13,13 @@ import model.TradeFXModel;
 import util.database.DAOHsqlImpl;
 import util.log.Log;
 
-public class SymbolLoaderTask extends Task{
+public class SymbolLoaderTask extends Task<ArrayList<Symbol>>  {
 	public SymbolLoaderTask() {
 	Log.fine("SymbolLoaderTask Constructed");
 	}
 	
 	@Override
-	protected ArrayList<Symbol> call() throws Exception {
+	public ArrayList<Symbol> call() throws Exception {
 		Log.fine("Started SymbolLoaderTask in Thread");
 		this.updateMessage("Loading Symbols");
 		// Load Symbols
@@ -34,6 +36,10 @@ public class SymbolLoaderTask extends Task{
 		Log.fine("Stop SymbolLoaderTask");
 		TradeFXModel.StockSymbols = alSymbols;
 		updateProgress(1, 1);
+		
+		System.out.println(alSymbols);
+		StateMachine.getInstance().model.StockSymbols=alSymbols;
+		System.out.println("set"+StateMachine.getInstance().model.StockSymbols);
 		return alSymbols;
 	}
 	@Override

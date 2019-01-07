@@ -22,4 +22,10 @@ public class InitialState extends State{
 	public void nextState() {
 		loadModel();
 	}
+
+	@Override
+	public void registerObserver(Object o) {
+		// TODO Auto-generated method stub
+		
+	}
 }

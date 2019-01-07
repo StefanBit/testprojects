@@ -17,8 +17,12 @@ public abstract class State implements IState{
 	public void loadSymbols() {
 		Log.info("Loading Symbols ...");
 	}
+	public void finish() {
+		Log.info("Finish ...");
+	}
 	
 	public void nextState() {
 		// TODO Auto-generated method stub
 	}
+	public void registerObserver() {};
 }
